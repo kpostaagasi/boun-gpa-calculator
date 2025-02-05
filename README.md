@@ -17,7 +17,7 @@ Boğaziçi Üniversitesi öğrencileri için basit ve kullanışlı bir GPA hesa
 ## Geliştirme
 
 ```bash
-git clone https://github.com/[kullanıcı-adı]/boun-gpa-calculator.git
+git clone https://github.com/kpostaagasi/boun-gpa-calculator.git
 ```
 
 ## İletişim
@@ -25,4 +25,5 @@ git clone https://github.com/[kullanıcı-adı]/boun-gpa-calculator.git
 Sorularınız için bir Issue açabilirsiniz.
 
 ---
-Made with ❤️ for Boğaziçi University students 
+
+Made with ❤️ for Boğaziçi University students
