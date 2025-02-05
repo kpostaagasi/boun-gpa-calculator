@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boğaziçi Üniversitesi GPA Hesaplama | GPA Calculator</title>
+    <meta name="description" content="Boğaziçi Üniversitesi öğrencileri için GPA (Not Ortalaması) hesaplama aracı. Dönemlik ve genel not ortalamanızı kolayca hesaplayın.">
+    <meta name="keywords" content="Boğaziçi, Boğaziçi Üniversitesi, GPA hesaplama, not ortalaması, BÜGPA, BU GPA">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bogazicigpacalculator.com/">
+    <meta property="og:title" content="Boğaziçi Üniversitesi GPA Hesaplama">
+    <meta property="og:description" content="Boğaziçi Üniversitesi öğrencileri için GPA (Not Ortalaması) hesaplama aracı.">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://bogazicigpacalculator.com/">
+    <meta property="twitter:title" content="Boğaziçi Üniversitesi GPA Hesaplama">
+    <meta property="twitter:description" content="Boğaziçi Üniversitesi öğrencileri için GPA (Not Ortalaması) hesaplama aracı.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <img src="Boğaziçi_Üniversitesi_Logo.png" alt="Boğaziçi Üniversitesi Logo" class="boun-logo">
+            </div>
+            <h1>Boun GPA Hesaplayıcı</h1>
+            <p class="description">
+                Boğaziçi Üniversitesi öğrencilerinin GPA hesaplamalarını kolayca yapabilmelerini sağlamaktadır. 
+                Ek olarak AA/BA/BB ... not sistemini kullanan diğer öğrenciler de kolayca notlarını hesaplayabilirler.
+            </p>
+        </div>
+        <div class="calculator">
+            <div class="previous-gpa">
+                <div class="gpa-input-group">
+                    <label>Önceki GPA</label>
+                    <input type="number" id="previousGPA" placeholder="0.00" step="0.01" min="0" max="4">
+                </div>
+                <div class="gpa-input-group">
+                    <label>Önceki Toplam Kredi</label>
+                    <input type="number" id="previousCredits" placeholder="0" min="0">
+                </div>
+            </div>
+
+            <div class="semester-section">
+                <div class="semester-header">
+                    <div class="semester-title">
+                        <h2>Dönem Seçimi</h2>
+                        <p>Hesaplamak istediğiniz dönemi seçin</p>
+                    </div>
+                    <select id="semesterSelect">
+                        <option value="" disabled selected>Dönem Seçin</option>
+                        <option value="1">1. Dönem (Güz)</option>
+                        <option value="2">2. Dönem (Bahar)</option>
+                        <option value="3">3. Dönem (Güz)</option>
+                        <option value="4">4. Dönem (Bahar)</option>
+                        <option value="5">5. Dönem (Güz)</option>
+                        <option value="6">6. Dönem (Bahar)</option>
+                        <option value="7">7. Dönem (Güz)</option>
+                        <option value="8">8. Dönem (Bahar)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="courses" id="courseList">
+                <!-- Course entries will be added here -->
+            </div>
+            <button id="addCourse" class="btn add-btn">Ders Ekle</button>
+
+            <div class="result">
+                <div class="gpa-results">
+                    <div class="gpa-item">
+                        <h3>Dönem Ortalaması</h3>
+                        <span id="semesterGPA">0.00</span>
+                    </div>
+                    <div class="gpa-item">
+                        <h3>Genel Ortalama</h3>
+                        <span id="gpa">0.00</span>
+                    </div>
+                    <div class="gpa-item">
+                        <h3>Toplam Kredi</h3>
+                        <span id="totalCredits">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
