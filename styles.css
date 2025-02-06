@@ -300,4 +300,69 @@ select {
 .gpa-input-group input:focus,
 .btn:focus {
     box-shadow: 0 0 0 2px rgba(99, 179, 237, 0.3);
+}
+
+/* Mobil Responsive Düzenlemeler */
+@media screen and (max-width: 768px) {
+    body {
+        padding: 20px 0;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    .calculator {
+        padding: 20px;
+    }
+
+    .previous-gpa {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .semester-header {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .course-entry {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .delete-btn {
+        width: 100%;
+        margin-top: 5px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+
+    .description {
+        font-size: 1em;
+    }
+
+    .gpa-results {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .boun-logo {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+/* Tablet Responsive Düzenlemeler */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    .course-entry {
+        grid-template-columns: 1fr 120px 120px 40px;
+        gap: 10px;
+    }
+
+    .calculator {
+        padding: 25px;
+    }
 } 
