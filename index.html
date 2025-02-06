@@ -29,9 +29,72 @@
     <div class="container">
         <div class="header">
             <div class="theme-switcher">
-                <button id="themeToggle" class="theme-btn">
-                    🌙 Tema Değiştir
+                <button id="themeToggle" class="theme-btn" title="Temayı Değiştir">
+                    🌙
                 </button>
+            </div>
+            <div class="help-button">
+                <button id="helpBtn" class="help-btn" title="Yardım">
+                    ?
+                </button>
+            </div>
+            <div id="helpModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Nasıl Kullanılır?</h2>
+                    <div class="help-content">
+                        <section>
+                            <h3>1. Önceki GPA ve Kredi Girişi</h3>
+                            <p>Önceki dönemlerden gelen GPA'nızı ve toplam kredinizi ilgili alanlara girin. İlk kez hesaplama yapıyorsanız bu alanları boş bırakabilirsiniz.</p>
+                        </section>
+                        
+                        <section>
+                            <h3>2. Dönem Seçimi</h3>
+                            <p>Hesaplama yapmak istediğiniz dönemi seçin. Bu, notlarınızı düzenli tutmanıza yardımcı olacaktır.</p>
+                        </section>
+                        
+                        <section>
+                            <h3>3. Ders Ekleme</h3>
+                            <p>"Ders Ekle" butonuna tıklayarak yeni bir ders ekleyebilirsiniz. Her ders için:</p>
+                            <ul>
+                                <li>Ders adını girin (isteğe bağlı)</li>
+                                <li>Dersin kredisini seçin</li>
+                                <li>Aldığınız notu seçin</li>
+                            </ul>
+                        </section>
+                        
+                        <section>
+                            <h3>4. Ders Silme</h3>
+                            <p>Her dersin yanındaki çarpı (×) işaretine tıklayarak dersi silebilirsiniz.</p>
+                        </section>
+                        
+                        <section>
+                            <h3>5. Otomatik Hesaplama</h3>
+                            <p>Girdiğiniz her bilgi sonrasında:</p>
+                            <ul>
+                                <li>Dönem Ortalaması</li>
+                                <li>Genel Ortalama</li>
+                                <li>Toplam Kredi</li>
+                            </ul>
+                            <p>otomatik olarak hesaplanır.</p>
+                        </section>
+                        
+                        <section>
+                            <h3>6. Verileri Kaydetme</h3>
+                            <p>Girdiğiniz tüm bilgiler otomatik olarak kaydedilir. Tarayıcınızı kapatıp açtığınızda bile verileriniz kaybolmaz.</p>
+                        </section>
+                        
+                        <section>
+                            <h3>7. Verileri Temizleme</h3>
+                            <p>Sayfanın altındaki "Kaydedilmiş Verileri Temizle" butonu ile tüm kayıtlı verilerinizi silebilirsiniz.</p>
+                        </section>
+                        
+                        <section>
+                            <h3>8. Tema Değiştirme</h3>
+                            <p>Sağ üst köşedeki tema değiştirme butonu ile açık/koyu tema arasında geçiş yapabilirsiniz.</p>
+                        </section>
+                    </div>
+                </div>
             </div>
             <div class="logo-container">
                 <img src="Boğaziçi_Üniversitesi_Logo.png" alt="Boğaziçi Üniversitesi Logo" class="boun-logo">
@@ -95,6 +158,8 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Buton JavaScript ile eklenecek -->
         </div>
     </div>
     <script src="script.js"></script>

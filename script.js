@@ -19,6 +19,90 @@ document.addEventListener('DOMContentLoaded', () => {
         'FF': 0.0
     };
 
+    // Kaydetme ve yükleme fonksiyonları
+    function saveCourses() {
+        const courses = [];
+        document.querySelectorAll('.course-entry').forEach(entry => {
+            const courseName = entry.querySelector('.course-name').value.trim();
+            const courseCredit = entry.querySelector('.course-credit').value;
+            const courseGrade = entry.querySelector('.course-grade').value;
+            
+            // Only save if both credit and grade are filled out (name is optional)
+            if (courseCredit && courseGrade) {
+                courses.push({
+                    name: courseName,
+                    credit: courseCredit,
+                    grade: courseGrade
+                });
+            }
+        });
+
+        const semester = semesterSelect.value;
+        const previousGPA = previousGPAInput.value;
+        const previousCredits = previousCreditsInput.value;
+
+        const saveData = {
+            courses,
+            semester,
+            previousGPA,
+            previousCredits
+        };
+
+        localStorage.setItem('gpaSaveData', JSON.stringify(saveData));
+    }
+
+    function loadCourses() {
+        const savedData = localStorage.getItem('gpaSaveData');
+        if (!savedData) return;
+
+        const data = JSON.parse(savedData);
+        
+        // Önceki GPA ve kredi bilgilerini yükle
+        if (data.previousGPA) previousGPAInput.value = data.previousGPA;
+        if (data.previousCredits) previousCreditsInput.value = data.previousCredits;
+        if (data.semester) semesterSelect.value = data.semester;
+
+        // Mevcut dersleri temizle
+        courseList.innerHTML = '';
+
+        // Kaydedilmiş dersleri yükle
+        data.courses.forEach(course => {
+            const entry = createCourseEntry();
+            entry.querySelector('.course-name').value = course.name;
+            entry.querySelector('.course-credit').value = course.credit;
+            entry.querySelector('.course-grade').value = course.grade;
+            courseList.appendChild(entry);
+        });
+
+        // GPA'yı hesapla
+        calculateGPA();
+    }
+
+    // Temizleme fonksiyonu
+    function clearSavedData() {
+        if (confirm('Tüm kaydedilmiş verileri silmek istediğinize emin misiniz?')) {
+            localStorage.removeItem('gpaSaveData');
+            location.reload();
+        }
+    }
+
+    // Event listener'ları güncelle
+    function addEventListeners(entry) {
+        entry.querySelectorAll('select, input').forEach(element => {
+            element.addEventListener('change', () => {
+                calculateGPA();
+                saveCourses();
+            });
+        });
+
+        entry.querySelector('.delete-btn').addEventListener('click', () => {
+            entry.remove();
+            calculateGPA();
+            saveCourses();
+        });
+    }
+
+    // createCourseEntry fonksiyonunu güncelle
     function createCourseEntry() {
         const courseEntry = document.createElement('div');
         courseEntry.className = 'course-entry';
@@ -37,18 +121,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     `<option value="${grade}">${grade} (${point})</option>`
                 ).join('')}
             </select>
-            <button class="btn delete-btn">×</button>
+            <button class="btn delete-btn" title="Dersi Sil">×</button>
         `;
 
-        courseEntry.querySelector('.delete-btn').addEventListener('click', () => {
-            courseEntry.remove();
-            calculateGPA();
-        });
-
-        courseEntry.querySelectorAll('select, input').forEach(element => {
-            element.addEventListener('change', calculateGPA);
-        });
-
+        addEventListeners(courseEntry);
         return courseEntry;
     }
 
@@ -91,19 +167,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Event Listeners
     addCourseBtn.addEventListener('click', () => {
-        courseList.appendChild(createCourseEntry());
+        const entry = createCourseEntry();
+        courseList.appendChild(entry);
         calculateGPA();
+        saveCourses();
     });
 
-    previousGPAInput.addEventListener('input', calculateGPA);
-    previousCreditsInput.addEventListener('input', calculateGPA);
+    previousGPAInput.addEventListener('input', () => {
+        calculateGPA();
+        saveCourses();
+    });
+
+    previousCreditsInput.addEventListener('input', () => {
+        calculateGPA();
+        saveCourses();
+    });
+
     semesterSelect.addEventListener('change', () => {
-        // You can add semester-specific logic here if needed
         calculateGPA();
+        saveCourses();
     });
 
-    // Add first course entry by default
-    courseList.appendChild(createCourseEntry());
+    // Temizleme butonu ekle
+    const clearButton = document.createElement('button');
+    clearButton.className = 'btn clear-btn';
+    clearButton.textContent = 'Kaydedilmiş Verileri Temizle';
+    clearButton.addEventListener('click', clearSavedData);
+    document.querySelector('.calculator').appendChild(clearButton);
+
+    // Sayfa yüklendiğinde kaydedilmiş verileri yükle
+    loadCourses();
 
     // Tema değiştirme fonksiyonları
     function initTheme() {
@@ -123,10 +216,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateThemeButton(theme) {
         const button = document.getElementById('themeToggle');
-        button.innerHTML = theme === 'light' ? '🌙 Koyu Tema' : '☀️ Açık Tema';
+        button.innerHTML = theme === 'light' ? '🌙' : '☀️';
+        button.setAttribute('title', theme === 'light' ? 'Koyu Temaya Geç' : 'Açık Temaya Geç');
     }
 
     // Event Listeners
     initTheme();
     document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+    // Modal kontrolleri
+    const modal = document.getElementById('helpModal');
+    const helpBtn = document.getElementById('helpBtn');
+    const closeBtn = document.querySelector('.close');
+
+    helpBtn.addEventListener('click', () => {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden'; // Arka planı kaydırmayı engelle
+    });
+
+    closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto'; // Arka plan kaydırmayı tekrar etkinleştir
+    });
+
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
+
+    // Escape tuşu ile modalı kapatma
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && modal.style.display === 'block') {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
 }); 
