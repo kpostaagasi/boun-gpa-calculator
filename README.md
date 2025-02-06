@@ -2,6 +2,8 @@
 
 Boğaziçi Üniversitesi öğrencileri için basit ve kullanışlı bir GPA hesaplama aracı.
 
+🌐 **Web sitesi:** [https://kpostaagasi.github.io/boun-gpa-calculator](https://kpostaagasi.github.io/boun-gpa-calculator)
+
 ## Özellikler
 
 - Boğaziçi not sistemine uygun hesaplama
