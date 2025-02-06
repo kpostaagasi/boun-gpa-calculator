@@ -9,12 +9,16 @@ Boğaziçi Üniversitesi öğrencileri için basit ve kullanışlı bir GPA hesa
 - Boğaziçi not sistemine uygun hesaplama
 - Kolay kullanım
 - Mobil uyumlu tasarım
+- Açık/koyu tema desteği
+- Otomatik veri kaydı
+- PWA desteği
 
 ## Nasıl Kullanılır?
 
 1. Ders eklemek için "Ders Ekle" butonuna tıklayın
 2. Dersin adını, kredisini ve notunu girin
 3. GPA otomatik olarak hesaplanacaktır
+4. Verileriniz otomatik olarak kaydedilir
 
 ## Geliştirme
 
@@ -25,6 +29,10 @@ git clone https://github.com/kpostaagasi/boun-gpa-calculator.git
 ## İletişim
 
 Sorularınız için bir Issue açabilirsiniz.
+
+## Lisans
+
+Bu proje MIT lisansı altında lisanslanmıştır. Daha fazla bilgi için `LICENSE` dosyasına bakınız.
 
 ---
 
