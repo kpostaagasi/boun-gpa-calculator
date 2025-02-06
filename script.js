@@ -104,4 +104,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add first course entry by default
     courseList.appendChild(createCourseEntry());
+
+    // Tema değiştirme fonksiyonları
+    function initTheme() {
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeButton(savedTheme);
+    }
+
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeButton(newTheme);
+    }
+
+    function updateThemeButton(theme) {
+        const button = document.getElementById('themeToggle');
+        button.innerHTML = theme === 'light' ? '🌙 Koyu Tema' : '☀️ Açık Tema';
+    }
+
+    // Event Listeners
+    initTheme();
+    document.getElementById('themeToggle').addEventListener('click', toggleTheme);
 }); 
