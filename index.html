@@ -12,12 +12,14 @@
     <meta property="og:url" content="https://kpostaagasi.github.io/boun-gpa-calculator/">
     <meta property="og:title" content="Boğaziçi Üniversitesi GPA Hesaplama">
     <meta property="og:description" content="Boğaziçi Üniversitesi öğrencileri için GPA (Not Ortalaması) hesaplama aracı.">
+    <meta property="og:image" content="https://kpostaagasi.github.io/boun-gpa-calculator/assets/images/social-preview.png">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://kpostaagasi.github.io/boun-gpa-calculator/">
     <meta property="twitter:title" content="Boğaziçi Üniversitesi GPA Hesaplama">
     <meta property="twitter:description" content="Boğaziçi Üniversitesi öğrencileri için GPA (Not Ortalaması) hesaplama aracı.">
+    <meta property="twitter:image" content="https://kpostaagasi.github.io/boun-gpa-calculator/assets/images/social-preview.png">
     
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="./assets/favicon/apple-touch-icon.png">
@@ -113,12 +115,12 @@
         <div class="calculator">
             <div class="previous-gpa">
                 <div class="gpa-input-group">
-                    <label>Önceki GPA</label>
-                    <input type="number" id="previousGPA" placeholder="0.00" step="0.01" min="0" max="4">
+                    <label for="previousGPA">Önceki GPA</label>
+                    <input type="number" id="previousGPA" placeholder="0.00" step="0.01" min="0" max="4" aria-label="Önceki GPA">
                 </div>
                 <div class="gpa-input-group">
-                    <label>Önceki Toplam Kredi</label>
-                    <input type="number" id="previousCredits" placeholder="0" min="0">
+                    <label for="previousCredits">Önceki Toplam Kredi</label>
+                    <input type="number" id="previousCredits" placeholder="0" min="0" aria-label="Önceki Toplam Kredi">
                 </div>
             </div>
 
@@ -128,7 +130,7 @@
                         <h2>Dönem Seçimi</h2>
                         <p>Hesaplamak istediğiniz dönemi seçin</p>
                     </div>
-                    <select id="semesterSelect">
+                    <select id="semesterSelect" aria-label="Dönem Seçimi">
                         <option value="" disabled selected>Dönem Seçin</option>
                         <option value="1">1. Dönem (Güz)</option>
                         <option value="2">2. Dönem (Bahar)</option>

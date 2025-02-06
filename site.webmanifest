@@ -2,7 +2,7 @@
     "name": "Boğaziçi GPA Hesaplayıcı",
     "short_name": "BOUN GPA",
     "description": "Boğaziçi Üniversitesi öğrencileri için GPA hesaplama aracı",
-    "start_url": "./",
+    "start_url": "/boun-gpa-calculator/",
     "icons": [
         {
             "src": "./assets/favicon/android-chrome-192x192.png",

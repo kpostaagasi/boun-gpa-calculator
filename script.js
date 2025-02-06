@@ -108,20 +108,20 @@ document.addEventListener('DOMContentLoaded', () => {
         courseEntry.className = 'course-entry';
 
         courseEntry.innerHTML = `
-            <input type="text" placeholder="Ders Adı" class="course-name">
-            <select class="course-credit">
+            <input type="text" placeholder="Ders Adı" class="course-name" aria-label="Ders Adı">
+            <select class="course-credit" aria-label="Ders Kredisi">
                 <option value="" disabled selected>Kredi Seçin</option>
                 ${[1, 2, 3, 4, 5, 6, 7, 8].map(credit => 
                     `<option value="${credit}">${credit} Kredi</option>`
                 ).join('')}
             </select>
-            <select class="course-grade">
+            <select class="course-grade" aria-label="Ders Notu">
                 <option value="" disabled selected>Not Seçin</option>
                 ${Object.entries(gradePoints).map(([grade, point]) => 
                     `<option value="${grade}">${grade} (${point})</option>`
                 ).join('')}
             </select>
-            <button class="btn delete-btn" title="Dersi Sil">×</button>
+            <button class="btn delete-btn" title="Dersi Sil" aria-label="Dersi Sil">×</button>
         `;
 
         addEventListeners(courseEntry);
@@ -174,11 +174,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     previousGPAInput.addEventListener('input', () => {
+        let value = parseFloat(previousGPAInput.value);
+        if (value < 0) {
+            previousGPAInput.value = 0;
+        } else if (value > 4) {
+            previousGPAInput.value = 4;
+        }
         calculateGPA();
         saveCourses();
     });
 
     previousCreditsInput.addEventListener('input', () => {
+        let value = parseInt(previousCreditsInput.value);
+        if (value < 0) {
+            previousCreditsInput.value = 0;
+        } else if (value > 300) { // Makul bir üst sınır
+            previousCreditsInput.value = 300;
+        }
         calculateGPA();
         saveCourses();
     });
