@@ -814,4 +814,15 @@ select {
         height: 35px;
         font-size: 18px;
     }
+}
+
+/* Data actions bar */
+.data-actions {
+    border-top: 1px dashed var(--border-color);
+    padding-top: 12px;
+}
+
+/* Target result subtle style */
+#targetResult {
+    min-height: 24px;
 } 

@@ -45,10 +45,13 @@
                     ?
                 </button>
             </div>
-            <div id="helpModal" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h2>Nasıl Kullanılır?</h2>
+            <div style="position:absolute; top:20px; left:70px; z-index:100;">
+                <button id="scaleBtn" class="btn" title="Not Skalası">Not Skalası</button>
+            </div>
+            <div id="helpModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+                <div class="modal-content" tabindex="-1">
+                    <span class="close" aria-label="Kapat">&times;</span>
+                    <h2 id="helpTitle">Nasıl Kullanılır?</h2>
                     <div class="help-content">
                         <section>
                             <h3>1. Önceki GPA ve Kredi Girişi</h3>
@@ -103,6 +106,35 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Grade Scale Modal -->
+            <div id="scaleModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="scaleTitle" aria-describedby="scaleDesc">
+                <div class="modal-content" tabindex="-1">
+                    <span class="close" aria-label="Kapat">&times;</span>
+                    <h2 id="scaleTitle">Not Skalası</h2>
+                    <p id="scaleDesc" class="description" style="margin-bottom:16px;">Harf notlarının 4.00 üzerinden karşılıklarını düzenleyin.</p>
+                    <div class="help-content">
+                        <section>
+                            <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:12px;">
+                                <label>AA <input id="scaleAA" type="number" min="0" max="4" step="0.1" /></label>
+                                <label>BA <input id="scaleBA" type="number" min="0" max="4" step="0.1" /></label>
+                                <label>BB <input id="scaleBB" type="number" min="0" max="4" step="0.1" /></label>
+                                <label>CB <input id="scaleCB" type="number" min="0" max="4" step="0.1" /></label>
+                                <label>CC <input id="scaleCC" type="number" min="0" max="4" step="0.1" /></label>
+                                <label>DC <input id="scaleDC" type="number" min="0" max="4" step="0.1" /></label>
+                                <label>DD <input id="scaleDD" type="number" min="0" max="4" step="0.1" /></label>
+                                <label>FF <input id="scaleFF" type="number" min="0" max="4" step="0.1" /></label>
+                            </div>
+                            <div style="display:flex; gap:10px; margin-top:16px;">
+                                <button id="scaleSaveBtn" class="btn">Kaydet</button>
+                                <button id="scaleResetBtn" class="btn">Varsayılana Sıfırla</button>
+                            </div>
+                            <p style="margin-top:8px; color:var(--text-secondary); font-size:0.9em;">P / U (S/U) / W / I değerleri sabittir ve GPA'ya katılım kuralları ile hesaplanır.</p>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
             <div class="logo-container">
                 <img src="./assets/images/Boğaziçi_Üniversitesi_Logo.png" alt="Boğaziçi Üniversitesi Logo" class="boun-logo">
             </div>
@@ -145,17 +177,18 @@
             </div>
 
             <div class="courses" id="courseList">
+                <div id="emptyState" aria-live="polite" style="display:none; text-align:center; color: var(--text-secondary); padding: 16px;">Henüz ders eklemediniz. Başlamak için "Ders Ekle" butonuna tıklayın.</div>
                 <!-- Course entries will be added here -->
             </div>
             <button id="addCourse" class="btn add-btn">Ders Ekle</button>
 
             <div class="result">
                 <div class="gpa-results">
-                    <div class="gpa-item">
+                    <div class="gpa-item" id="semesterGPAItem">
                         <h3>Dönem Ortalaması</h3>
                         <span id="semesterGPA">0.00</span>
                     </div>
-                    <div class="gpa-item">
+                    <div class="gpa-item" id="cumulativeGPAItem">
                         <h3>Genel Ortalama</h3>
                         <span id="gpa">0.00</span>
                     </div>
@@ -164,6 +197,29 @@
                         <span id="totalCredits">0</span>
                     </div>
                 </div>
+            </div>
+
+            <!-- Hedef GPA Bölümü -->
+            <div class="target-gpa-section" style="margin-top:24px;">
+                <div class="semester-header" style="margin-bottom:12px;">
+                    <div class="semester-title">
+                        <h2>Hedef GPA</h2>
+                        <p>Bu dönem kalan dersler için gerekli ortalamayı hesaplayın</p>
+                    </div>
+                </div>
+                <div class="target-gpa-input" style="display:flex; gap:12px; align-items:center;">
+                    <input type="number" id="targetGPA" placeholder="Hedef Genel GPA (0.00 - 4.00)" step="0.01" min="0" max="4" aria-label="Hedef GPA" />
+                    <button id="calcTargetBtn" class="btn target-btn">Hesapla</button>
+                    <div id="targetResult" aria-live="polite" style="color: var(--text-secondary);"></div>
+                </div>
+            </div>
+
+            <!-- Dışa/İçe Aktar ve Paylaş -->
+            <div class="data-actions" style="display:flex; flex-wrap:wrap; gap:10px; margin-top:16px;">
+                <button id="exportBtn" class="btn" title="Verileri JSON olarak indir">Verileri Dışa Aktar</button>
+                <input type="file" id="importFile" accept="application/json" style="display:none" />
+                <button id="importBtn" class="btn" title="JSON dosyasından yükle">Verileri İçe Aktar</button>
+                <button id="shareBtn" class="btn" title="Bağlantıyı kopyala">Bağlantıyı Kopyala</button>
             </div>
 
             <!-- Buton JavaScript ile eklenecek -->
