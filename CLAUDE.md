@@ -31,6 +31,7 @@ boun-gpa-calculator/
 
 - GPA calculation with Turkish grade system (4.0 scale)
 - Previous GPA/credit input for cumulative calculations
+- **Course retake support** - for courses previously taken with FF/DD/DC grades
 - Semester selection (8 semesters)
 - Auto-save to LocalStorage
 - Dark/Light theme toggle
@@ -73,9 +74,21 @@ Push to `main` branch - GitHub Pages auto-deploys from the repository root.
 - **JavaScript:** ES6+ syntax, all in single file with DOMContentLoaded wrapper
 - **Accessibility:** ARIA labels on interactive elements
 
+## Course Retake Logic
+
+When a student retakes a course (previously FF/DD/DC):
+1. Semester GPA includes the new grade normally
+2. Cumulative GPA calculation:
+   - Subtracts old grade's contribution from previous credits/points
+   - Adds new grade's contribution
+   - Formula: `adjustedPreviousCredits = previousCredits - retakeCredits`
+   - Formula: `adjustedPreviousPoints = previousPoints - (oldGrade * credits)`
+
 ## Important Files
 
 - `script.js:11-20` - Grade point definitions
-- `script.js:131-166` - GPA calculation logic
-- `script.js:214-237` - Theme toggle implementation
+- `script.js:107` - Retakeable grades (FF, DD, DC)
+- `script.js:165-216` - GPA calculation logic with retake support
+- `script.js:232-256` - Theme toggle implementation
 - `styles.css:19-48` - Theme CSS variables (dark/light)
+- `styles.css:209-277` - Course entry and retake UI styles

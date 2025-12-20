@@ -26,13 +26,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const courseName = entry.querySelector('.course-name').value.trim();
             const courseCredit = entry.querySelector('.course-credit').value;
             const courseGrade = entry.querySelector('.course-grade').value;
-            
+            const isRetake = entry.querySelector('.is-retake').checked;
+            const previousGrade = entry.querySelector('.previous-grade').value;
+
             // Only save if both credit and grade are filled out (name is optional)
             if (courseCredit && courseGrade) {
                 courses.push({
                     name: courseName,
                     credit: courseCredit,
-                    grade: courseGrade
+                    grade: courseGrade,
+                    isRetake: isRetake,
+                    previousGrade: previousGrade
                 });
             }
         });
@@ -56,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!savedData) return;
 
         const data = JSON.parse(savedData);
-        
+
         // Önceki GPA ve kredi bilgilerini yükle
         if (data.previousGPA) previousGPAInput.value = data.previousGPA;
         if (data.previousCredits) previousCreditsInput.value = data.previousCredits;
@@ -71,6 +75,16 @@ document.addEventListener('DOMContentLoaded', () => {
             entry.querySelector('.course-name').value = course.name;
             entry.querySelector('.course-credit').value = course.credit;
             entry.querySelector('.course-grade').value = course.grade;
+
+            // Tekrar ders bilgilerini yükle
+            if (course.isRetake) {
+                entry.querySelector('.is-retake').checked = true;
+                entry.querySelector('.previous-grade-container').style.display = 'block';
+                if (course.previousGrade) {
+                    entry.querySelector('.previous-grade').value = course.previousGrade;
+                }
+            }
+
             courseList.appendChild(entry);
         });
 
@@ -95,6 +109,21 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
+        // Tekrar checkbox'ı için özel event listener
+        const retakeCheckbox = entry.querySelector('.is-retake');
+        const previousGradeContainer = entry.querySelector('.previous-grade-container');
+
+        retakeCheckbox.addEventListener('change', () => {
+            if (retakeCheckbox.checked) {
+                previousGradeContainer.style.display = 'block';
+            } else {
+                previousGradeContainer.style.display = 'none';
+                entry.querySelector('.previous-grade').value = '';
+            }
+            calculateGPA();
+            saveCourses();
+        });
+
         entry.querySelector('.delete-btn').addEventListener('click', () => {
             entry.remove();
             calculateGPA();
@@ -103,25 +132,44 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // createCourseEntry fonksiyonunu güncelle
+    // Tekrar alınabilecek notlar (düşük notlar)
+    const retakeableGrades = ['FF', 'DD', 'DC'];
+
     function createCourseEntry() {
         const courseEntry = document.createElement('div');
         courseEntry.className = 'course-entry';
 
         courseEntry.innerHTML = `
-            <input type="text" placeholder="Ders Adı" class="course-name" aria-label="Ders Adı">
-            <select class="course-credit" aria-label="Ders Kredisi">
-                <option value="" disabled selected>Kredi Seçin</option>
-                ${[1, 2, 3, 4, 5, 6, 7, 8].map(credit => 
-                    `<option value="${credit}">${credit} Kredi</option>`
-                ).join('')}
-            </select>
-            <select class="course-grade" aria-label="Ders Notu">
-                <option value="" disabled selected>Not Seçin</option>
-                ${Object.entries(gradePoints).map(([grade, point]) => 
-                    `<option value="${grade}">${grade} (${point})</option>`
-                ).join('')}
-            </select>
-            <button class="btn delete-btn" title="Dersi Sil" aria-label="Dersi Sil">×</button>
+            <div class="course-main-row">
+                <input type="text" placeholder="Ders Adı" class="course-name" aria-label="Ders Adı">
+                <select class="course-credit" aria-label="Ders Kredisi">
+                    <option value="" disabled selected>Kredi Seçin</option>
+                    ${[1, 2, 3, 4, 5, 6, 7, 8].map(credit =>
+                        `<option value="${credit}">${credit} Kredi</option>`
+                    ).join('')}
+                </select>
+                <select class="course-grade" aria-label="Ders Notu">
+                    <option value="" disabled selected>Not Seçin</option>
+                    ${Object.entries(gradePoints).map(([grade, point]) =>
+                        `<option value="${grade}">${grade} (${point})</option>`
+                    ).join('')}
+                </select>
+                <button class="btn delete-btn" title="Dersi Sil" aria-label="Dersi Sil">×</button>
+            </div>
+            <div class="course-retake-row">
+                <label class="retake-toggle">
+                    <input type="checkbox" class="is-retake" aria-label="Tekrar Ders">
+                    <span class="retake-label">Tekrar mı?</span>
+                </label>
+                <div class="previous-grade-container" style="display: none;">
+                    <select class="previous-grade" aria-label="Önceki Not">
+                        <option value="" disabled selected>Önceki Not</option>
+                        ${retakeableGrades.map(grade =>
+                            `<option value="${grade}">${grade} (${gradePoints[grade]})</option>`
+                        ).join('')}
+                    </select>
+                </div>
+            </div>
         `;
 
         addEventListeners(courseEntry);
@@ -132,35 +180,51 @@ document.addEventListener('DOMContentLoaded', () => {
         let semesterPoints = 0;
         let semesterCredits = 0;
         let previousPoints = 0;
-        
+
+        // Tekrar dersleri için düzeltmeler
+        let retakeCredits = 0;      // Önceki kredilerden çıkarılacak
+        let retakeOldPoints = 0;    // Önceki puanlardan çıkarılacak
+
         // Calculate current semester GPA
         document.querySelectorAll('.course-entry').forEach(entry => {
             const credit = parseFloat(entry.querySelector('.course-credit').value);
             const grade = entry.querySelector('.course-grade').value;
-            
+            const isRetake = entry.querySelector('.is-retake').checked;
+            const previousGrade = entry.querySelector('.previous-grade').value;
+
             if (credit && grade) {
                 semesterPoints += credit * gradePoints[grade];
                 semesterCredits += credit;
+
+                // Tekrar ders ise önceki notun etkisini hesapla
+                if (isRetake && previousGrade) {
+                    retakeCredits += credit;
+                    retakeOldPoints += credit * gradePoints[previousGrade];
+                }
             }
         });
 
         // Get previous GPA and credits
         const previousGPA = parseFloat(previousGPAInput.value) || 0;
         const previousCredits = parseFloat(previousCreditsInput.value) || 0;
-        
+
         if (previousGPA && previousCredits) {
             previousPoints = previousGPA * previousCredits;
         }
 
-        // Calculate semester GPA
+        // Calculate semester GPA (tekrar dersler dahil, normal hesaplama)
         const semesterGPA = semesterCredits > 0 ? (semesterPoints / semesterCredits).toFixed(2) : '0.00';
         semesterGPADisplay.textContent = semesterGPA;
 
-        // Calculate cumulative GPA
-        const totalCredits = semesterCredits + previousCredits;
-        const totalPoints = semesterPoints + previousPoints;
+        // Önceki değerlerden tekrar derslerin eski etkisini çıkar
+        const adjustedPreviousCredits = Math.max(0, previousCredits - retakeCredits);
+        const adjustedPreviousPoints = Math.max(0, previousPoints - retakeOldPoints);
+
+        // Calculate cumulative GPA (tekrar dersler düzeltilmiş)
+        const totalCredits = semesterCredits + adjustedPreviousCredits;
+        const totalPoints = semesterPoints + adjustedPreviousPoints;
         const cumulativeGPA = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : '0.00';
-        
+
         gpaDisplay.textContent = cumulativeGPA;
         totalCreditsDisplay.textContent = totalCredits;
     }
