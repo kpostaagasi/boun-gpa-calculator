@@ -138,11 +138,11 @@ h1 {
 
 .gpa-input-group input {
     padding: 12px;
-    border: 1px solid #404040;
+    border: 1px solid var(--input-border);
     border-radius: 8px;
     font-size: 14px;
-    background-color: #363636;
-    color: #ffffff;
+    background-color: var(--input-bg);
+    color: var(--text-color);
     transition: all 0.3s ease;
 }
 
@@ -176,34 +176,34 @@ h1 {
 #semesterSelect {
     width: 100%;
     padding: 12px 16px;
-    border: 1px solid #404040;
+    border: 1px solid var(--input-border);
     border-radius: 8px;
     font-size: 15px;
-    background-color: #363636;
-    color: #ffffff;
+    background-color: var(--input-bg);
+    color: var(--text-color);
     transition: all 0.3s ease;
     cursor: pointer;
 }
 
 #semesterSelect:hover {
-    border-color: #4a5568;
-    background-color: #404040;
+    border-color: var(--text-secondary);
+    background-color: var(--hover-color);
 }
 
 #semesterSelect:focus {
     outline: none;
-    border-color: #63b3ed;
+    border-color: var(--result-color);
     box-shadow: 0 0 0 2px rgba(99, 179, 237, 0.2);
 }
 
 #semesterSelect option {
-    background-color: #2d2d2d;
-    color: #ffffff;
+    background-color: var(--calculator-bg);
+    color: var(--text-color);
     padding: 8px;
 }
 
 #semesterSelect option:hover {
-    background-color: #404040;
+    background-color: var(--hover-color);
 }
 
 .course-entry {
@@ -272,18 +272,18 @@ h1 {
 
 .previous-grade:focus {
     outline: none;
-    border-color: #666666;
-    background-color: #404040;
+    border-color: var(--text-secondary);
+    background-color: var(--hover-color);
 }
 
 .course-entry input, 
 .course-entry select {
     padding: 12px;
-    border: 1px solid #404040;
+    border: 1px solid var(--input-border);
     border-radius: 8px;
     font-size: 14px;
-    background-color: #363636;
-    color: #ffffff;
+    background-color: var(--input-bg);
+    color: var(--text-color);
     transition: all 0.3s ease;
 }
 
@@ -291,8 +291,8 @@ h1 {
 .course-entry select:focus,
 .gpa-input-group input:focus {
     outline: none;
-    border-color: #666666;
-    background-color: #404040;
+    border-color: var(--text-secondary);
+    background-color: var(--hover-color);
 }
 
 .course-entry input::placeholder,
@@ -311,7 +311,7 @@ h1 {
 }
 
 .add-btn {
-    background-color: #2c5282;
+    background-color: var(--btn-primary);
     color: white;
     width: 100%;
     margin: 25px 0;
@@ -319,7 +319,7 @@ h1 {
 }
 
 .add-btn:hover {
-    background-color: #2b6cb0;
+    background-color: var(--result-color);
     transform: translateY(-1px);
 }
 
@@ -338,7 +338,7 @@ h1 {
 }
 
 .delete-btn:hover {
-    background-color: #822727;
+    opacity: 0.85;
 }
 
 .result {
@@ -357,14 +357,14 @@ h1 {
 
 .gpa-item {
     padding: 20px;
-    background-color: #363636;
+    background-color: var(--input-bg);
     border-radius: 12px;
     transition: all 0.3s ease;
 }
 
 .gpa-item:hover {
     transform: translateY(-2px);
-    background-color: #404040;
+    background-color: var(--hover-color);
 }
 
 .gpa-item h3 {
@@ -376,7 +376,7 @@ h1 {
 
 .gpa-item span {
     display: block;
-    color: #63b3ed;
+    color: var(--result-color);
     font-size: 1.8em;
     font-weight: 600;
 }
@@ -397,7 +397,7 @@ select {
 .course-entry input:hover,
 .course-entry select:hover,
 .gpa-input-group input:hover {
-    border-color: #4a5568;
+    border-color: var(--text-secondary);
 }
 
 /* Focus ring for accessibility */
@@ -563,7 +563,7 @@ select {
 
 /* Tablet Responsive Düzenlemeler */
 @media screen and (min-width: 769px) and (max-width: 1024px) {
-    .course-entry {
+    .course-main-row {
         grid-template-columns: 1fr 100px 100px 40px;
         gap: 8px;
     }
@@ -572,33 +572,6 @@ select {
         padding: 20px;
         margin: 0 10px;
     }
-}
-
-/* Mevcut stilleri değişkenlerle güncelle */
-body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-}
-
-.calculator {
-    background-color: var(--calculator-bg);
-}
-
-.course-entry input, 
-.course-entry select,
-.gpa-input-group input,
-#semesterSelect {
-    background-color: var(--input-bg);
-    border-color: var(--input-border);
-    color: var(--text-color);
-}
-
-.gpa-item {
-    background-color: var(--input-bg);
-}
-
-.gpa-item span {
-    color: var(--result-color);
 }
 
 /* Tema Değiştirme Butonu Stilleri */
@@ -630,47 +603,6 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Tema bazlı renk düzenlemeleri */
-.gpa-input-group label {
-    color: var(--text-secondary);
-}
-
-.semester-title p {
-    color: var(--text-secondary);
-}
-
-.gpa-item h3 {
-    color: var(--text-secondary);
-}
-
-.previous-gpa,
-.semester-section {
-    border-bottom: 2px solid var(--border-color);
-}
-
-.result {
-    border-top: 2px solid var(--border-color);
-}
-
-.course-entry {
-    border-bottom: 1px solid var(--border-color);
-}
-
-/* Placeholder renkleri */
-.course-entry input::placeholder,
-.gpa-input-group input::placeholder {
-    color: var(--text-secondary);
-}
-
-/* Select arrow rengi */
-select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23666666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-}
-
-[data-theme="dark"] select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-}
-
 .clear-btn {
     background-color: var(--calculator-bg);
     color: var(--btn-danger);
@@ -687,28 +619,6 @@ select {
     background-color: var(--btn-danger);
     color: white;
     opacity: 1;
-}
-
-/* Mobil düzenlemeler */
-@media screen and (max-width: 768px) {
-    .target-gpa-section {
-        margin-top: 25px;
-        padding: 20px 15px;
-    }
-
-    .target-gpa-input {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .target-btn {
-        width: 100%;
-    }
-
-    .target-gpa-input input {
-        font-size: 16px;
-        height: 45px;
-    }
 }
 
 /* Yardım Butonu Stilleri */
