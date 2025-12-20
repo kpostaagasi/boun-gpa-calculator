@@ -207,13 +207,73 @@ h1 {
 }
 
 .course-entry {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 20px;
+}
+
+.course-main-row {
     display: grid;
     grid-template-columns: 1fr 150px 150px 40px;
     gap: 15px;
-    margin-bottom: 20px;
     align-items: center;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 20px;
+}
+
+.course-retake-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding-left: 5px;
+}
+
+.retake-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.retake-toggle input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--result-color);
+}
+
+.retake-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+    transition: color 0.3s ease;
+}
+
+.retake-toggle:hover .retake-label {
+    color: var(--text-color);
+}
+
+.previous-grade-container {
+    flex: 1;
+    max-width: 200px;
+}
+
+.previous-grade {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+.previous-grade:focus {
+    outline: none;
+    border-color: #666666;
+    background-color: #404040;
 }
 
 .course-entry input, 
@@ -373,10 +433,33 @@ select {
         display: flex;
         flex-direction: column;
         width: 100%;
-        gap: 8px;
+        gap: 10px;
         padding: 0 5px 15px 5px;
         margin-bottom: 15px;
         border-bottom: 1px solid var(--border-color);
+    }
+
+    .course-main-row {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .course-retake-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .previous-grade-container {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .previous-grade {
+        width: 100%;
+        height: 45px;
+        font-size: 16px;
     }
 
     .course-entry input, 
