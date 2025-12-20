@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,156 +30,615 @@
     <meta name="theme-color" content="#003366">
     <link rel="manifest" href="./site.webmanifest">
     
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    
+    <!-- HTML2Canvas CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="theme-switcher">
-                <button id="themeToggle" class="theme-btn" title="Temayı Değiştir">
-                    🌙
+    <div class="app-container">
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="#" class="sidebar-logo">
+                    <img src="./assets/images/boun-logo.png" alt="Boğaziçi Üniversitesi Logo">
+                    <div class="sidebar-logo-text">
+                        <span>BOUN</span> GPA
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title" data-i18n="nav.menu">Menü</div>
+                    <button class="nav-item active" data-view="dashboard">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        <span data-i18n="nav.dashboard">Dashboard</span>
+                    </button>
+                    <button class="nav-item" data-view="calculator">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="2" width="16" height="20" rx="2"></rect>
+                            <line x1="8" y1="6" x2="16" y2="6"></line>
+                            <line x1="8" y1="10" x2="16" y2="10"></line>
+                            <line x1="8" y1="14" x2="12" y2="14"></line>
+                            <line x1="8" y1="18" x2="12" y2="18"></line>
+                        </svg>
+                        <span data-i18n="nav.calculator">Hesaplayıcı</span>
+                    </button>
+                    <button class="nav-item" data-view="goal">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <circle cx="12" cy="12" r="6"></circle>
+                            <circle cx="12" cy="12" r="2"></circle>
+                        </svg>
+                        <span data-i18n="nav.goal">Hedef GPA</span>
+                    </button>
+                    <button class="nav-item" data-view="history">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        <span data-i18n="nav.history">Geçmiş</span>
+                    </button>
+                    <button class="nav-item" data-view="charts">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                        <span data-i18n="nav.statistics">İstatistikler</span>
+                    </button>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title" data-i18n="nav.tools">Araçlar</div>
+                    <button class="nav-item" data-view="export">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <span data-i18n="nav.export">Dışa Aktar</span>
+                    </button>
+                    <button class="nav-item" id="helpBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                        <span data-i18n="nav.help">Yardım</span>
+                    </button>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button class="nav-item" id="clearDataBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    <span data-i18n="nav.clearData">Verileri Temizle</span>
                 </button>
             </div>
-            <div class="help-button">
-                <button id="helpBtn" class="help-btn" title="Yardım">
-                    ?
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <div style="display: flex; align-items: center; gap: var(--space-4);">
+                    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menüyü Aç">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
+                    <h1 class="header-title" id="pageTitle">Dashboard</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="lang-toggle" id="langToggle" aria-label="Change Language">
+                        <span class="lang-flag">🇹🇷</span>
+                        <span class="lang-code">TR</span>
+                    </button>
+                    <button class="theme-toggle" id="themeToggle" data-tooltip="Tema Değiştir" aria-label="Tema Değiştir">
+                        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Main Body -->
+            <div class="main-body">
+                <!-- Dashboard View -->
+                <div class="view active" id="dashboardView">
+                    <div class="stats-grid">
+                        <div class="stat-card animate-fade-in stagger-1">
+                            <div class="stat-card-icon primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                                </svg>
+                            </div>
+                            <div class="stat-card-value" id="dashboardGPA">0.00</div>
+                            <div class="stat-card-label" data-i18n="dashboard.gpa">Genel Ortalama</div>
+                        </div>
+                        <div class="stat-card animate-fade-in stagger-2">
+                            <div class="stat-card-icon success">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                            </div>
+                            <div class="stat-card-value" id="dashboardSemesterGPA">0.00</div>
+                            <div class="stat-card-label" data-i18n="dashboard.semesterGpa">Dönem Ortalaması</div>
+                        </div>
+                        <div class="stat-card animate-fade-in stagger-3">
+                            <div class="stat-card-icon warning">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                                </svg>
+                            </div>
+                            <div class="stat-card-value" id="dashboardCredits">0</div>
+                            <div class="stat-card-label" data-i18n="dashboard.totalCredits">Toplam Kredi</div>
+                        </div>
+                        <div class="stat-card animate-fade-in stagger-4">
+                            <div class="stat-card-icon primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                            </div>
+                            <div class="stat-card-value" id="dashboardSemester">-</div>
+                            <div class="stat-card-label" data-i18n="dashboard.activeSemester">Aktif Dönem</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card animate-fade-in stagger-5">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title" data-i18n="dashboard.quickStart">Hızlı Başlangıç</h2>
+                                <p class="card-subtitle" data-i18n="dashboard.quickStartDesc">GPA hesaplamaya başlamak için bir seçenek seçin</p>
+                            </div>
+                        </div>
+                        <div class="export-options">
+                            <div class="export-option" data-action="go-calculator">
+                                <div class="export-option-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                </div>
+                                <div class="export-option-title" data-i18n="dashboard.addCourse">Ders Ekle</div>
+                                <div class="export-option-desc" data-i18n="dashboard.addCourseDesc">Manuel olarak ders ekleyerek başla</div>
+                            </div>
+                            <div class="export-option" data-action="open-templates">
+                                <div class="export-option-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="export-option-title" data-i18n="dashboard.templates">Şablonlar</div>
+                                <div class="export-option-desc" data-i18n="dashboard.templatesDesc">Hazır ders şablonlarından seç</div>
+                            </div>
+                            <div class="export-option" data-action="go-goal">
+                                <div class="export-option-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <circle cx="12" cy="12" r="6"></circle>
+                                        <circle cx="12" cy="12" r="2"></circle>
+                                    </svg>
+                                </div>
+                                <div class="export-option-title" data-i18n="dashboard.setGoal">Hedef Belirle</div>
+                                <div class="export-option-desc" data-i18n="dashboard.setGoalDesc">İstediğin GPA'ya nasıl ulaşırsın?</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Calculator View -->
+                <div class="view" id="calculatorView">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title" data-i18n="calc.previousInfo">Önceki Dönem Bilgileri</h2>
+                                <p class="card-subtitle" data-i18n="calc.previousInfoDesc">Varsa önceki dönemlerden gelen bilgilerinizi girin</p>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="previousGPA" data-i18n="calc.previousGpa">Önceki GPA</label>
+                                <input type="number" id="previousGPA" class="form-input" placeholder="0.00" step="0.01" min="0" max="4">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="previousCredits" data-i18n="calc.previousCredits">Önceki Toplam Kredi</label>
+                                <input type="number" id="previousCredits" class="form-input" placeholder="0" min="0">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="semesterSelect" data-i18n="calc.selectSemester">Dönem Seçimi</label>
+                            <select id="semesterSelect" class="form-select">
+                                <option value="" disabled selected data-i18n="calc.selectSemesterPlaceholder">Dönem Seçin</option>
+                                <option value="1">1. Dönem (Güz)</option>
+                                <option value="2">2. Dönem (Bahar)</option>
+                                <option value="3">3. Dönem (Güz)</option>
+                                <option value="4">4. Dönem (Bahar)</option>
+                                <option value="5">5. Dönem (Güz)</option>
+                                <option value="6">6. Dönem (Bahar)</option>
+                                <option value="7">7. Dönem (Güz)</option>
+                                <option value="8">8. Dönem (Bahar)</option>
+                                <option value="9">9. Dönem (Güz)</option>
+                                <option value="10">10. Dönem (Bahar)</option>
+                                <option value="11">11. Dönem (Güz)</option>
+                                <option value="12">12. Dönem (Bahar)</option>
+                                <option value="13">13. Dönem (Güz)</option>
+                                <option value="14">14. Dönem (Bahar)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="card" style="margin-top: var(--space-6);">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title" data-i18n="calc.courses">Dersler</h2>
+                                <p class="card-subtitle" data-i18n="calc.coursesDesc">Bu dönem aldığınız dersleri ekleyin</p>
+                            </div>
+                            <div style="display: flex; gap: var(--space-2);">
+                                <button class="btn btn-secondary" id="openTemplatesBtn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                    </svg>
+                                    <span data-i18n="dashboard.templates">Şablonlar</span>
+                                </button>
+                                <button class="btn btn-primary" id="addCourse">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                    <span data-i18n="calc.addCourse">Ders Ekle</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="course-list" id="courseList">
+                            <!-- Course entries will be added here -->
+                        </div>
+                        
+                        <div id="emptyCoursesState" class="empty-state">
+                            <div class="empty-state-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="empty-state-title" data-i18n="calc.noCourses">Henüz ders eklenmedi</h3>
+                            <p class="empty-state-desc" data-i18n="calc.noCoursesDesc">GPA hesaplamaya başlamak için "Ders Ekle" butonuna tıklayın veya şablonlardan seçin.</p>
+                        </div>
+                        
+                        <div class="results-grid" id="resultsGrid" style="display: none;">
+                            <div class="result-item">
+                                <div class="result-label" data-i18n="calc.semesterGpa">Dönem Ortalaması</div>
+                                <div class="result-value" id="semesterGPA">0.00</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-label" data-i18n="calc.overallGpa">Genel Ortalama</div>
+                                <div class="result-value" id="gpa">0.00</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-label" data-i18n="calc.totalCredits">Toplam Kredi</div>
+                                <div class="result-value" id="totalCredits">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Goal Calculator View -->
+                <div class="view" id="goalView">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title" data-i18n="goal.title">Hedef GPA Hesaplayıcı</h2>
+                                <p class="card-subtitle" data-i18n="goal.desc">İstediğiniz GPA'ya ulaşmak için gereken notu hesaplayın</p>
+                            </div>
+                        </div>
+                        
+                        <div class="goal-calculator">
+                            <div class="goal-input-section">
+                                <div class="form-group">
+                                    <label class="form-label" for="goalCurrentGPA" data-i18n="goal.currentGpa">Mevcut GPA</label>
+                                    <input type="number" id="goalCurrentGPA" class="form-input" placeholder="0.00" step="0.01" min="0" max="4">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="goalCurrentCredits" data-i18n="goal.currentCredits">Mevcut Toplam Kredi</label>
+                                    <input type="number" id="goalCurrentCredits" class="form-input" placeholder="0" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="goalTargetGPA" data-i18n="goal.targetGpa">Hedef GPA</label>
+                                    <input type="number" id="goalTargetGPA" class="form-input" placeholder="3.00" step="0.01" min="0" max="4">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="goalPlannedCredits" data-i18n="goal.plannedCredits">Alınacak Kredi</label>
+                                    <input type="number" id="goalPlannedCredits" class="form-input" placeholder="15" min="1">
+                                </div>
+                                <button class="btn btn-primary btn-block btn-lg" id="calculateGoalBtn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <circle cx="12" cy="12" r="6"></circle>
+                                        <circle cx="12" cy="12" r="2"></circle>
+                                    </svg>
+                                    <span data-i18n="goal.calculate">Hesapla</span>
+                                </button>
+                            </div>
+                            
+                            <div class="goal-result-section" id="goalResultSection">
+                                <div class="goal-result-icon success" id="goalResultIcon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <circle cx="12" cy="12" r="6"></circle>
+                                        <circle cx="12" cy="12" r="2"></circle>
+                                    </svg>
+                                </div>
+                                <div class="goal-result-title" data-i18n="goal.requiredGrade">Gereken Ortalama Not</div>
+                                <div class="goal-result-value" id="goalResultValue">-</div>
+                                <div class="goal-result-description" id="goalResultDesc" data-i18n="goal.enterInfo">Hesaplamak için bilgileri girin</div>
+                                <div class="progress-bar" id="goalProgressBar" style="display: none;">
+                                    <div class="progress-bar-fill" id="goalProgressFill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- History View -->
+                <div class="view" id="historyView">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title" data-i18n="history.title">Dönem Geçmişi</h2>
+                                <p class="card-subtitle" data-i18n="history.desc">Geçmiş dönemlerinizi görüntüleyin</p>
+                            </div>
+                            <button class="btn btn-primary" id="addSemesterBtn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                                <span data-i18n="history.newSemester">Yeni Dönem</span>
+                            </button>
+                        </div>
+                        
+                        <div class="semester-tabs" id="semesterTabs">
+                            <!-- Semester tabs will be generated here -->
+                        </div>
+                        
+                        <div id="semesterContent">
+                            <div class="empty-state" id="emptySemesterState">
+                                <div class="empty-state-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                </div>
+                                <h3 class="empty-state-title" data-i18n="history.noRecords">Dönem kaydı bulunamadı</h3>
+                                <p class="empty-state-desc" data-i18n="history.noRecordsDesc">Hesaplayıcıdan ders ekleyip kaydettiğinizde dönemler burada görünecektir.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charts View -->
+                <div class="view" id="chartsView">
+                    <div class="charts-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title" data-i18n="charts.gradeDistribution">Not Dağılımı (Genel & Dönem)</h2>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="gradeDistributionChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title" data-i18n="charts.gpaTrend">GPA & SPA Trendi</h2>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="gpaTrendChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card" style="margin-top: var(--space-6);">
+                        <div class="card-header">
+                            <h2 class="card-title" data-i18n="charts.creditDistribution">Kredi Dağılımı</h2>
+                        </div>
+                        <div class="chart-container" style="height: 200px;">
+                            <canvas id="creditDistributionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Export View -->
+                <div class="view" id="exportView">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title" data-i18n="export.title">Dışa Aktar</h2>
+                                <p class="card-subtitle" data-i18n="export.desc">Verilerinizi farklı formatlarda kaydedin veya paylaşın</p>
+                            </div>
+                        </div>
+                        
+                        <div class="export-options">
+                            <div class="export-option" id="exportPNG">
+                                <div class="export-option-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                        <polyline points="21 15 16 10 5 21"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="export-option-title" data-i18n="export.png">PNG Görsel</div>
+                                <div class="export-option-desc" data-i18n="export.pngDesc">Sonuçlarınızı görsel olarak kaydedin</div>
+                            </div>
+                            <div class="export-option" id="exportPDF">
+                                <div class="export-option-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="export-option-title" data-i18n="export.pdf">PDF Yazdır</div>
+                                <div class="export-option-desc" data-i18n="export.pdfDesc">Yazdırmaya hazır PDF oluşturun</div>
+                            </div>
+                            <div class="export-option" id="exportShare">
+                                <div class="export-option-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="18" cy="5" r="3"></circle>
+                                        <circle cx="6" cy="12" r="3"></circle>
+                                        <circle cx="18" cy="19" r="3"></circle>
+                                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                                    </svg>
+                                </div>
+                                <div class="export-option-title" data-i18n="export.share">Paylaş</div>
+                                <div class="export-option-desc" data-i18n="export.shareDesc">Sosyal medyada paylaşın</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Export Preview Card -->
+                    <div class="card" style="margin-top: var(--space-6);" id="exportPreviewCard">
+                        <div class="card-header">
+                            <h2 class="card-title" data-i18n="export.preview">Önizleme</h2>
+                        </div>
+                        <div id="exportPreview" style="padding: var(--space-6); background: var(--bg-tertiary); border-radius: var(--radius-lg); text-align: center;">
+                            <img src="./assets/images/boun-logo.png" alt="Logo" style="width: 60px; height: 60px; margin-bottom: var(--space-4);">
+                            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">BOUN GPA Calculator</h3>
+                            <div class="results-grid" style="border: none; padding: 0; margin: 0;">
+                                <div class="result-item">
+                                    <div class="result-label" data-i18n="calc.semesterGpa">Dönem Ortalaması</div>
+                                    <div class="result-value" id="exportSemesterGPA">0.00</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-label" data-i18n="calc.overallGpa">Genel Ortalama</div>
+                                    <div class="result-value" id="exportGPA">0.00</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-label" data-i18n="calc.totalCredits">Toplam Kredi</div>
+                                    <div class="result-value" id="exportCredits">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Templates Modal -->
+    <div class="modal-overlay" id="templatesModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" data-i18n="templates.title">Ders Şablonları</h3>
+                <button class="modal-close" id="closeTemplatesModal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
                 </button>
             </div>
-            <div id="helpModal" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h2>Nasıl Kullanılır?</h2>
-                    <div class="help-content">
-                        <section>
-                            <h3>1. Önceki GPA ve Kredi Girişi</h3>
-                            <p>Önceki dönemlerden gelen GPA'nızı ve toplam kredinizi ilgili alanlara girin. İlk kez hesaplama yapıyorsanız bu alanları boş bırakabilirsiniz.</p>
-                        </section>
-                        
-                        <section>
-                            <h3>2. Dönem Seçimi</h3>
-                            <p>Hesaplama yapmak istediğiniz dönemi seçin. Bu, notlarınızı düzenli tutmanıza yardımcı olacaktır.</p>
-                        </section>
-                        
-                        <section>
-                            <h3>3. Ders Ekleme</h3>
-                            <p>"Ders Ekle" butonuna tıklayarak yeni bir ders ekleyebilirsiniz. Her ders için:</p>
-                            <ul>
-                                <li>Ders adını girin (isteğe bağlı)</li>
-                                <li>Dersin kredisini seçin</li>
-                                <li>Aldığınız notu seçin</li>
-                            </ul>
-                        </section>
-                        
-                        <section>
-                            <h3>4. Ders Silme</h3>
-                            <p>Her dersin yanındaki çarpı (×) işaretine tıklayarak dersi silebilirsiniz.</p>
-                        </section>
-
-                        <section>
-                            <h3>5. Tekrar Ders (Ders Tekrarı)</h3>
-                            <p>Daha önce FF, DD veya DC aldığınız bir dersi tekrar alıyorsanız:</p>
-                            <ul>
-                                <li>"Tekrar mı?" kutucuğunu işaretleyin</li>
-                                <li>Açılan menüden önceki notunuzu seçin (FF, DD veya DC)</li>
-                                <li>Sistem otomatik olarak eski notun etkisini genel ortalamadan çıkarıp yeni notu ekleyecektir</li>
-                            </ul>
-                            <p><strong>Not:</strong> Dönem ortalaması yeni notla hesaplanır. Genel ortalama ise eski notun yerine yeni not konularak hesaplanır.</p>
-                        </section>
-                        
-                        <section>
-                            <h3>6. Otomatik Hesaplama</h3>
-                            <p>Girdiğiniz her bilgi sonrasında:</p>
-                            <ul>
-                                <li>Dönem Ortalaması</li>
-                                <li>Genel Ortalama</li>
-                                <li>Toplam Kredi</li>
-                            </ul>
-                            <p>otomatik olarak hesaplanır.</p>
-                        </section>
-
-                        <section>
-                            <h3>7. Verileri Kaydetme</h3>
-                            <p>Girdiğiniz tüm bilgiler otomatik olarak kaydedilir. Tarayıcınızı kapatıp açtığınızda bile verileriniz kaybolmaz.</p>
-                        </section>
-
-                        <section>
-                            <h3>8. Verileri Temizleme</h3>
-                            <p>Sayfanın altındaki "Kaydedilmiş Verileri Temizle" butonu ile tüm kayıtlı verilerinizi silebilirsiniz.</p>
-                        </section>
-
-                        <section>
-                            <h3>9. Tema Değiştirme</h3>
-                            <p>Sağ üst köşedeki tema değiştirme butonu ile açık/koyu tema arasında geçiş yapabilirsiniz.</p>
-                        </section>
-                    </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input type="text" class="form-input" id="templateSearch" data-i18n="templates.search" placeholder="Ders ara...">
+                </div>
+                <div class="template-list" id="templateList">
+                    <!-- Templates will be generated here -->
                 </div>
             </div>
-            <div class="logo-container">
-                <img src="./assets/images/boun-logo.png" alt="Boğaziçi Üniversitesi Logo" class="boun-logo">
-            </div>
-            <h1>Boun GPA Hesaplayıcı</h1>
-            <p class="description">
-                Boğaziçi Üniversitesi öğrencilerinin GPA hesaplamalarını kolayca yapabilmelerini sağlamaktadır. 
-                Ek olarak AA/BA/BB ... not sistemini kullanan diğer öğrenciler de kolayca notlarını hesaplayabilirler.
-            </p>
-        </div>
-        <div class="calculator">
-            <div class="previous-gpa">
-                <div class="gpa-input-group">
-                    <label for="previousGPA">Önceki GPA</label>
-                    <input type="number" id="previousGPA" placeholder="0.00" step="0.01" min="0" max="4" aria-label="Önceki GPA">
-                </div>
-                <div class="gpa-input-group">
-                    <label for="previousCredits">Önceki Toplam Kredi</label>
-                    <input type="number" id="previousCredits" placeholder="0" min="0" aria-label="Önceki Toplam Kredi">
-                </div>
-            </div>
-
-            <div class="semester-section">
-                <div class="semester-header">
-                    <div class="semester-title">
-                        <h2>Dönem Seçimi</h2>
-                        <p>Hesaplamak istediğiniz dönemi seçin</p>
-                    </div>
-                    <select id="semesterSelect" aria-label="Dönem Seçimi">
-                        <option value="" disabled selected>Dönem Seçin</option>
-                        <option value="1">1. Dönem (Güz)</option>
-                        <option value="2">2. Dönem (Bahar)</option>
-                        <option value="3">3. Dönem (Güz)</option>
-                        <option value="4">4. Dönem (Bahar)</option>
-                        <option value="5">5. Dönem (Güz)</option>
-                        <option value="6">6. Dönem (Bahar)</option>
-                        <option value="7">7. Dönem (Güz)</option>
-                        <option value="8">8. Dönem (Bahar)</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="courses" id="courseList">
-                <!-- Course entries will be added here -->
-            </div>
-            <button id="addCourse" class="btn add-btn">Ders Ekle</button>
-
-            <div class="result">
-                <div class="gpa-results">
-                    <div class="gpa-item">
-                        <h3>Dönem Ortalaması</h3>
-                        <span id="semesterGPA">0.00</span>
-                    </div>
-                    <div class="gpa-item">
-                        <h3>Genel Ortalama</h3>
-                        <span id="gpa">0.00</span>
-                    </div>
-                    <div class="gpa-item">
-                        <h3>Toplam Kredi</h3>
-                        <span id="totalCredits">0</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Buton JavaScript ile eklenecek -->
         </div>
     </div>
+    
+    <!-- Help Modal -->
+    <div id="helpModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" data-i18n="help.title">Nasıl Kullanılır?</h3>
+                <button class="modal-close close">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body help-content">
+                <section>
+                    <h3>1. <span data-i18n="help.dashboard">Dashboard</span></h3>
+                    <p data-i18n="help.dashboardDesc">Ana sayfada genel istatistiklerinizi görüntüleyebilir ve hızlıca işlem yapabilirsiniz.</p>
+                </section>
+                
+                <section>
+                    <h3>2. <span data-i18n="help.calculator">Hesaplayıcı</span></h3>
+                    <p data-i18n="help.calculatorDesc">Önceki GPA ve kredi bilgilerinizi girin, ardından bu dönem aldığınız dersleri ekleyin. Her ders için:</p>
+                    <ul>
+                        <li data-i18n="help.calculatorList1">Ders adını girin (isteğe bağlı)</li>
+                        <li data-i18n="help.calculatorList2">Dersin kredisini seçin</li>
+                        <li data-i18n="help.calculatorList3">Aldığınız notu seçin</li>
+                    </ul>
+                </section>
+                
+                <section>
+                    <h3>3. <span data-i18n="help.retake">Tekrar Ders</span></h3>
+                    <p data-i18n="help.retakeDesc">Daha önce FF, DD veya DC aldığınız bir dersi tekrar alıyorsanız "Tekrar mı?" kutucuğunu işaretleyin ve önceki notunuzu seçin.</p>
+                </section>
+                
+                <section>
+                    <h3>4. <span data-i18n="help.goal">Hedef GPA</span></h3>
+                    <p data-i18n="help.goalDesc">İstediğiniz GPA'ya ulaşmak için hangi notları almanız gerektiğini hesaplayın.</p>
+                </section>
+                
+                <section>
+                    <h3>5. <span data-i18n="help.templates">Ders Şablonları</span></h3>
+                    <p data-i18n="help.templatesDesc">BOUN'da sık alınan dersler için hazır şablonları kullanarak hızlıca ders ekleyebilirsiniz.</p>
+                </section>
+                
+                <section>
+                    <h3>6. <span data-i18n="help.statistics">İstatistikler</span></h3>
+                    <p data-i18n="help.statisticsDesc">Not dağılımınızı ve GPA trendinizi grafiklerle görüntüleyin.</p>
+                </section>
+                
+                <section>
+                    <h3>7. <span data-i18n="help.export">Dışa Aktarma</span></h3>
+                    <p data-i18n="help.exportDesc">Sonuçlarınızı PNG görsel veya PDF olarak kaydedin, sosyal medyada paylaşın.</p>
+                </section>
+            </div>
+        </div>
+    </div>
+    
     <script src="script.js"></script>
 </body>
-</html> 
+</html>
