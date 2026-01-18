@@ -424,10 +424,12 @@ document.addEventListener('DOMContentLoaded', () => {
         'CC': 2.0,
         'DC': 1.5,
         'DD': 1.0,
-        'FF': 0.0
+        'FF': 0.0,
+        'P': null  // Pass - doesn't affect GPA but counts as credit
     };
 
     const retakeableGrades = ['FF', 'DD', 'DC'];
+    const nonGPAGrades = ['P'];  // Grades that don't affect GPA calculation
 
     // HTML escape utility to prevent XSS
     function escapeHtml(text) {
@@ -828,6 +830,9 @@ document.addEventListener('DOMContentLoaded', () => {
         let retakeOldPoints = 0;
         
         // Calculate current semester
+        let semesterCreditsForGPA = 0;  // Credits used for GPA calculation (excludes P)
+        let totalSemesterCredits = 0;   // All credits including P
+        
         document.querySelectorAll('.course-entry').forEach(entry => {
             const credit = parseFloat(entry.querySelector('.course-credit').value);
             const grade = entry.querySelector('.course-grade').value;
@@ -835,15 +840,24 @@ document.addEventListener('DOMContentLoaded', () => {
             const previousGrade = entry.querySelector('.previous-grade').value;
             
             if (credit && grade) {
-                semesterPoints += credit * gradePoints[grade];
-                semesterCredits += credit;
+                totalSemesterCredits += credit;
                 
-                if (isRetake && previousGrade) {
+                // Handle retake adjustment FIRST (even for P grades, old grade must be removed from cumulative)
+                // This ensures that if someone retakes FF and gets P, the FF is still removed
+                if (isRetake && previousGrade && !nonGPAGrades.includes(previousGrade)) {
                     retakeCredits += credit;
                     retakeOldPoints += credit * gradePoints[previousGrade];
                 }
+                
+                // P grade doesn't affect GPA but counts as credit
+                if (!nonGPAGrades.includes(grade)) {
+                    semesterPoints += credit * gradePoints[grade];
+                    semesterCreditsForGPA += credit;
+                }
             }
         });
+        
+        semesterCredits = semesterCreditsForGPA;
         
         // Get previous values
         const previousGPA = parseFloat(elements.previousGPAInput.value) || 0;
@@ -856,9 +870,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Calculate cumulative GPA (with retake adjustment)
         const adjustedPreviousCredits = Math.max(0, previousCredits - retakeCredits);
         const adjustedPreviousPoints = Math.max(0, previousPoints - retakeOldPoints);
-        const totalCredits = semesterCredits + adjustedPreviousCredits;
+        const creditsForGPA = semesterCredits + adjustedPreviousCredits;
         const totalPoints = semesterPoints + adjustedPreviousPoints;
-        const cumulativeGPA = totalCredits > 0 ? (totalPoints / totalCredits) : 0;
+        const cumulativeGPA = creditsForGPA > 0 ? (totalPoints / creditsForGPA) : 0;
+        
+        // Total credits includes P grades
+        const totalCredits = totalSemesterCredits + adjustedPreviousCredits;
         
         // Update displays with animation
         animateValue(elements.semesterGPA, semesterGPA.toFixed(2));
@@ -888,7 +905,8 @@ document.addEventListener('DOMContentLoaded', () => {
         state.previousCredits = previousCredits;
         state.semester = semesterValue;
         
-        return { semesterGPA, cumulativeGPA, totalCredits };
+        // Return both total credits (includes P) and GPA-affecting credits (excludes P)
+        return { semesterGPA, cumulativeGPA, totalCredits, creditsForGPA };
     }
 
     function applyGPAColorCoding(element, gpa) {
@@ -1056,9 +1074,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function syncGoalInputsFromCalculator() {
         // Sync current values from calculator to goal inputs
-        const { cumulativeGPA, totalCredits } = calculateGPA();
+        // Use creditsForGPA (excludes P) because goal calculation formula requires GPA-affecting credits
+        const { cumulativeGPA, creditsForGPA } = calculateGPA();
         elements.goalCurrentGPA.value = cumulativeGPA.toFixed(2);
-        elements.goalCurrentCredits.value = totalCredits;
+        elements.goalCurrentCredits.value = creditsForGPA;
     }
 
     // ============================================
@@ -1082,7 +1101,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 'AA': '#10b981', 'BA': '#34d399', 'BB': '#6ee7b7',
                 'CB': '#fbbf24', 'CC': '#fcd34d',
                 'DC': '#f97316', 'DD': '#fb923c',
-                'FF': '#ef4444'
+                'FF': '#ef4444',
+                'P': '#3b82f6'  // Blue for Pass
             };
             
             state.charts.gradeDistribution = new Chart(elements.gradeDistributionChart, {
@@ -1292,7 +1312,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function getGradeDistributionData() {
-        const grades = ['AA', 'BA', 'BB', 'CB', 'CC', 'DC', 'DD', 'FF'];
+        const grades = ['AA', 'BA', 'BB', 'CB', 'CC', 'DC', 'DD', 'FF', 'P'];
         
         // Current semester courses
         const currentCourses = getCoursesData();
@@ -1338,7 +1358,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return numA - numB;
             });
             
-            const labels = sorted.map(s => s[0]);
+            const labels = sorted.map(s => t('semester.format', { n: s[0] }));
             const spaValues = sorted.map(s => s[1].gpa || 0); // Semester GPA
             
             // Calculate cumulative GPA for each semester
@@ -1516,7 +1536,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const semesterId = semesterValue;
         const courses = [];
         let totalPoints = 0;
-        let totalCredits = 0;
+        let creditsForGPA = 0;
         
         document.querySelectorAll('.course-entry').forEach(entry => {
             const name = entry.querySelector('.course-name').value.trim();
@@ -1525,8 +1545,11 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (credit && grade) {
                 courses.push({ name, credit, grade });
-                totalPoints += credit * gradePoints[grade];
-                totalCredits += credit;
+                // P grade doesn't affect GPA
+                if (!nonGPAGrades.includes(grade)) {
+                    totalPoints += credit * gradePoints[grade];
+                    creditsForGPA += credit;
+                }
             }
         });
         
@@ -1536,8 +1559,8 @@ document.addEventListener('DOMContentLoaded', () => {
             
             state.semesters[semesterId] = {
                 courses,
-                gpa: totalCredits > 0 ? totalPoints / totalCredits : 0,
-                credits: totalCredits
+                gpa: creditsForGPA > 0 ? totalPoints / creditsForGPA : 0,
+                credits: creditsForGPA  // Credits used for GPA calculation (excludes P)
             };
             saveToLocalStorage();
         }
