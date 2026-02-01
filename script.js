@@ -151,6 +151,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Alerts
             'alert.clearConfirm': 'Tüm kaydedilmiş verileri silmek istediğinize emin misiniz?',
             'alert.exportError': 'Dışa aktarma sırasında bir hata oluştu.',
+            'alert.importSuccess': 'Veriler başarıyla içe aktarıldı!',
+            'alert.importError': 'İçe aktarma sırasında bir hata oluştu. Geçerli bir JSON dosyası yükleyin.',
+            'alert.feedbackSuccess': 'Geri bildiriminiz için teşekkürler!',
             
             // Theme & Language
             'theme.toggle': 'Tema Değiştir',
@@ -159,6 +162,187 @@ document.addEventListener('DOMContentLoaded', () => {
             // Misc
             'misc.delete': 'Sil',
             'misc.noCourseRecords': 'Bu dönemde ders kaydı yok.',
+            
+            // New features - Navigation
+            'nav.import': 'İçe Aktar',
+            'nav.feedback': 'Geri Bildirim',
+            'nav.shortcuts': 'Kısayollar',
+            'nav.universities': 'Üniversite',
+            
+            // Keyboard Shortcuts
+            'shortcuts.title': 'Klavye Kısayolları',
+            'shortcuts.addCourse': 'Yeni ders ekle',
+            'shortcuts.save': 'Verileri kaydet',
+            'shortcuts.export': 'Dışa aktar',
+            'shortcuts.dashboard': 'Dashboard\'a git',
+            'shortcuts.calculator': 'Hesaplayıcıya git',
+            'shortcuts.theme': 'Tema değiştir',
+            'shortcuts.language': 'Dil değiştir',
+            'shortcuts.help': 'Yardım menüsü',
+            'shortcuts.close': 'Modalı kapat',
+            
+            // Feedback
+            'feedback.title': 'Geri Bildirim',
+            'feedback.type': 'Geri Bildirim Türü',
+            'feedback.bug': 'Hata Bildirimi',
+            'feedback.feature': 'Özellik İsteği',
+            'feedback.improvement': 'İyileştirme Önerisi',
+            'feedback.other': 'Diğer',
+            'feedback.message': 'Mesajınız',
+            'feedback.email': 'E-posta (İsteğe bağlı)',
+            'feedback.submit': 'Gönder',
+            
+            // Import
+            'import.title': 'Veri İçe Aktar',
+            'import.desc': 'Daha önce dışa aktardığınız JSON dosyasını yükleyin veya yapıştırın.',
+            'import.selectFile': 'Dosya Seç',
+            'import.pasteJson': 'veya JSON yapıştırın:',
+            'import.import': 'İçe Aktar',
+            'import.cancel': 'İptal',
+            
+            // Export JSON
+            'export.json': 'JSON Yedek',
+            'export.jsonDesc': 'Verilerinizi JSON olarak yedekleyin',
+            
+            // New Navigation Items
+            'nav.simulation': 'Simülasyon',
+            'nav.graduation': 'Mezuniyet',
+            'nav.achievements': 'Rozetler',
+            'nav.calendar': 'Takvim',
+            
+            // Simulation
+            'simulation.title': 'GPA Simülasyonu',
+            'simulation.desc': '"Eğer şu notları alsam..." senaryolarını deneyin',
+            'simulation.currentGpa': 'Mevcut GPA',
+            'simulation.scenarios': 'Senaryolar',
+            'simulation.addScenario': 'Senaryo Ekle',
+            'simulation.projectedGpa': 'Tahmini GPA',
+            'simulation.quickScenarios': 'Hızlı Senaryolar',
+            'simulation.allAA': 'Tüm AA',
+            'simulation.allBB': 'Tüm BB',
+            'simulation.allCC': 'Tüm CC',
+            'simulation.mixed': 'Karışık',
+            'simulation.credits': 'Kredi',
+            'simulation.grade': 'Not',
+            'simulation.remove': 'Kaldır',
+            'simulation.gpaUp': '↑ Artış',
+            'simulation.gpaDown': '↓ Düşüş',
+            'simulation.gpaSame': '→ Aynı',
+            
+            // Graduation
+            'graduation.title': 'Mezuniyet Hesaplayıcı',
+            'graduation.desc': 'Mezuniyete ne kadar kaldığınızı hesaplayın',
+            'graduation.requiredCredits': 'Gereken Toplam Kredi',
+            'graduation.minGpa': 'Minimum GPA',
+            'graduation.currentCredits': 'Mevcut Krediniz',
+            'graduation.currentGpa': 'Mevcut GPA',
+            'graduation.calculate': 'Hesapla',
+            'graduation.progress': 'Mezuniyet İlerlemesi',
+            'graduation.creditProgress': 'Kredi İlerlemesi',
+            'graduation.gpaProgress': 'GPA Durumu',
+            'graduation.estimateText': 'Tahmini mezuniyet: Hesapla butonuna tıklayın',
+            'graduation.honorStatus': 'Onur Durumu',
+            'graduation.honor': 'Onur Öğrencisi',
+            'graduation.highHonor': 'Yüksek Onur Öğrencisi',
+            'graduation.achieved': '✓ Ulaşıldı',
+            'graduation.notAchieved': '✗ Ulaşılmadı',
+            'graduation.remaining': 'Kalan: {credits} kredi',
+            'graduation.semestersLeft': 'Tahmini {semesters} dönem kaldı',
+            'graduation.readyToGraduate': '🎉 Mezuniyete hazırsınız!',
+            'graduation.needCredits': '{credits} kredi daha almanız gerekiyor',
+            'graduation.needGpa': 'GPA\'nızı {gpa}\'e yükseltmeniz gerekiyor',
+            
+            // Achievements
+            'achievements.title': 'Başarı Rozetleri',
+            'achievements.desc': 'Akademik başarılarınızı kutlayın',
+            'achievements.streaks': 'Seri Takibi',
+            'achievements.successStreak': 'Başarılı Dönem Serisi',
+            'achievements.improvementStreak': 'Gelişim Serisi',
+            'achievements.perfectStreak': 'Mükemmel Dönem',
+            'achievements.locked': 'Kilitli',
+            'achievements.unlocked': 'Açıldı!',
+            
+            // Calendar
+            'calendar.title': 'Akademik Takvim',
+            'calendar.desc': 'Önemli tarihleri ve hatırlatıcıları yönetin',
+            'calendar.addReminder': 'Hatırlatıcı Ekle',
+            'calendar.upcoming': 'Yaklaşan Hatırlatıcılar',
+            'calendar.noReminders': 'Henüz hatırlatıcı eklenmedi',
+            'calendar.quickAdd': 'Hızlı Ekle',
+            'calendar.midterm': 'Vize',
+            'calendar.final': 'Final',
+            'calendar.project': 'Proje',
+            'calendar.assignment': 'Ödev',
+            'calendar.reminderTitle': 'Başlık',
+            'calendar.reminderType': 'Tür',
+            'calendar.reminderDate': 'Tarih',
+            'calendar.reminderTime': 'Saat',
+            'calendar.reminderCourse': 'Ders (İsteğe bağlı)',
+            'calendar.reminderNotes': 'Notlar',
+            'calendar.saveReminder': 'Kaydet',
+            'calendar.today': 'Bugün',
+            'calendar.daysLeft': '{days} gün kaldı',
+            'calendar.tomorrow': 'Yarın',
+            'calendar.delete': 'Sil',
+            
+            // Months
+            'month.0': 'Ocak',
+            'month.1': 'Şubat',
+            'month.2': 'Mart',
+            'month.3': 'Nisan',
+            'month.4': 'Mayıs',
+            'month.5': 'Haziran',
+            'month.6': 'Temmuz',
+            'month.7': 'Ağustos',
+            'month.8': 'Eylül',
+            'month.9': 'Ekim',
+            'month.10': 'Kasım',
+            'month.11': 'Aralık',
+            
+            // Additional translations for new features
+            'scenario': 'Senaryo',
+            'scenarioSaved': 'Senaryo kaydedildi',
+            'noSavedScenarios': 'Kayıtlı senaryo yok',
+            'load': 'Yükle',
+            'course': 'Ders',
+            'credits': 'kredi',
+            'graduationComplete': 'Tebrikler! Mezuniyet şartlarını tamamladınız!',
+            'targetUnreachable': 'Bu hedef mevcut krediyle ulaşılamaz',
+            'targetChallenging': 'Zorlu ama imkansız değil!',
+            'targetAchievable': 'Hedefinize ulaşabilirsiniz!',
+            'achievementUnlocked': 'Rozet Açıldı!',
+            'achFirstCourse': 'İlk Ders',
+            'achFirstCourseDesc': 'İlk dersinizi eklediniz',
+            'achFiveCourses': 'Beş Ders',
+            'achFiveCoursesDesc': '5 ders eklediniz',
+            'achTwentyCourses': 'Yirmi Ders',
+            'achTwentyCoursesDesc': '20 ders eklediniz',
+            'achFirstAA': 'İlk AA',
+            'achFirstAADesc': 'İlk AA notunuzu aldınız',
+            'achHonor': 'Onur Öğrencisi',
+            'achHonorDesc': 'GPA 3.00 ve üzeri',
+            'achHighHonor': 'Yüksek Onur',
+            'achHighHonorDesc': 'GPA 3.50 ve üzeri',
+            'achPerfectGPA': 'Mükemmel GPA',
+            'achPerfectGPADesc': 'GPA 4.00',
+            'achFirstSemester': 'İlk Dönem',
+            'achFirstSemesterDesc': 'İlk döneminizi tamamladınız',
+            'achFourSemesters': 'Dört Dönem',
+            'achFourSemestersDesc': '4 dönemi tamamladınız',
+            'achEightSemesters': 'Sekiz Dönem',
+            'achEightSemestersDesc': '8 dönemi tamamladınız',
+            'achNightOwl': 'Gece Kuşu',
+            'achNightOwlDesc': 'Gece yarısından sonra çalışıyorsunuz',
+            'achEarlyBird': 'Erken Kuş',
+            'achEarlyBirdDesc': 'Sabah erken saatlerde çalışıyorsunuz',
+            'achExplorer': 'Kaşif',
+            'achExplorerDesc': 'Tüm görünümleri keşfettiniz',
+            'noReminders': 'Henüz hatırlatıcı yok',
+            'today': 'Bugün',
+            'tomorrow': 'Yarın',
+            'fillAllFields': 'Lütfen tüm alanları doldurun',
+            'reminderAdded': 'Hatırlatıcı eklendi',
+            'reminderDeleted': 'Hatırlatıcı silindi',
         },
         en: {
             // Navigation
@@ -303,6 +487,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Alerts
             'alert.clearConfirm': 'Are you sure you want to delete all saved data?',
             'alert.exportError': 'An error occurred during export.',
+            'alert.importSuccess': 'Data imported successfully!',
+            'alert.importError': 'An error occurred during import. Please upload a valid JSON file.',
+            'alert.feedbackSuccess': 'Thank you for your feedback!',
             
             // Theme & Language
             'theme.toggle': 'Toggle Theme',
@@ -311,6 +498,187 @@ document.addEventListener('DOMContentLoaded', () => {
             // Misc
             'misc.delete': 'Delete',
             'misc.noCourseRecords': 'No course records for this semester.',
+            
+            // New features - Navigation
+            'nav.import': 'Import',
+            'nav.feedback': 'Feedback',
+            'nav.shortcuts': 'Shortcuts',
+            'nav.universities': 'University',
+            
+            // Keyboard Shortcuts
+            'shortcuts.title': 'Keyboard Shortcuts',
+            'shortcuts.addCourse': 'Add new course',
+            'shortcuts.save': 'Save data',
+            'shortcuts.export': 'Export',
+            'shortcuts.dashboard': 'Go to Dashboard',
+            'shortcuts.calculator': 'Go to Calculator',
+            'shortcuts.theme': 'Toggle theme',
+            'shortcuts.language': 'Change language',
+            'shortcuts.help': 'Help menu',
+            'shortcuts.close': 'Close modal',
+            
+            // Feedback
+            'feedback.title': 'Feedback',
+            'feedback.type': 'Feedback Type',
+            'feedback.bug': 'Bug Report',
+            'feedback.feature': 'Feature Request',
+            'feedback.improvement': 'Improvement Suggestion',
+            'feedback.other': 'Other',
+            'feedback.message': 'Your Message',
+            'feedback.email': 'Email (Optional)',
+            'feedback.submit': 'Submit',
+            
+            // Import
+            'import.title': 'Import Data',
+            'import.desc': 'Upload or paste a JSON file you previously exported.',
+            'import.selectFile': 'Select File',
+            'import.pasteJson': 'or paste JSON:',
+            'import.import': 'Import',
+            'import.cancel': 'Cancel',
+            
+            // Export JSON
+            'export.json': 'JSON Backup',
+            'export.jsonDesc': 'Backup your data as JSON',
+            
+            // New Navigation Items
+            'nav.simulation': 'Simulation',
+            'nav.graduation': 'Graduation',
+            'nav.achievements': 'Achievements',
+            'nav.calendar': 'Calendar',
+            
+            // Simulation
+            'simulation.title': 'GPA Simulation',
+            'simulation.desc': 'Try "What if I got these grades..." scenarios',
+            'simulation.currentGpa': 'Current GPA',
+            'simulation.scenarios': 'Scenarios',
+            'simulation.addScenario': 'Add Scenario',
+            'simulation.projectedGpa': 'Projected GPA',
+            'simulation.quickScenarios': 'Quick Scenarios',
+            'simulation.allAA': 'All AA',
+            'simulation.allBB': 'All BB',
+            'simulation.allCC': 'All CC',
+            'simulation.mixed': 'Mixed',
+            'simulation.credits': 'Credits',
+            'simulation.grade': 'Grade',
+            'simulation.remove': 'Remove',
+            'simulation.gpaUp': '↑ Increase',
+            'simulation.gpaDown': '↓ Decrease',
+            'simulation.gpaSame': '→ Same',
+            
+            // Graduation
+            'graduation.title': 'Graduation Calculator',
+            'graduation.desc': 'Calculate how close you are to graduation',
+            'graduation.requiredCredits': 'Required Total Credits',
+            'graduation.minGpa': 'Minimum GPA',
+            'graduation.currentCredits': 'Your Current Credits',
+            'graduation.currentGpa': 'Your Current GPA',
+            'graduation.calculate': 'Calculate',
+            'graduation.progress': 'Graduation Progress',
+            'graduation.creditProgress': 'Credit Progress',
+            'graduation.gpaProgress': 'GPA Status',
+            'graduation.estimateText': 'Estimated graduation: Click Calculate',
+            'graduation.honorStatus': 'Honor Status',
+            'graduation.honor': 'Honor Student',
+            'graduation.highHonor': 'High Honor Student',
+            'graduation.achieved': '✓ Achieved',
+            'graduation.notAchieved': '✗ Not Achieved',
+            'graduation.remaining': 'Remaining: {credits} credits',
+            'graduation.semestersLeft': 'Estimated {semesters} semesters left',
+            'graduation.readyToGraduate': '🎉 Ready to graduate!',
+            'graduation.needCredits': 'You need {credits} more credits',
+            'graduation.needGpa': 'You need to raise GPA to {gpa}',
+            
+            // Achievements
+            'achievements.title': 'Achievement Badges',
+            'achievements.desc': 'Celebrate your academic achievements',
+            'achievements.streaks': 'Streak Tracking',
+            'achievements.successStreak': 'Successful Semester Streak',
+            'achievements.improvementStreak': 'Improvement Streak',
+            'achievements.perfectStreak': 'Perfect Semester',
+            'achievements.locked': 'Locked',
+            'achievements.unlocked': 'Unlocked!',
+            
+            // Calendar
+            'calendar.title': 'Academic Calendar',
+            'calendar.desc': 'Manage important dates and reminders',
+            'calendar.addReminder': 'Add Reminder',
+            'calendar.upcoming': 'Upcoming Reminders',
+            'calendar.noReminders': 'No reminders added yet',
+            'calendar.quickAdd': 'Quick Add',
+            'calendar.midterm': 'Midterm',
+            'calendar.final': 'Final',
+            'calendar.project': 'Project',
+            'calendar.assignment': 'Assignment',
+            'calendar.reminderTitle': 'Title',
+            'calendar.reminderType': 'Type',
+            'calendar.reminderDate': 'Date',
+            'calendar.reminderTime': 'Time',
+            'calendar.reminderCourse': 'Course (Optional)',
+            'calendar.reminderNotes': 'Notes',
+            'calendar.saveReminder': 'Save',
+            'calendar.today': 'Today',
+            'calendar.daysLeft': '{days} days left',
+            'calendar.tomorrow': 'Tomorrow',
+            'calendar.delete': 'Delete',
+            
+            // Months
+            'month.0': 'January',
+            'month.1': 'February',
+            'month.2': 'March',
+            'month.3': 'April',
+            'month.4': 'May',
+            'month.5': 'June',
+            'month.6': 'July',
+            'month.7': 'August',
+            'month.8': 'September',
+            'month.9': 'October',
+            'month.10': 'November',
+            'month.11': 'December',
+            
+            // Additional translations for new features
+            'scenario': 'Scenario',
+            'scenarioSaved': 'Scenario saved',
+            'noSavedScenarios': 'No saved scenarios',
+            'load': 'Load',
+            'course': 'Course',
+            'credits': 'credits',
+            'graduationComplete': 'Congratulations! You completed graduation requirements!',
+            'targetUnreachable': 'This target is unreachable with current credits',
+            'targetChallenging': 'Challenging but not impossible!',
+            'targetAchievable': 'You can reach your goal!',
+            'achievementUnlocked': 'Achievement Unlocked!',
+            'achFirstCourse': 'First Course',
+            'achFirstCourseDesc': 'Added your first course',
+            'achFiveCourses': 'Five Courses',
+            'achFiveCoursesDesc': 'Added 5 courses',
+            'achTwentyCourses': 'Twenty Courses',
+            'achTwentyCoursesDesc': 'Added 20 courses',
+            'achFirstAA': 'First AA',
+            'achFirstAADesc': 'Got your first AA grade',
+            'achHonor': 'Honor Student',
+            'achHonorDesc': 'GPA 3.00 and above',
+            'achHighHonor': 'High Honor',
+            'achHighHonorDesc': 'GPA 3.50 and above',
+            'achPerfectGPA': 'Perfect GPA',
+            'achPerfectGPADesc': 'GPA 4.00',
+            'achFirstSemester': 'First Semester',
+            'achFirstSemesterDesc': 'Completed your first semester',
+            'achFourSemesters': 'Four Semesters',
+            'achFourSemestersDesc': 'Completed 4 semesters',
+            'achEightSemesters': 'Eight Semesters',
+            'achEightSemestersDesc': 'Completed 8 semesters',
+            'achNightOwl': 'Night Owl',
+            'achNightOwlDesc': 'Working after midnight',
+            'achEarlyBird': 'Early Bird',
+            'achEarlyBirdDesc': 'Working early in the morning',
+            'achExplorer': 'Explorer',
+            'achExplorerDesc': 'Explored all views',
+            'noReminders': 'No reminders yet',
+            'today': 'Today',
+            'tomorrow': 'Tomorrow',
+            'fillAllFields': 'Please fill all fields',
+            'reminderAdded': 'Reminder added',
+            'reminderDeleted': 'Reminder deleted',
         }
     };
 
@@ -416,20 +784,144 @@ document.addEventListener('DOMContentLoaded', () => {
     // ============================================
     // Grade System Configuration
     // ============================================
-    const gradePoints = {
-        'AA': 4.0,
-        'BA': 3.5,
-        'BB': 3.0,
-        'CB': 2.5,
-        'CC': 2.0,
-        'DC': 1.5,
-        'DD': 1.0,
-        'FF': 0.0,
-        'P': null  // Pass - doesn't affect GPA but counts as credit
+    
+    // University grade systems - each university may have different scales
+    const universityGradeSystems = {
+        boun: {
+            name: 'Boğaziçi Üniversitesi',
+            grades: {
+                'AA': 4.0, 'BA': 3.5, 'BB': 3.0, 'CB': 2.5, 'CC': 2.0,
+                'DC': 1.5, 'DD': 1.0, 'FF': 0.0, 'P': null
+            },
+            retakeable: ['FF', 'DD', 'DC'],
+            nonGPA: ['P']
+        },
+        itu: {
+            name: 'İstanbul Teknik Üniversitesi',
+            grades: {
+                'AA': 4.0, 'BA': 3.5, 'BB': 3.0, 'CB': 2.5, 'CC': 2.0,
+                'DC': 1.5, 'DD': 1.0, 'FD': 0.5, 'FF': 0.0, 'P': null
+            },
+            retakeable: ['FF', 'FD', 'DD', 'DC'],
+            nonGPA: ['P']
+        },
+        odtu: {
+            name: 'Orta Doğu Teknik Üniversitesi',
+            grades: {
+                'AA': 4.0, 'BA': 3.5, 'BB': 3.0, 'CB': 2.5, 'CC': 2.0,
+                'DC': 1.5, 'DD': 1.0, 'FF': 0.0, 'S': null, 'U': 0.0
+            },
+            retakeable: ['FF', 'DD', 'DC', 'U'],
+            nonGPA: ['S']
+        },
+        koc: {
+            name: 'Koç Üniversitesi',
+            grades: {
+                'A': 4.0, 'A-': 3.7, 'B+': 3.3, 'B': 3.0, 'B-': 2.7,
+                'C+': 2.3, 'C': 2.0, 'C-': 1.7, 'D+': 1.3, 'D': 1.0, 'F': 0.0, 'P': null
+            },
+            retakeable: ['F', 'D', 'D+'],
+            nonGPA: ['P']
+        },
+        bilkent: {
+            name: 'Bilkent Üniversitesi',
+            grades: {
+                'A': 4.0, 'A-': 3.7, 'B+': 3.3, 'B': 3.0, 'B-': 2.7,
+                'C+': 2.3, 'C': 2.0, 'C-': 1.7, 'D+': 1.3, 'D': 1.0, 'F': 0.0, 'P': null
+            },
+            retakeable: ['F', 'D', 'D+'],
+            nonGPA: ['P']
+        },
+        sabanci: {
+            name: 'Sabancı Üniversitesi',
+            grades: {
+                'A': 4.0, 'A-': 3.7, 'B+': 3.3, 'B': 3.0, 'B-': 2.7,
+                'C+': 2.3, 'C': 2.0, 'C-': 1.7, 'D+': 1.3, 'D': 1.0, 'F': 0.0, 'P': null
+            },
+            retakeable: ['F', 'D', 'D+'],
+            nonGPA: ['P']
+        },
+        ytu: {
+            name: 'Yıldız Teknik Üniversitesi',
+            grades: {
+                'AA': 4.0, 'BA': 3.5, 'BB': 3.0, 'CB': 2.5, 'CC': 2.0,
+                'DC': 1.5, 'DD': 1.0, 'FF': 0.0, 'G': null
+            },
+            retakeable: ['FF', 'DD', 'DC'],
+            nonGPA: ['G']
+        },
+        gsu: {
+            name: 'Galatasaray Üniversitesi',
+            grades: {
+                'AA': 4.0, 'BA': 3.5, 'BB': 3.0, 'CB': 2.5, 'CC': 2.0,
+                'DC': 1.5, 'DD': 1.0, 'FF': 0.0, 'P': null
+            },
+            retakeable: ['FF', 'DD', 'DC'],
+            nonGPA: ['P']
+        },
+        custom: {
+            name: 'Özel',
+            grades: {
+                'A': 4.0, 'A-': 3.7, 'B+': 3.3, 'B': 3.0, 'B-': 2.7,
+                'C+': 2.3, 'C': 2.0, 'C-': 1.7, 'D+': 1.3, 'D': 1.0, 'F': 0.0, 'P': null
+            },
+            retakeable: ['F', 'D', 'D+'],
+            nonGPA: ['P']
+        }
     };
-
-    const retakeableGrades = ['FF', 'DD', 'DC'];
-    const nonGPAGrades = ['P'];  // Grades that don't affect GPA calculation
+    
+    // Current university (default: boun)
+    let currentUniversity = localStorage.getItem('university') || 'boun';
+    
+    // Get current grade system
+    function getGradeSystem() {
+        return universityGradeSystems[currentUniversity] || universityGradeSystems.boun;
+    }
+    
+    // Dynamic grade points based on selected university
+    let gradePoints = { ...getGradeSystem().grades };
+    let retakeableGrades = [...getGradeSystem().retakeable];
+    let nonGPAGrades = [...getGradeSystem().nonGPA];
+    
+    // Update grade system when university changes
+    function updateGradeSystem(universityKey) {
+        currentUniversity = universityKey;
+        localStorage.setItem('university', universityKey);
+        
+        const system = getGradeSystem();
+        gradePoints = { ...system.grades };
+        retakeableGrades = [...system.retakeable];
+        nonGPAGrades = [...system.nonGPA];
+        
+        // Update all course grade selects
+        updateAllGradeSelects();
+        
+        // Recalculate GPA
+        calculateGPA();
+    }
+    
+    // Update all grade select dropdowns
+    function updateAllGradeSelects() {
+        document.querySelectorAll('.course-grade').forEach(select => {
+            const currentValue = select.value;
+            select.innerHTML = `
+                <option value="" disabled>${t('calc.grade')}</option>
+                ${Object.entries(gradePoints).map(([grade, point]) => 
+                    `<option value="${grade}" ${currentValue === grade ? 'selected' : ''}>${grade}</option>`
+                ).join('')}
+            `;
+        });
+        
+        document.querySelectorAll('.previous-grade').forEach(select => {
+            const currentValue = select.value;
+            select.innerHTML = `
+                <option value="" disabled>${t('calc.previousGrade')}</option>
+                ${retakeableGrades.map(grade => 
+                    `<option value="${grade}" ${currentValue === grade ? 'selected' : ''}>${grade} (${gradePoints[grade]})</option>`
+                ).join('')}
+            `;
+        });
+    }
 
     // HTML escape utility to prevent XSS
     function escapeHtml(text) {
@@ -517,7 +1009,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Base values: the semester user started with and their cumulative GPA/credits before that
         baseSemester: null,  // The first semester user started using the app
         baseGPA: 0,          // Cumulative GPA before baseSemester
-        baseCredits: 0       // Total credits before baseSemester
+        baseCredits: 0,      // Total credits before baseSemester
+        // New features
+        reminders: [],       // Calendar reminders
+        achievements: {},    // Unlocked achievements
+        scenarios: [],       // Simulation scenarios
+        calendarMonth: new Date().getMonth(),
+        calendarYear: new Date().getFullYear()
     };
 
     // ============================================
@@ -613,7 +1111,11 @@ document.addEventListener('DOMContentLoaded', () => {
         get goal() { return t('nav.goal'); },
         get history() { return t('nav.history'); },
         get charts() { return t('nav.statistics'); },
-        get export() { return t('nav.export'); }
+        get export() { return t('nav.export'); },
+        get simulation() { return t('nav.simulation'); },
+        get graduation() { return t('nav.graduation'); },
+        get achievements() { return t('nav.achievements'); },
+        get calendar() { return t('nav.calendar'); }
     };
 
     function switchView(viewId) {
@@ -643,6 +1145,14 @@ document.addEventListener('DOMContentLoaded', () => {
             renderSemesterHistory();
         } else if (viewId === 'goal') {
             syncGoalInputsFromCalculator();
+        } else if (viewId === 'simulation') {
+            initSimulationView();
+        } else if (viewId === 'graduation') {
+            initGraduationView();
+        } else if (viewId === 'achievements') {
+            initAchievementsView();
+        } else if (viewId === 'calendar') {
+            initCalendarView();
         }
     }
 
@@ -725,11 +1235,22 @@ document.addEventListener('DOMContentLoaded', () => {
     function createCourseEntry(courseData = {}) {
         const courseEntry = document.createElement('div');
         courseEntry.className = 'course-entry';
+        courseEntry.draggable = true;
         
         // Escape course name for safe HTML attribute insertion
         const escapedName = escapeHtml(courseData.name || '').replace(/"/g, '&quot;');
         
         courseEntry.innerHTML = `
+            <div class="drag-handle" title="Sürükle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <circle cx="9" cy="6" r="1.5"></circle>
+                    <circle cx="15" cy="6" r="1.5"></circle>
+                    <circle cx="9" cy="12" r="1.5"></circle>
+                    <circle cx="15" cy="12" r="1.5"></circle>
+                    <circle cx="9" cy="18" r="1.5"></circle>
+                    <circle cx="15" cy="18" r="1.5"></circle>
+                </svg>
+            </div>
             <div class="course-name-group">
                 <input type="text" placeholder="${t('calc.courseName')}" class="form-input course-name" value="${escapedName}" aria-label="${t('calc.courseName')}">
                 <div class="course-retake-row">
@@ -1436,7 +1957,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 await navigator.share(shareData);
             } catch (err) {
-                console.log('Share cancelled');
+                // Share was cancelled by user
             }
         } else {
             // Fallback: copy to clipboard
@@ -1649,7 +2170,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // Base semester info for cumulative calculation
             baseSemester: state.baseSemester,
             baseGPA: state.baseGPA,
-            baseCredits: state.baseCredits
+            baseCredits: state.baseCredits,
+            // New features
+            reminders: state.reminders,
+            achievements: state.achievements,
+            scenarios: state.scenarios
         };
         
         localStorage.setItem('gpaSaveData', JSON.stringify(saveData));
@@ -1666,6 +2191,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.baseSemester !== undefined) state.baseSemester = data.baseSemester;
             if (data.baseGPA !== undefined) state.baseGPA = data.baseGPA;
             if (data.baseCredits !== undefined) state.baseCredits = data.baseCredits;
+            
+            // Load new features data
+            if (data.reminders) state.reminders = data.reminders;
+            if (data.achievements) state.achievements = data.achievements;
+            if (data.scenarios) state.scenarios = data.scenarios;
             
             // Load semester and history
             if (data.semester) elements.semesterSelect.value = data.semester;
@@ -1792,6 +2322,7 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.exportPNG?.addEventListener('click', exportAsPNG);
         elements.exportPDF?.addEventListener('click', exportAsPDF);
         elements.exportShare?.addEventListener('click', shareResults);
+        document.getElementById('exportJSON')?.addEventListener('click', exportAsJSON);
         
         // Theme
         elements.themeToggle?.addEventListener('click', toggleTheme);
@@ -1806,6 +2337,359 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.addSemesterBtn?.addEventListener('click', () => {
             switchView('calculator');
         });
+        
+        // University selector
+        const universitySelect = document.getElementById('universitySelect');
+        if (universitySelect) {
+            universitySelect.value = currentUniversity;
+            universitySelect.addEventListener('change', (e) => {
+                updateGradeSystem(e.target.value);
+            });
+        }
+        
+        // Feedback modal
+        const feedbackBtn = document.getElementById('feedbackBtn');
+        const feedbackModal = document.getElementById('feedbackModal');
+        const feedbackModalClose = document.getElementById('feedbackModalClose');
+        const feedbackForm = document.getElementById('feedbackForm');
+        
+        feedbackBtn?.addEventListener('click', () => {
+            feedbackModal?.classList.add('active');
+            closeMobileMenu();
+        });
+        
+        feedbackModalClose?.addEventListener('click', () => {
+            feedbackModal?.classList.remove('active');
+        });
+        
+        feedbackModal?.addEventListener('click', (e) => {
+            if (e.target === feedbackModal) feedbackModal.classList.remove('active');
+        });
+        
+        feedbackForm?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // In a real app, you'd send this to a server
+            const formData = {
+                type: document.getElementById('feedbackType').value,
+                message: document.getElementById('feedbackMessage').value,
+                email: document.getElementById('feedbackEmail').value
+            };
+            alert(t('alert.feedbackSuccess'));
+            feedbackForm.reset();
+            feedbackModal?.classList.remove('active');
+        });
+        
+        // Shortcuts modal
+        const shortcutsBtn = document.getElementById('shortcutsBtn');
+        const shortcutsModal = document.getElementById('shortcutsModal');
+        const shortcutsModalClose = document.getElementById('shortcutsModalClose');
+        
+        shortcutsBtn?.addEventListener('click', () => {
+            shortcutsModal?.classList.add('active');
+            closeMobileMenu();
+        });
+        
+        shortcutsModalClose?.addEventListener('click', () => {
+            shortcutsModal?.classList.remove('active');
+        });
+        
+        shortcutsModal?.addEventListener('click', (e) => {
+            if (e.target === shortcutsModal) shortcutsModal.classList.remove('active');
+        });
+        
+        // Import modal
+        const importBtn = document.getElementById('importBtn');
+        const importModal = document.getElementById('importModal');
+        const importModalClose = document.getElementById('importModalClose');
+        const importDataBtn = document.getElementById('importDataBtn');
+        const importCancelBtn = document.getElementById('importCancelBtn');
+        const importFile = document.getElementById('importFile');
+        const importFileName = document.getElementById('importFileName');
+        
+        importBtn?.addEventListener('click', () => {
+            importModal?.classList.add('active');
+            closeMobileMenu();
+        });
+        
+        importModalClose?.addEventListener('click', () => {
+            importModal?.classList.remove('active');
+        });
+        
+        importCancelBtn?.addEventListener('click', () => {
+            importModal?.classList.remove('active');
+        });
+        
+        importModal?.addEventListener('click', (e) => {
+            if (e.target === importModal) importModal.classList.remove('active');
+        });
+        
+        importFile?.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                importFileName.textContent = file.name;
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    document.getElementById('importJson').value = event.target.result;
+                };
+                reader.readAsText(file);
+            }
+        });
+        
+        importDataBtn?.addEventListener('click', () => {
+            importData();
+        });
+    }
+    
+    // ============================================
+    // Keyboard Shortcuts
+    // ============================================
+    function initKeyboardShortcuts() {
+        document.addEventListener('keydown', (e) => {
+            // Don't trigger shortcuts when typing in inputs
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
+                // Only allow Escape in inputs
+                if (e.key === 'Escape') {
+                    closeAllModals();
+                }
+                return;
+            }
+            
+            // Ctrl/Cmd + key shortcuts
+            if (e.ctrlKey || e.metaKey) {
+                switch (e.key.toLowerCase()) {
+                    case 'n':
+                        e.preventDefault();
+                        if (state.currentView === 'calculator') {
+                            addCourse();
+                        } else {
+                            switchView('calculator');
+                            setTimeout(() => addCourse(), 100);
+                        }
+                        break;
+                    case 's':
+                        e.preventDefault();
+                        saveCourses();
+                        // Visual feedback
+                        showToast(currentLanguage === 'tr' ? 'Kaydedildi!' : 'Saved!');
+                        break;
+                    case 'e':
+                        e.preventDefault();
+                        switchView('export');
+                        break;
+                    case 'd':
+                        e.preventDefault();
+                        switchView('dashboard');
+                        break;
+                    case 'k':
+                        e.preventDefault();
+                        switchView('calculator');
+                        break;
+                    case 't':
+                        e.preventDefault();
+                        toggleTheme();
+                        break;
+                    case 'l':
+                        e.preventDefault();
+                        toggleLanguage();
+                        break;
+                }
+            }
+            
+            // Single key shortcuts
+            if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+                switch (e.key) {
+                    case '?':
+                        elements.helpModal?.classList.add('active');
+                        break;
+                    case 'Escape':
+                        closeAllModals();
+                        break;
+                }
+            }
+        });
+    }
+    
+    function closeAllModals() {
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.classList.remove('active');
+        });
+        document.body.style.overflow = '';
+    }
+    
+    function showToast(message, duration = 2000) {
+        // Remove existing toasts
+        document.querySelectorAll('.toast').forEach(t => t.remove());
+        
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = message;
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: 12px 24px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            z-index: 10000;
+            animation: slideUp 0.3s ease;
+        `;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.style.animation = 'slideDown 0.3s ease';
+            setTimeout(() => toast.remove(), 300);
+        }, duration);
+    }
+    
+    // ============================================
+    // Import/Export Functions
+    // ============================================
+    function exportAsJSON() {
+        const data = {
+            version: '2.0',
+            exportDate: new Date().toISOString(),
+            university: currentUniversity,
+            language: currentLanguage,
+            courses: state.courses,
+            semester: elements.semesterSelect?.value,
+            previousGPA: elements.previousGPAInput?.value,
+            previousCredits: elements.previousCreditsInput?.value,
+            semesters: state.semesters,
+            baseSemester: state.baseSemester,
+            baseGPA: state.baseGPA,
+            baseCredits: state.baseCredits
+        };
+        
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.download = `boun-gpa-backup-${new Date().toISOString().slice(0, 10)}.json`;
+        link.href = url;
+        link.click();
+        URL.revokeObjectURL(url);
+    }
+    
+    function importData() {
+        const jsonInput = document.getElementById('importJson');
+        const jsonText = jsonInput?.value?.trim();
+        
+        if (!jsonText) {
+            alert(t('alert.importError'));
+            return;
+        }
+        
+        try {
+            const data = JSON.parse(jsonText);
+            
+            // Validate data structure
+            if (!data.courses && !data.semesters) {
+                throw new Error('Invalid data structure');
+            }
+            
+            // Import university setting
+            if (data.university && universityGradeSystems[data.university]) {
+                updateGradeSystem(data.university);
+                const universitySelect = document.getElementById('universitySelect');
+                if (universitySelect) universitySelect.value = data.university;
+            }
+            
+            // Import language
+            if (data.language) {
+                setLanguage(data.language);
+            }
+            
+            // Import base semester info
+            if (data.baseSemester !== undefined) state.baseSemester = data.baseSemester;
+            if (data.baseGPA !== undefined) state.baseGPA = data.baseGPA;
+            if (data.baseCredits !== undefined) state.baseCredits = data.baseCredits;
+            
+            // Import semester and history
+            if (data.semester && elements.semesterSelect) {
+                elements.semesterSelect.value = data.semester;
+            }
+            if (data.semesters) state.semesters = data.semesters;
+            
+            // Import previous GPA/credits
+            if (data.previousGPA && elements.previousGPAInput) {
+                elements.previousGPAInput.value = data.previousGPA;
+            }
+            if (data.previousCredits && elements.previousCreditsInput) {
+                elements.previousCreditsInput.value = data.previousCredits;
+            }
+            
+            // Import courses
+            if (data.courses && elements.courseList) {
+                elements.courseList.innerHTML = '';
+                data.courses.forEach(course => addCourse(course));
+            }
+            
+            // Save and update
+            saveToLocalStorage();
+            updateCoursesEmptyState();
+            calculateGPA();
+            
+            // Close modal
+            document.getElementById('importModal')?.classList.remove('active');
+            
+            alert(t('alert.importSuccess'));
+            
+        } catch (error) {
+            console.error('Import error:', error);
+            alert(t('alert.importError'));
+        }
+    }
+    
+    // ============================================
+    // Drag and Drop for Courses
+    // ============================================
+    function initDragAndDrop() {
+        let draggedItem = null;
+        
+        elements.courseList?.addEventListener('dragstart', (e) => {
+            if (e.target.classList.contains('course-entry')) {
+                draggedItem = e.target;
+                e.target.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+            }
+        });
+        
+        elements.courseList?.addEventListener('dragend', (e) => {
+            if (e.target.classList.contains('course-entry')) {
+                e.target.classList.remove('dragging');
+                draggedItem = null;
+                saveCourses();
+            }
+        });
+        
+        elements.courseList?.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            const afterElement = getDragAfterElement(elements.courseList, e.clientY);
+            const dragging = document.querySelector('.dragging');
+            if (dragging) {
+                if (afterElement == null) {
+                    elements.courseList.appendChild(dragging);
+                } else {
+                    elements.courseList.insertBefore(dragging, afterElement);
+                }
+            }
+        });
+    }
+    
+    function getDragAfterElement(container, y) {
+        const draggableElements = [...container.querySelectorAll('.course-entry:not(.dragging)')];
+        
+        return draggableElements.reduce((closest, child) => {
+            const box = child.getBoundingClientRect();
+            const offset = y - box.top - box.height / 2;
+            if (offset < 0 && offset > closest.offset) {
+                return { offset: offset, element: child };
+            } else {
+                return closest;
+            }
+        }, { offset: Number.NEGATIVE_INFINITY }).element;
     }
 
     // ============================================
@@ -1816,16 +2700,675 @@ document.addEventListener('DOMContentLoaded', () => {
         translatePage();
         updateLangToggle();
     }
+    
+    function initUniversity() {
+        currentUniversity = localStorage.getItem('university') || 'boun';
+        const universitySelect = document.getElementById('universitySelect');
+        if (universitySelect) {
+            universitySelect.value = currentUniversity;
+        }
+        // Update grade system
+        const system = getGradeSystem();
+        gradePoints = { ...system.grades };
+        retakeableGrades = [...system.retakeable];
+        nonGPAGrades = [...system.nonGPA];
+    }
+
+    // ============================================
+    // Simulation View Functions
+    // ============================================
+    function initSimulationView() {
+        renderSimulationView();
+        setupSimulationEventListeners();
+    }
+    
+    function renderSimulationView() {
+        const container = document.getElementById('simulationCourses');
+        if (!container) return;
+        
+        // Get current courses for simulation
+        const courses = state.courses.length > 0 ? state.courses : getSampleCourses();
+        
+        container.innerHTML = courses.map((course, index) => `
+            <div class="simulation-course" data-index="${index}">
+                <div class="sim-course-info">
+                    <span class="sim-course-name">${course.name || t('course') + ' ' + (index + 1)}</span>
+                    <span class="sim-course-credits">${course.credits} ${t('credits')}</span>
+                </div>
+                <select class="sim-grade-select" data-index="${index}">
+                    ${Object.keys(gradePoints).map(grade => 
+                        `<option value="${grade}" ${course.grade === grade ? 'selected' : ''}>${grade}</option>`
+                    ).join('')}
+                </select>
+            </div>
+        `).join('');
+        
+        calculateSimulationGPA();
+    }
+    
+    function getSampleCourses() {
+        return [
+            { name: t('course') + ' 1', credits: 3, grade: 'AA' },
+            { name: t('course') + ' 2', credits: 3, grade: 'BA' },
+            { name: t('course') + ' 3', credits: 4, grade: 'BB' },
+            { name: t('course') + ' 4', credits: 3, grade: 'CB' }
+        ];
+    }
+    
+    function calculateSimulationGPA() {
+        const selects = document.querySelectorAll('.sim-grade-select');
+        const courses = state.courses.length > 0 ? state.courses : getSampleCourses();
+        
+        let totalPoints = 0;
+        let totalCredits = 0;
+        
+        selects.forEach((select, index) => {
+            const grade = select.value;
+            const credits = courses[index]?.credits || 3;
+            
+            if (!nonGPAGrades.includes(grade) && gradePoints[grade] !== undefined) {
+                totalPoints += gradePoints[grade] * credits;
+                totalCredits += credits;
+            }
+        });
+        
+        const simGPA = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : '0.00';
+        
+        const resultEl = document.getElementById('simulatedGPA');
+        const changeEl = document.getElementById('gpaChange');
+        
+        if (resultEl) resultEl.textContent = simGPA;
+        
+        if (changeEl) {
+            const currentGPA = parseFloat(document.getElementById('gpaResult')?.textContent) || 0;
+            const change = (parseFloat(simGPA) - currentGPA).toFixed(2);
+            const prefix = change >= 0 ? '+' : '';
+            changeEl.textContent = `(${prefix}${change})`;
+            changeEl.className = 'gpa-change ' + (change >= 0 ? 'positive' : 'negative');
+        }
+    }
+    
+    function setupSimulationEventListeners() {
+        // Grade select changes
+        document.getElementById('simulationCourses')?.addEventListener('change', (e) => {
+            if (e.target.classList.contains('sim-grade-select')) {
+                calculateSimulationGPA();
+            }
+        });
+        
+        // Quick scenario buttons
+        document.querySelectorAll('.quick-scenario-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const scenario = btn.dataset.scenario;
+                applyQuickScenario(scenario);
+            });
+        });
+        
+        // Save scenario button
+        document.getElementById('saveScenarioBtn')?.addEventListener('click', saveCurrentScenario);
+        
+        // Reset simulation
+        document.getElementById('resetSimulationBtn')?.addEventListener('click', () => {
+            renderSimulationView();
+        });
+    }
+    
+    function applyQuickScenario(scenario) {
+        const selects = document.querySelectorAll('.sim-grade-select');
+        const gradeKeys = Object.keys(gradePoints).filter(g => !nonGPAGrades.includes(g));
+        
+        selects.forEach(select => {
+            switch(scenario) {
+                case 'all-aa':
+                    select.value = 'AA';
+                    break;
+                case 'all-bb':
+                    select.value = 'BB';
+                    break;
+                case 'all-cc':
+                    select.value = 'CC';
+                    break;
+                case 'random':
+                    select.value = gradeKeys[Math.floor(Math.random() * gradeKeys.length)];
+                    break;
+            }
+        });
+        
+        calculateSimulationGPA();
+    }
+    
+    function saveCurrentScenario() {
+        const selects = document.querySelectorAll('.sim-grade-select');
+        const grades = Array.from(selects).map(s => s.value);
+        const simGPA = document.getElementById('simulatedGPA')?.textContent || '0.00';
+        
+        const scenario = {
+            id: Date.now(),
+            name: `${t('scenario')} ${state.scenarios.length + 1}`,
+            grades: grades,
+            gpa: simGPA,
+            date: new Date().toLocaleDateString()
+        };
+        
+        state.scenarios.push(scenario);
+        saveToLocalStorage();
+        renderSavedScenarios();
+        showToast(t('scenarioSaved'));
+    }
+    
+    function renderSavedScenarios() {
+        const container = document.getElementById('savedScenarios');
+        if (!container) return;
+        
+        if (state.scenarios.length === 0) {
+            container.innerHTML = `<p class="empty-message">${t('noSavedScenarios')}</p>`;
+            return;
+        }
+        
+        container.innerHTML = state.scenarios.map(scenario => `
+            <div class="scenario-card" data-id="${scenario.id}">
+                <div class="scenario-info">
+                    <span class="scenario-name">${scenario.name}</span>
+                    <span class="scenario-gpa">GPA: ${scenario.gpa}</span>
+                </div>
+                <div class="scenario-actions">
+                    <button class="load-scenario-btn" data-id="${scenario.id}">${t('load')}</button>
+                    <button class="delete-scenario-btn" data-id="${scenario.id}">&times;</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // ============================================
+    // Graduation Calculator Functions
+    // ============================================
+    function initGraduationView() {
+        setupGraduationEventListeners();
+        calculateGraduationProgress();
+    }
+    
+    function setupGraduationEventListeners() {
+        document.getElementById('calculateGraduationBtn')?.addEventListener('click', calculateGraduationProgress);
+        
+        // Auto-calculate on input change
+        ['targetCredits', 'targetGPA'].forEach(id => {
+            document.getElementById(id)?.addEventListener('input', calculateGraduationProgress);
+        });
+    }
+    
+    function calculateGraduationProgress() {
+        const targetCreditsInput = document.getElementById('targetCredits');
+        const targetGPAInput = document.getElementById('targetGPA');
+        
+        const targetCredits = parseFloat(targetCreditsInput?.value) || 140;
+        const targetGPA = parseFloat(targetGPAInput?.value) || 2.50;
+        
+        // Calculate current stats
+        const currentCredits = calculateTotalCredits();
+        const currentGPA = parseFloat(document.getElementById('gpaResult')?.textContent) || 0;
+        
+        // Remaining credits
+        const remainingCredits = Math.max(0, targetCredits - currentCredits);
+        
+        // Required GPA for remaining courses
+        const currentPoints = currentGPA * currentCredits;
+        const targetPoints = targetGPA * targetCredits;
+        const neededPoints = targetPoints - currentPoints;
+        const requiredGPA = remainingCredits > 0 ? (neededPoints / remainingCredits).toFixed(2) : 0;
+        
+        // Update UI
+        updateGraduationUI({
+            currentCredits,
+            targetCredits,
+            remainingCredits,
+            currentGPA,
+            targetGPA,
+            requiredGPA
+        });
+        
+        // Check honor status
+        updateHonorStatus(currentGPA);
+    }
+    
+    function calculateTotalCredits() {
+        let total = state.baseCredits || 0;
+        
+        Object.values(state.semesters).forEach(semester => {
+            semester.courses.forEach(course => {
+                if (!nonGPAGrades.includes(course.grade)) {
+                    total += parseFloat(course.credits) || 0;
+                }
+            });
+        });
+        
+        // Add current semester courses
+        state.courses.forEach(course => {
+            if (!nonGPAGrades.includes(course.grade)) {
+                total += parseFloat(course.credits) || 0;
+            }
+        });
+        
+        return total;
+    }
+    
+    function updateGraduationUI(data) {
+        // Credit progress
+        const creditProgress = Math.min(100, (data.currentCredits / data.targetCredits) * 100);
+        const creditFill = document.getElementById('creditProgressFill');
+        const creditText = document.getElementById('creditProgressText');
+        
+        if (creditFill) creditFill.style.width = `${creditProgress}%`;
+        if (creditText) creditText.textContent = `${data.currentCredits} / ${data.targetCredits} ${t('credits')}`;
+        
+        // GPA progress
+        const gpaProgress = Math.min(100, (data.currentGPA / 4.0) * 100);
+        const gpaFill = document.getElementById('gpaProgressFill');
+        const gpaText = document.getElementById('gpaProgressText');
+        
+        if (gpaFill) gpaFill.style.width = `${gpaProgress}%`;
+        if (gpaText) gpaText.textContent = `${data.currentGPA.toFixed(2)} / 4.00`;
+        
+        // Required GPA display
+        const requiredEl = document.getElementById('requiredGPA');
+        if (requiredEl) {
+            const reqGPA = parseFloat(data.requiredGPA);
+            requiredEl.textContent = data.requiredGPA;
+            requiredEl.className = 'required-gpa-value ' + (reqGPA > 4.0 ? 'impossible' : reqGPA > 3.5 ? 'hard' : 'achievable');
+        }
+        
+        // Remaining credits
+        const remainingEl = document.getElementById('remainingCredits');
+        if (remainingEl) remainingEl.textContent = data.remainingCredits;
+        
+        // Graduation message
+        const messageEl = document.getElementById('graduationMessage');
+        if (messageEl) {
+            const reqGPA = parseFloat(data.requiredGPA);
+            if (data.remainingCredits === 0) {
+                messageEl.innerHTML = `<span class="success">🎓 ${t('graduationComplete')}</span>`;
+            } else if (reqGPA > 4.0) {
+                messageEl.innerHTML = `<span class="warning">⚠️ ${t('targetUnreachable')}</span>`;
+            } else if (reqGPA > 3.5) {
+                messageEl.innerHTML = `<span class="caution">${t('targetChallenging')}</span>`;
+            } else {
+                messageEl.innerHTML = `<span class="good">${t('targetAchievable')}</span>`;
+            }
+        }
+    }
+    
+    function updateHonorStatus(gpa) {
+        const badges = document.querySelectorAll('.honor-badge');
+        badges.forEach(badge => {
+            const minGPA = parseFloat(badge.dataset.mingpa);
+            if (gpa >= minGPA) {
+                badge.classList.add('achieved');
+            } else {
+                badge.classList.remove('achieved');
+            }
+        });
+    }
+
+    // ============================================
+    // Achievements View Functions
+    // ============================================
+    const achievementsList = [
+        { id: 'first_course', icon: '📚', nameKey: 'achFirstCourse', descKey: 'achFirstCourseDesc', condition: (s) => getTotalCourseCount(s) >= 1 },
+        { id: 'five_courses', icon: '📖', nameKey: 'achFiveCourses', descKey: 'achFiveCoursesDesc', condition: (s) => getTotalCourseCount(s) >= 5 },
+        { id: 'twenty_courses', icon: '🎒', nameKey: 'achTwentyCourses', descKey: 'achTwentyCoursesDesc', condition: (s) => getTotalCourseCount(s) >= 20 },
+        { id: 'first_aa', icon: '⭐', nameKey: 'achFirstAA', descKey: 'achFirstAADesc', condition: (s) => hasGrade(s, 'AA') },
+        { id: 'honor_student', icon: '🏆', nameKey: 'achHonor', descKey: 'achHonorDesc', condition: (s) => getCurrentGPA() >= 3.00 },
+        { id: 'high_honor', icon: '🥇', nameKey: 'achHighHonor', descKey: 'achHighHonorDesc', condition: (s) => getCurrentGPA() >= 3.50 },
+        { id: 'perfect_gpa', icon: '💎', nameKey: 'achPerfectGPA', descKey: 'achPerfectGPADesc', condition: (s) => getCurrentGPA() >= 4.00 },
+        { id: 'first_semester', icon: '📅', nameKey: 'achFirstSemester', descKey: 'achFirstSemesterDesc', condition: (s) => Object.keys(s.semesters).length >= 1 },
+        { id: 'four_semesters', icon: '🎯', nameKey: 'achFourSemesters', descKey: 'achFourSemestersDesc', condition: (s) => Object.keys(s.semesters).length >= 4 },
+        { id: 'eight_semesters', icon: '🎓', nameKey: 'achEightSemesters', descKey: 'achEightSemestersDesc', condition: (s) => Object.keys(s.semesters).length >= 8 },
+        { id: 'night_owl', icon: '🦉', nameKey: 'achNightOwl', descKey: 'achNightOwlDesc', condition: () => new Date().getHours() >= 0 && new Date().getHours() < 6 },
+        { id: 'early_bird', icon: '🐦', nameKey: 'achEarlyBird', descKey: 'achEarlyBirdDesc', condition: () => new Date().getHours() >= 5 && new Date().getHours() < 8 },
+        { id: 'explorer', icon: '🔍', nameKey: 'achExplorer', descKey: 'achExplorerDesc', condition: () => localStorage.getItem('viewedViews')?.split(',').length >= 5 }
+    ];
+    
+    function getTotalCourseCount(s) {
+        let count = s.courses.length;
+        Object.values(s.semesters).forEach(sem => {
+            count += sem.courses.length;
+        });
+        return count;
+    }
+    
+    function hasGrade(s, grade) {
+        if (s.courses.some(c => c.grade === grade)) return true;
+        return Object.values(s.semesters).some(sem => sem.courses.some(c => c.grade === grade));
+    }
+    
+    function getCurrentGPA() {
+        return parseFloat(document.getElementById('gpaResult')?.textContent) || 0;
+    }
+    
+    function initAchievementsView() {
+        checkAchievements();
+        renderAchievements();
+    }
+    
+    function checkAchievements() {
+        const newlyUnlocked = [];
+        
+        achievementsList.forEach(ach => {
+            const wasUnlocked = state.achievements[ach.id];
+            const isNowUnlocked = ach.condition(state);
+            
+            if (!wasUnlocked && isNowUnlocked) {
+                state.achievements[ach.id] = {
+                    unlockedAt: new Date().toISOString()
+                };
+                newlyUnlocked.push(ach);
+            }
+        });
+        
+        if (newlyUnlocked.length > 0) {
+            saveToLocalStorage();
+            newlyUnlocked.forEach(ach => {
+                showAchievementNotification(ach);
+            });
+        }
+        
+        return newlyUnlocked;
+    }
+    
+    function showAchievementNotification(achievement) {
+        const notification = document.createElement('div');
+        notification.className = 'achievement-notification';
+        notification.innerHTML = `
+            <div class="achievement-icon">${achievement.icon}</div>
+            <div class="achievement-text">
+                <span class="achievement-title">${t('achievementUnlocked')}</span>
+                <span class="achievement-name">${t(achievement.nameKey)}</span>
+            </div>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => notification.classList.add('show'), 100);
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
+    }
+    
+    function renderAchievements() {
+        const container = document.getElementById('achievementsList');
+        if (!container) return;
+        
+        const unlockedCount = Object.keys(state.achievements).length;
+        const totalCount = achievementsList.length;
+        
+        // Update progress
+        const progressEl = document.getElementById('achievementProgress');
+        if (progressEl) {
+            progressEl.textContent = `${unlockedCount} / ${totalCount}`;
+        }
+        
+        const progressFill = document.getElementById('achievementProgressFill');
+        if (progressFill) {
+            progressFill.style.width = `${(unlockedCount / totalCount) * 100}%`;
+        }
+        
+        // Render badges
+        container.innerHTML = achievementsList.map(ach => {
+            const isUnlocked = !!state.achievements[ach.id];
+            const unlockedDate = isUnlocked ? new Date(state.achievements[ach.id].unlockedAt).toLocaleDateString() : '';
+            
+            return `
+                <div class="achievement-badge ${isUnlocked ? 'unlocked' : 'locked'}">
+                    <div class="badge-icon">${isUnlocked ? ach.icon : '🔒'}</div>
+                    <div class="badge-info">
+                        <span class="badge-name">${t(ach.nameKey)}</span>
+                        <span class="badge-desc">${t(ach.descKey)}</span>
+                        ${isUnlocked ? `<span class="badge-date">${unlockedDate}</span>` : ''}
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // ============================================
+    // Calendar View Functions
+    // ============================================
+    function initCalendarView() {
+        renderCalendar();
+        renderReminders();
+        setupCalendarEventListeners();
+    }
+    
+    function renderCalendar() {
+        const container = document.getElementById('calendarGrid');
+        const monthLabel = document.getElementById('currentMonth');
+        if (!container) return;
+        
+        const year = state.calendarYear;
+        const month = state.calendarMonth;
+        
+        const monthNames = currentLanguage === 'tr' 
+            ? ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık']
+            : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        
+        if (monthLabel) monthLabel.textContent = `${monthNames[month]} ${year}`;
+        
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const today = new Date();
+        
+        // Day headers
+        const dayNames = currentLanguage === 'tr' 
+            ? ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz']
+            : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        
+        let html = dayNames.map(d => `<div class="calendar-day-header">${d}</div>`).join('');
+        
+        // Adjust for Monday start
+        const startDay = firstDay === 0 ? 6 : firstDay - 1;
+        
+        // Empty cells before first day
+        for (let i = 0; i < startDay; i++) {
+            html += '<div class="calendar-day empty"></div>';
+        }
+        
+        // Days of month
+        for (let day = 1; day <= daysInMonth; day++) {
+            const date = new Date(year, month, day);
+            const dateStr = date.toISOString().split('T')[0];
+            const isToday = date.toDateString() === today.toDateString();
+            const hasReminder = state.reminders.some(r => r.date === dateStr);
+            
+            html += `
+                <div class="calendar-day ${isToday ? 'today' : ''} ${hasReminder ? 'has-reminder' : ''}" 
+                     data-date="${dateStr}">
+                    <span class="day-number">${day}</span>
+                    ${hasReminder ? '<span class="reminder-dot"></span>' : ''}
+                </div>
+            `;
+        }
+        
+        container.innerHTML = html;
+    }
+    
+    function renderReminders() {
+        const container = document.getElementById('remindersList');
+        if (!container) return;
+        
+        // Sort by date
+        const sortedReminders = [...state.reminders].sort((a, b) => new Date(a.date) - new Date(b.date));
+        
+        // Filter upcoming
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const upcoming = sortedReminders.filter(r => new Date(r.date) >= today);
+        
+        if (upcoming.length === 0) {
+            container.innerHTML = `<p class="empty-message">${t('noReminders')}</p>`;
+            return;
+        }
+        
+        container.innerHTML = upcoming.map(reminder => {
+            const date = new Date(reminder.date);
+            const isToday = date.toDateString() === today.toDateString();
+            const isTomorrow = date.toDateString() === new Date(today.getTime() + 86400000).toDateString();
+            
+            let dateLabel = date.toLocaleDateString();
+            if (isToday) dateLabel = t('today');
+            if (isTomorrow) dateLabel = t('tomorrow');
+            
+            return `
+                <div class="reminder-card ${reminder.type}" data-id="${reminder.id}">
+                    <div class="reminder-icon">${getReminderIcon(reminder.type)}</div>
+                    <div class="reminder-content">
+                        <span class="reminder-title">${reminder.title}</span>
+                        <span class="reminder-date">${dateLabel}</span>
+                    </div>
+                    <button class="delete-reminder-btn" data-id="${reminder.id}">&times;</button>
+                </div>
+            `;
+        }).join('');
+    }
+    
+    function getReminderIcon(type) {
+        const icons = {
+            exam: '📝',
+            assignment: '📋',
+            project: '💼',
+            other: '📌'
+        };
+        return icons[type] || icons.other;
+    }
+    
+    function setupCalendarEventListeners() {
+        // Month navigation
+        document.getElementById('prevMonth')?.addEventListener('click', () => {
+            state.calendarMonth--;
+            if (state.calendarMonth < 0) {
+                state.calendarMonth = 11;
+                state.calendarYear--;
+            }
+            renderCalendar();
+        });
+        
+        document.getElementById('nextMonth')?.addEventListener('click', () => {
+            state.calendarMonth++;
+            if (state.calendarMonth > 11) {
+                state.calendarMonth = 0;
+                state.calendarYear++;
+            }
+            renderCalendar();
+        });
+        
+        // Click on day
+        document.getElementById('calendarGrid')?.addEventListener('click', (e) => {
+            const dayEl = e.target.closest('.calendar-day:not(.empty)');
+            if (dayEl) {
+                const date = dayEl.dataset.date;
+                openReminderModal(date);
+            }
+        });
+        
+        // Add reminder button
+        document.getElementById('addReminderBtn')?.addEventListener('click', () => {
+            const today = new Date().toISOString().split('T')[0];
+            openReminderModal(today);
+        });
+        
+        // Quick add buttons
+        document.querySelectorAll('.quick-add-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const type = btn.dataset.type;
+                const today = new Date().toISOString().split('T')[0];
+                openReminderModal(today, type);
+            });
+        });
+        
+        // Reminder modal
+        document.getElementById('saveReminderBtn')?.addEventListener('click', saveReminder);
+        document.getElementById('cancelReminderBtn')?.addEventListener('click', closeReminderModal);
+        
+        // Delete reminder
+        document.getElementById('remindersList')?.addEventListener('click', (e) => {
+            if (e.target.classList.contains('delete-reminder-btn')) {
+                const id = parseInt(e.target.dataset.id);
+                deleteReminder(id);
+            }
+        });
+    }
+    
+    function openReminderModal(date, type = 'exam') {
+        const modal = document.getElementById('reminderModal');
+        if (!modal) return;
+        
+        document.getElementById('reminderDate').value = date;
+        document.getElementById('reminderType').value = type;
+        document.getElementById('reminderTitle').value = '';
+        
+        modal.classList.add('active');
+    }
+    
+    function closeReminderModal() {
+        const modal = document.getElementById('reminderModal');
+        if (modal) modal.classList.remove('active');
+    }
+    
+    function saveReminder() {
+        const title = document.getElementById('reminderTitle')?.value.trim();
+        const date = document.getElementById('reminderDate')?.value;
+        const type = document.getElementById('reminderType')?.value;
+        
+        if (!title || !date) {
+            showToast(t('fillAllFields'));
+            return;
+        }
+        
+        const reminder = {
+            id: Date.now(),
+            title,
+            date,
+            type
+        };
+        
+        state.reminders.push(reminder);
+        saveToLocalStorage();
+        
+        closeReminderModal();
+        renderCalendar();
+        renderReminders();
+        showToast(t('reminderAdded'));
+    }
+    
+    function deleteReminder(id) {
+        state.reminders = state.reminders.filter(r => r.id !== id);
+        saveToLocalStorage();
+        renderCalendar();
+        renderReminders();
+        showToast(t('reminderDeleted'));
+    }
+    
+    // Track viewed views for explorer achievement
+    function trackViewedView(view) {
+        const viewed = localStorage.getItem('viewedViews')?.split(',') || [];
+        if (!viewed.includes(view)) {
+            viewed.push(view);
+            localStorage.setItem('viewedViews', viewed.join(','));
+        }
+    }
 
     function init() {
         initTheme();
         initLanguage();
+        initUniversity();
         initNavigation();
         initEventListeners();
         initHelpModal();
+        initKeyboardShortcuts();
+        initDragAndDrop();
         loadFromLocalStorage();
         updateCoursesEmptyState();
         calculateGPA();
+        checkAchievements();
     }
 
     init();

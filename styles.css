@@ -1525,3 +1525,1073 @@ input[type="number"] {
     color: var(--primary-600);
     font-weight: bold;
 }
+
+/* ============================================
+   New Features Styles
+   ============================================ */
+
+/* University Selector */
+.university-selector {
+    padding: var(--space-2) var(--space-4);
+}
+
+.university-select {
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.university-select:hover {
+    border-color: var(--primary-500);
+}
+
+.university-select:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Keyboard Shortcuts Modal */
+.shortcuts-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.shortcut-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-3) var(--space-4);
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+}
+
+.shortcut-keys {
+    display: flex;
+    gap: var(--space-2);
+    align-items: center;
+}
+
+.shortcut-keys kbd {
+    display: inline-block;
+    padding: var(--space-1) var(--space-2);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-family);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.shortcut-desc {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Drag Handle */
+.drag-handle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 40px;
+    cursor: grab;
+    color: var(--text-tertiary);
+    transition: color var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.drag-handle:hover {
+    color: var(--text-secondary);
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+.course-entry.dragging {
+    opacity: 0.5;
+    background: var(--primary-100);
+    border: 2px dashed var(--primary-500);
+}
+
+[data-theme="dark"] .course-entry.dragging {
+    background: var(--primary-900);
+}
+
+/* Toast Notification */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    padding: 12px 24px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    z-index: 10000;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+}
+
+/* Feedback Form */
+#feedbackModal .form-group {
+    margin-bottom: var(--space-4);
+}
+
+#feedbackModal label {
+    display: block;
+    margin-bottom: var(--space-2);
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+#feedbackModal select,
+#feedbackModal input,
+#feedbackModal textarea {
+    width: 100%;
+    padding: var(--space-3);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-family: var(--font-family);
+    font-size: 1rem;
+    transition: all var(--transition-fast);
+}
+
+#feedbackModal select:focus,
+#feedbackModal input:focus,
+#feedbackModal textarea:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+#feedbackModal textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Import Modal */
+#importModal .form-group {
+    margin-bottom: var(--space-4);
+}
+
+#importModal label {
+    display: block;
+    margin-bottom: var(--space-2);
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+#importModal textarea {
+    width: 100%;
+    padding: var(--space-3);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-family: monospace;
+    font-size: 0.85rem;
+    resize: vertical;
+    transition: all var(--transition-fast);
+}
+
+#importModal textarea:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Export JSON Button */
+.export-json-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    background: var(--success-500);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.export-json-btn:hover {
+    background: var(--success-600);
+    transform: translateY(-1px);
+}
+
+/* Update course-entry grid for drag handle */
+.course-entry {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto auto;
+    gap: var(--space-3);
+    align-items: start;
+}
+
+@media (max-width: 768px) {
+    .course-entry {
+        grid-template-columns: auto 1fr;
+        gap: var(--space-2);
+    }
+    
+    .drag-handle {
+        grid-row: span 2;
+    }
+    
+    .course-name-group {
+        grid-column: 2;
+    }
+    
+    .course-credit,
+    .course-grade {
+        grid-column: 2;
+    }
+    
+    .delete-course-btn {
+        position: absolute;
+        top: var(--space-2);
+        right: var(--space-2);
+    }
+    
+    .shortcut-item {
+        flex-direction: column;
+        gap: var(--space-2);
+        text-align: center;
+    }
+}
+
+/* ============================================
+   SIMULATION VIEW STYLES
+   ============================================ */
+
+.simulation-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+}
+
+.simulation-courses {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.simulation-course {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-4);
+    background: var(--neutral-50);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--neutral-200);
+    transition: all var(--transition-fast);
+}
+
+[data-theme="dark"] .simulation-course {
+    background: var(--neutral-800);
+    border-color: var(--neutral-700);
+}
+
+.simulation-course:hover {
+    border-color: var(--primary-300);
+    box-shadow: var(--shadow-sm);
+}
+
+.sim-course-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.sim-course-name {
+    font-weight: 600;
+    color: var(--neutral-800);
+}
+
+[data-theme="dark"] .sim-course-name {
+    color: var(--neutral-100);
+}
+
+.sim-course-credits {
+    font-size: var(--font-sm);
+    color: var(--neutral-500);
+}
+
+.sim-grade-select {
+    padding: var(--space-2) var(--space-4);
+    border: 2px solid var(--neutral-300);
+    border-radius: var(--radius-md);
+    font-size: var(--font-base);
+    font-weight: 600;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    cursor: pointer;
+    min-width: 80px;
+    transition: all var(--transition-fast);
+}
+
+.sim-grade-select:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 3px var(--primary-100);
+}
+
+.simulation-result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-6);
+    background: linear-gradient(135deg, var(--primary-50), var(--primary-100));
+    border-radius: var(--radius-xl);
+    text-align: center;
+}
+
+[data-theme="dark"] .simulation-result {
+    background: linear-gradient(135deg, var(--primary-900), var(--primary-800));
+}
+
+.simulation-result-label {
+    font-size: var(--font-sm);
+    color: var(--primary-600);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+[data-theme="dark"] .simulation-result-label {
+    color: var(--primary-300);
+}
+
+.simulation-result-value {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--primary-600);
+}
+
+[data-theme="dark"] .simulation-result-value {
+    color: var(--primary-300);
+}
+
+.gpa-change {
+    font-size: var(--font-lg);
+    font-weight: 600;
+}
+
+.gpa-change.positive {
+    color: var(--success-600);
+}
+
+.gpa-change.negative {
+    color: var(--error-600);
+}
+
+.quick-scenarios {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+}
+
+.quick-scenario-btn {
+    padding: var(--space-2) var(--space-4);
+    background: var(--neutral-100);
+    border: 1px solid var(--neutral-300);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    font-size: var(--font-sm);
+    font-weight: 500;
+    transition: all var(--transition-fast);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .quick-scenario-btn {
+    background: var(--neutral-700);
+    border-color: var(--neutral-600);
+}
+
+.quick-scenario-btn:hover {
+    background: var(--primary-100);
+    border-color: var(--primary-400);
+    color: var(--primary-700);
+}
+
+[data-theme="dark"] .quick-scenario-btn:hover {
+    background: var(--primary-900);
+    color: var(--primary-300);
+}
+
+.saved-scenarios {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+}
+
+.scenario-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-3) var(--space-4);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--neutral-200);
+}
+
+[data-theme="dark"] .scenario-card {
+    border-color: var(--neutral-700);
+}
+
+.scenario-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.scenario-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.scenario-gpa {
+    font-size: var(--font-sm);
+    color: var(--primary-600);
+}
+
+.scenario-actions {
+    display: flex;
+    gap: var(--space-2);
+}
+
+.load-scenario-btn,
+.delete-scenario-btn {
+    padding: var(--space-1) var(--space-3);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: var(--font-sm);
+    transition: all var(--transition-fast);
+}
+
+.load-scenario-btn {
+    background: var(--primary-500);
+    color: white;
+}
+
+.load-scenario-btn:hover {
+    background: var(--primary-600);
+}
+
+.delete-scenario-btn {
+    background: var(--error-100);
+    color: var(--error-600);
+}
+
+.delete-scenario-btn:hover {
+    background: var(--error-200);
+}
+
+/* ============================================
+   GRADUATION VIEW STYLES
+   ============================================ */
+
+.graduation-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+}
+
+.graduation-inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-4);
+}
+
+.graduation-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.graduation-input-group label {
+    font-weight: 500;
+    color: var(--text-secondary);
+    font-size: var(--font-sm);
+}
+
+.graduation-input-group input {
+    padding: var(--space-3);
+    border: 2px solid var(--neutral-300);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-base);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    transition: all var(--transition-fast);
+}
+
+.graduation-input-group input:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 3px var(--primary-100);
+}
+
+.progress-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.progress-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--font-sm);
+}
+
+.progress-bar {
+    height: 12px;
+    background: var(--neutral-200);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+[data-theme="dark"] .progress-bar {
+    background: var(--neutral-700);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-500), var(--primary-400));
+    border-radius: var(--radius-full);
+    transition: width 0.5s ease;
+}
+
+.required-gpa-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    padding: var(--space-6);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-xl);
+}
+
+.required-gpa-label {
+    font-size: var(--font-lg);
+    color: var(--text-secondary);
+}
+
+.required-gpa-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.required-gpa-value.achievable {
+    color: var(--success-600);
+}
+
+.required-gpa-value.hard {
+    color: var(--warning-600);
+}
+
+.required-gpa-value.impossible {
+    color: var(--error-600);
+}
+
+.graduation-message {
+    text-align: center;
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-lg);
+}
+
+.graduation-message .success {
+    color: var(--success-600);
+}
+
+.graduation-message .warning {
+    color: var(--error-600);
+}
+
+.graduation-message .caution {
+    color: var(--warning-600);
+}
+
+.graduation-message .good {
+    color: var(--success-600);
+}
+
+.honor-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    justify-content: center;
+    margin-top: var(--space-4);
+}
+
+.honor-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-4) var(--space-6);
+    background: var(--neutral-100);
+    border-radius: var(--radius-xl);
+    border: 2px solid var(--neutral-300);
+    opacity: 0.5;
+    transition: all var(--transition-fast);
+}
+
+[data-theme="dark"] .honor-badge {
+    background: var(--neutral-800);
+    border-color: var(--neutral-600);
+}
+
+.honor-badge.achieved {
+    opacity: 1;
+    border-color: var(--success-500);
+    background: var(--success-50);
+}
+
+[data-theme="dark"] .honor-badge.achieved {
+    background: rgba(34, 197, 94, 0.1);
+}
+
+.honor-badge-icon {
+    font-size: 2rem;
+}
+
+.honor-badge-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.honor-badge-gpa {
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+}
+
+/* ============================================
+   ACHIEVEMENTS VIEW STYLES
+   ============================================ */
+
+.achievements-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+}
+
+.achievements-progress {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-6);
+    background: linear-gradient(135deg, var(--primary-50), var(--primary-100));
+    border-radius: var(--radius-xl);
+    text-align: center;
+}
+
+[data-theme="dark"] .achievements-progress {
+    background: linear-gradient(135deg, var(--primary-900), var(--primary-800));
+}
+
+.achievements-progress-label {
+    font-size: var(--font-lg);
+    color: var(--primary-600);
+}
+
+[data-theme="dark"] .achievements-progress-label {
+    color: var(--primary-300);
+}
+
+.achievements-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-4);
+}
+
+.achievement-badge {
+    display: flex;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-xl);
+    border: 2px solid var(--neutral-200);
+    transition: all var(--transition-fast);
+}
+
+[data-theme="dark"] .achievement-badge {
+    border-color: var(--neutral-700);
+}
+
+.achievement-badge.locked {
+    opacity: 0.5;
+    filter: grayscale(0.5);
+}
+
+.achievement-badge.unlocked {
+    border-color: var(--success-400);
+    background: linear-gradient(135deg, var(--success-50), var(--bg-secondary));
+}
+
+[data-theme="dark"] .achievement-badge.unlocked {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), var(--bg-secondary));
+}
+
+.badge-icon {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+}
+
+.badge-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.badge-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.badge-desc {
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+}
+
+.badge-date {
+    font-size: var(--font-xs);
+    color: var(--success-600);
+}
+
+.achievement-notification {
+    position: fixed;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-6);
+    background: linear-gradient(135deg, var(--success-500), var(--success-600));
+    color: white;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    z-index: 1000;
+    transition: bottom 0.3s ease;
+}
+
+.achievement-notification.show {
+    bottom: var(--space-6);
+}
+
+.achievement-notification .achievement-icon {
+    font-size: 2rem;
+}
+
+.achievement-notification .achievement-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.achievement-notification .achievement-title {
+    font-size: var(--font-xs);
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.achievement-notification .achievement-name {
+    font-weight: 600;
+    font-size: var(--font-lg);
+}
+
+/* ============================================
+   CALENDAR VIEW STYLES
+   ============================================ */
+
+.calendar-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.calendar-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.calendar-nav-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-secondary);
+    border: 1px solid var(--neutral-300);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    font-size: var(--font-lg);
+    transition: all var(--transition-fast);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .calendar-nav-btn {
+    border-color: var(--neutral-600);
+}
+
+.calendar-nav-btn:hover {
+    background: var(--primary-100);
+    border-color: var(--primary-400);
+}
+
+.current-month {
+    font-size: var(--font-xl);
+    font-weight: 600;
+    color: var(--text-primary);
+    min-width: 200px;
+    text-align: center;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: var(--space-2);
+}
+
+.calendar-day-header {
+    padding: var(--space-2);
+    text-align: center;
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: var(--font-sm);
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    position: relative;
+}
+
+.calendar-day:hover:not(.empty) {
+    background: var(--primary-100);
+    transform: scale(1.05);
+}
+
+[data-theme="dark"] .calendar-day:hover:not(.empty) {
+    background: var(--primary-900);
+}
+
+.calendar-day.empty {
+    background: transparent;
+    cursor: default;
+}
+
+.calendar-day.today {
+    background: var(--primary-500);
+    color: white;
+}
+
+.calendar-day.today:hover {
+    background: var(--primary-600);
+}
+
+.calendar-day.has-reminder::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    width: 6px;
+    height: 6px;
+    background: var(--error-500);
+    border-radius: 50%;
+}
+
+.day-number {
+    font-weight: 500;
+}
+
+.reminder-dot {
+    display: none;
+}
+
+.reminders-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.reminders-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.add-reminder-btn {
+    padding: var(--space-2) var(--space-4);
+    background: var(--primary-500);
+    color: white;
+    border: none;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all var(--transition-fast);
+}
+
+.add-reminder-btn:hover {
+    background: var(--primary-600);
+}
+
+.reminders-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.reminder-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    border-left: 4px solid var(--primary-500);
+}
+
+.reminder-card.exam {
+    border-left-color: var(--error-500);
+}
+
+.reminder-card.assignment {
+    border-left-color: var(--warning-500);
+}
+
+.reminder-card.project {
+    border-left-color: var(--primary-500);
+}
+
+.reminder-icon {
+    font-size: 1.5rem;
+}
+
+.reminder-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.reminder-title {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.reminder-date {
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+}
+
+.delete-reminder-btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--error-100);
+    color: var(--error-600);
+    border: none;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    font-size: var(--font-lg);
+    transition: all var(--transition-fast);
+}
+
+.delete-reminder-btn:hover {
+    background: var(--error-200);
+}
+
+.quick-add-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.quick-add-btn {
+    padding: var(--space-2) var(--space-3);
+    background: var(--neutral-100);
+    border: 1px solid var(--neutral-300);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    font-size: var(--font-sm);
+    transition: all var(--transition-fast);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .quick-add-btn {
+    background: var(--neutral-700);
+    border-color: var(--neutral-600);
+}
+
+.quick-add-btn:hover {
+    background: var(--primary-100);
+    border-color: var(--primary-400);
+}
+
+.empty-message {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: var(--space-6);
+}
