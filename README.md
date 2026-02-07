@@ -12,6 +12,10 @@ Boğaziçi Üniversitesi öğrencileri için basit ve kullanışlı bir GPA hesa
 - Açık/koyu tema desteği
 - Otomatik veri kaydı
 - PWA desteği
+- Çoklu üniversite not sistemi
+- GPA simülasyonu ve mezuniyet hesaplayıcı
+- Takvim ve hatırlatıcılar
+- İçe/Dışa aktarma (JSON, PNG, PDF)
 
 ## Nasıl Kullanılır?
 

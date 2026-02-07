@@ -1,0 +1,33 @@
+BOUN GPA Calculator - One-Page Summary
+======================================
+
+WHAT IT IS
+A lightweight, client-side GPA calculator web app for Bogazici University
+students, built as a static site with offline support.
+
+WHO IT'S FOR
+Primary persona: Bogazici University students who want to compute semester
+and cumulative GPA quickly on desktop or mobile.
+
+WHAT IT DOES
+- Calculates semester GPA (SPA) and overall GPA using BOUN grading rules.
+- Lets users add courses, credits, grades, and retake info.
+- Supports multiple universities via a selector (BOUN, ITU, ODTU, etc.).
+- Shows charts for grade distribution, GPA trends, and credit breakdown.
+- Saves data locally and supports import/export plus shareable outputs.
+- Offers themes and language switching, plus PWA offline capability.
+
+HOW IT WORKS (REPO EVIDENCE)
+- UI: `index.html` + `styles.css` render the single-page interface.
+- Logic: `script.js` handles calculations, i18n, state, and UI updates.
+- Storage: `localStorage` persists GPA data, theme, language, university.
+- Charts/Export: Chart.js and html2canvas loaded via CDN for visuals/exports.
+- PWA: `service-worker.js` caches app shell and assets; `site.webmanifest`
+  declares installable metadata.
+- Data flow: user inputs -> JS state -> GPA calculations -> DOM + charts ->
+  localStorage save; service worker caches static assets for offline use.
+
+HOW TO RUN (MINIMAL)
+- Clone the repo (README.md).
+- Open `index.html` in a browser (static site).
+- Not found in repo: a local dev server command or build steps.

@@ -2511,8 +2511,13 @@ input[type="number"] {
     border-left: 4px solid var(--primary-500);
 }
 
-.reminder-card.exam {
+.reminder-card.exam,
+.reminder-card.midterm {
     border-left-color: var(--error-500);
+}
+
+.reminder-card.final {
+    border-left-color: var(--warning-500);
 }
 
 .reminder-card.assignment {
@@ -2541,6 +2546,11 @@ input[type="number"] {
 
 .reminder-date {
     font-size: var(--font-sm);
+    color: var(--text-secondary);
+}
+
+.reminder-meta {
+    font-size: var(--font-xs);
     color: var(--text-secondary);
 }
 

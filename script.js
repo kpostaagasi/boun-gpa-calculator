@@ -37,9 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Calculator
             'calc.previousInfo': 'Önceki Dönem Bilgileri',
-            'calc.previousInfoDesc': 'Varsa önceki dönemlerden gelen bilgilerinizi girin',
+            'calc.previousInfoDesc': 'Varsa önceki dönemlerden gelen GPA’ya dahil kredi ve not bilgilerinizi girin',
             'calc.previousGpa': 'Önceki GPA',
-            'calc.previousCredits': 'Önceki Toplam Kredi',
+            'calc.previousCredits': 'GPA’ya Dahil Kredi',
             'calc.selectSemester': 'Dönem Seçimi',
             'calc.selectSemesterPlaceholder': 'Dönem Seçin',
             'calc.courses': 'Dersler',
@@ -373,9 +373,9 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Calculator
             'calc.previousInfo': 'Previous Semester Info',
-            'calc.previousInfoDesc': 'Enter your cumulative information from previous semesters if applicable',
+            'calc.previousInfoDesc': 'Enter your GPA-affecting credits and GPA from previous semesters if applicable',
             'calc.previousGpa': 'Previous GPA',
-            'calc.previousCredits': 'Previous Total Credits',
+            'calc.previousCredits': 'GPA Credits So Far',
             'calc.selectSemester': 'Semester Selection',
             'calc.selectSemesterPlaceholder': 'Select Semester',
             'calc.courses': 'Courses',
@@ -754,6 +754,28 @@ document.addEventListener('DOMContentLoaded', () => {
         if (state.currentView === 'history') {
             renderSemesterHistory();
         }
+
+        if (state.currentView === 'simulation') {
+            const currentGrades = Array.from(document.querySelectorAll('.sim-grade-select')).map(s => s.value);
+            renderSimulationView();
+            if (currentGrades.length > 0) {
+                applySimulationGrades(currentGrades);
+            }
+            renderSavedScenarios();
+        }
+
+        if (state.currentView === 'calendar') {
+            renderCalendar();
+            renderReminders();
+        }
+
+        if (state.currentView === 'graduation') {
+            calculateGraduationProgress();
+        }
+
+        if (state.currentView === 'achievements') {
+            renderAchievements();
+        }
     }
 
     // Set language and persist
@@ -898,6 +920,20 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Recalculate GPA
         calculateGPA();
+
+        // Refresh view-specific content
+        if (state.currentView === 'charts') {
+            initializeCharts();
+        }
+        if (state.currentView === 'simulation') {
+            initSimulationView();
+        }
+        if (state.currentView === 'graduation') {
+            calculateGraduationProgress();
+        }
+        if (state.currentView === 'achievements') {
+            renderAchievements();
+        }
     }
     
     // Update all grade select dropdowns
@@ -921,6 +957,50 @@ document.addEventListener('DOMContentLoaded', () => {
                 ).join('')}
             `;
         });
+    }
+
+    function getNumericGradeEntries() {
+        return Object.entries(gradePoints).filter(([_, point]) => typeof point === 'number' && !Number.isNaN(point));
+    }
+
+    function getSortedNumericGrades(desc = true) {
+        const entries = getNumericGradeEntries().sort((a, b) => a[1] - b[1]);
+        return desc ? entries.reverse() : entries;
+    }
+
+    function formatGradePoint(point) {
+        const rounded = Math.round(point * 100) / 100;
+        if (Number.isInteger(rounded)) return rounded.toFixed(1);
+        return String(rounded);
+    }
+
+    function getGradeLabels() {
+        const numeric = getSortedNumericGrades(true).map(([grade]) => grade);
+        const nonGpa = Object.keys(gradePoints).filter(grade => nonGPAGrades.includes(grade) || gradePoints[grade] === null);
+        const labels = [...numeric];
+        nonGpa.forEach(grade => {
+            if (!labels.includes(grade)) labels.push(grade);
+        });
+        return labels;
+    }
+
+    function getClosestGradeToPoint(targetPoint) {
+        const entries = getNumericGradeEntries();
+        if (entries.length === 0) return null;
+        let closest = entries[0];
+        entries.forEach(entry => {
+            if (Math.abs(entry[1] - targetPoint) < Math.abs(closest[1] - targetPoint)) {
+                closest = entry;
+            }
+        });
+        return closest[0];
+    }
+
+    function getGradeAtLeastPoint(targetPoint) {
+        const entries = getSortedNumericGrades(false);
+        if (entries.length === 0) return null;
+        const found = entries.find(([, point]) => point >= targetPoint);
+        return (found || entries[entries.length - 1])[0];
     }
 
     // HTML escape utility to prevent XSS
@@ -1015,7 +1095,17 @@ document.addEventListener('DOMContentLoaded', () => {
         achievements: {},    // Unlocked achievements
         scenarios: [],       // Simulation scenarios
         calendarMonth: new Date().getMonth(),
-        calendarYear: new Date().getFullYear()
+        calendarYear: new Date().getFullYear(),
+        // Last calculated values (single source of truth for GPA-related views)
+        lastCalculatedGPA: 0,
+        lastCalculatedCreditsForGPA: 0,
+        lastCalculatedTotalCredits: 0
+    };
+
+    const viewInitFlags = {
+        simulation: false,
+        graduation: false,
+        calendar: false
     };
 
     // ============================================
@@ -1137,6 +1227,10 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Update state
         state.currentView = viewId;
+
+        // Track views for achievements
+        trackViewedView(viewId);
+        checkAchievements();
         
         // Initialize view-specific content
         if (viewId === 'charts') {
@@ -1425,9 +1519,22 @@ document.addEventListener('DOMContentLoaded', () => {
         state.previousGPA = previousGPA;
         state.previousCredits = previousCredits;
         state.semester = semesterValue;
+
+        state.lastCalculatedGPA = cumulativeGPA;
+        state.lastCalculatedCreditsForGPA = creditsForGPA;
+        state.lastCalculatedTotalCredits = totalCredits;
+
+        checkAchievements();
         
         // Return both total credits (includes P) and GPA-affecting credits (excludes P)
         return { semesterGPA, cumulativeGPA, totalCredits, creditsForGPA };
+    }
+
+    function getCurrentGPAValue() {
+        if (typeof state.lastCalculatedGPA === 'number' && !Number.isNaN(state.lastCalculatedGPA)) {
+            return state.lastCalculatedGPA;
+        }
+        return parseFloat(elements.gpa?.textContent) || 0;
     }
 
     function applyGPAColorCoding(element, gpa) {
@@ -1583,14 +1690,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function getGradeForGPA(gpa) {
-        if (gpa >= 4.0) return 'AA (4.0)';
-        if (gpa >= 3.5) return 'BA (3.5)';
-        if (gpa >= 3.0) return 'BB (3.0)';
-        if (gpa >= 2.5) return 'CB (2.5)';
-        if (gpa >= 2.0) return 'CC (2.0)';
-        if (gpa >= 1.5) return 'DC (1.5)';
-        if (gpa >= 1.0) return 'DD (1.0)';
-        return 'FF (0.0)';
+        const grade = getGradeAtLeastPoint(gpa);
+        if (!grade) return '';
+        const point = gradePoints[grade];
+        if (typeof point !== 'number') return grade;
+        return `${grade} (${formatGradePoint(point)})`;
     }
 
     function syncGoalInputsFromCalculator() {
@@ -1621,9 +1725,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const gradeColors = {
                 'AA': '#10b981', 'BA': '#34d399', 'BB': '#6ee7b7',
                 'CB': '#fbbf24', 'CC': '#fcd34d',
-                'DC': '#f97316', 'DD': '#fb923c',
-                'FF': '#ef4444',
-                'P': '#3b82f6'  // Blue for Pass
+                'DC': '#f97316', 'DD': '#fb923c', 'FD': '#fb7185',
+                'FF': '#ef4444', 'U': '#ef4444', 'F': '#ef4444',
+                'A': '#10b981', 'A-': '#34d399',
+                'B+': '#6ee7b7', 'B': '#fbbf24', 'B-': '#fcd34d',
+                'C+': '#f59e0b', 'C': '#f97316', 'C-': '#fb923c',
+                'D+': '#f87171', 'D': '#ef4444',
+                'P': '#3b82f6', 'S': '#3b82f6', 'G': '#3b82f6'
             };
             
             state.charts.gradeDistribution = new Chart(elements.gradeDistributionChart, {
@@ -1833,7 +1941,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function getGradeDistributionData() {
-        const grades = ['AA', 'BA', 'BB', 'CB', 'CC', 'DC', 'DD', 'FF', 'P'];
+        const grades = getGradeLabels();
         
         // Current semester courses
         const currentCourses = getCoursesData();
@@ -2174,7 +2282,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // New features
             reminders: state.reminders,
             achievements: state.achievements,
-            scenarios: state.scenarios
+            scenarios: state.scenarios,
+            calendarMonth: state.calendarMonth,
+            calendarYear: state.calendarYear
         };
         
         localStorage.setItem('gpaSaveData', JSON.stringify(saveData));
@@ -2193,9 +2303,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.baseCredits !== undefined) state.baseCredits = data.baseCredits;
             
             // Load new features data
-            if (data.reminders) state.reminders = data.reminders;
-            if (data.achievements) state.achievements = data.achievements;
-            if (data.scenarios) state.scenarios = data.scenarios;
+            if (Array.isArray(data.reminders)) state.reminders = data.reminders;
+            if (data.achievements && typeof data.achievements === 'object') state.achievements = data.achievements;
+            if (Array.isArray(data.scenarios)) state.scenarios = data.scenarios;
+            if (data.calendarMonth !== undefined) {
+                const month = parseInt(data.calendarMonth, 10);
+                if (!Number.isNaN(month)) state.calendarMonth = month;
+            }
+            if (data.calendarYear !== undefined) {
+                const year = parseInt(data.calendarYear, 10);
+                if (!Number.isNaN(year)) state.calendarYear = year;
+            }
             
             // Load semester and history
             if (data.semester) elements.semesterSelect.value = data.semester;
@@ -2209,8 +2327,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 updatePreviousFromHistory(currentSemesterNum);
             } else {
                 // Fallback to saved values (for backward compatibility)
-                if (data.previousGPA) elements.previousGPAInput.value = data.previousGPA;
-                if (data.previousCredits) elements.previousCreditsInput.value = data.previousCredits;
+                if (data.previousGPA !== undefined) elements.previousGPAInput.value = data.previousGPA;
+                if (data.previousCredits !== undefined) elements.previousCreditsInput.value = data.previousCredits;
             }
             
             // Load courses
@@ -2549,7 +2667,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ============================================
     function exportAsJSON() {
         const data = {
-            version: '2.0',
+            version: '2.1',
             exportDate: new Date().toISOString(),
             university: currentUniversity,
             language: currentLanguage,
@@ -2560,7 +2678,12 @@ document.addEventListener('DOMContentLoaded', () => {
             semesters: state.semesters,
             baseSemester: state.baseSemester,
             baseGPA: state.baseGPA,
-            baseCredits: state.baseCredits
+            baseCredits: state.baseCredits,
+            reminders: state.reminders,
+            achievements: state.achievements,
+            scenarios: state.scenarios,
+            calendarMonth: state.calendarMonth,
+            calendarYear: state.calendarYear
         };
         
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -2613,11 +2736,24 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.semesters) state.semesters = data.semesters;
             
             // Import previous GPA/credits
-            if (data.previousGPA && elements.previousGPAInput) {
+            if (data.previousGPA !== undefined && elements.previousGPAInput) {
                 elements.previousGPAInput.value = data.previousGPA;
             }
-            if (data.previousCredits && elements.previousCreditsInput) {
+            if (data.previousCredits !== undefined && elements.previousCreditsInput) {
                 elements.previousCreditsInput.value = data.previousCredits;
+            }
+
+            // Import reminders and other extras
+            if (Array.isArray(data.reminders)) state.reminders = data.reminders;
+            if (data.achievements && typeof data.achievements === 'object') state.achievements = data.achievements;
+            if (Array.isArray(data.scenarios)) state.scenarios = data.scenarios;
+            if (data.calendarMonth !== undefined) {
+                const month = parseInt(data.calendarMonth, 10);
+                if (!Number.isNaN(month)) state.calendarMonth = month;
+            }
+            if (data.calendarYear !== undefined) {
+                const year = parseInt(data.calendarYear, 10);
+                if (!Number.isNaN(year)) state.calendarYear = year;
             }
             
             // Import courses
@@ -2630,6 +2766,20 @@ document.addEventListener('DOMContentLoaded', () => {
             saveToLocalStorage();
             updateCoursesEmptyState();
             calculateGPA();
+
+            if (state.currentView === 'calendar') {
+                renderCalendar();
+                renderReminders();
+            }
+            if (state.currentView === 'simulation') {
+                initSimulationView();
+            }
+            if (state.currentView === 'achievements') {
+                renderAchievements();
+            }
+            if (state.currentView === 'graduation') {
+                calculateGraduationProgress();
+            }
             
             // Close modal
             document.getElementById('importModal')?.classList.remove('active');
@@ -2719,7 +2869,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // ============================================
     function initSimulationView() {
         renderSimulationView();
-        setupSimulationEventListeners();
+        renderSavedScenarios();
+        if (!viewInitFlags.simulation) {
+            setupSimulationEventListeners();
+            viewInitFlags.simulation = true;
+        }
     }
     
     function renderSimulationView() {
@@ -2728,16 +2882,17 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Get current courses for simulation
         const courses = state.courses.length > 0 ? state.courses : getSampleCourses();
+        const fallbackGrade = getSortedNumericGrades(true)[0]?.[0] || Object.keys(gradePoints)[0] || '';
         
         container.innerHTML = courses.map((course, index) => `
             <div class="simulation-course" data-index="${index}">
                 <div class="sim-course-info">
                     <span class="sim-course-name">${course.name || t('course') + ' ' + (index + 1)}</span>
-                    <span class="sim-course-credits">${course.credits} ${t('credits')}</span>
+                    <span class="sim-course-credits">${course.credits ?? course.credit ?? 3} ${t('credits')}</span>
                 </div>
                 <select class="sim-grade-select" data-index="${index}">
                     ${Object.keys(gradePoints).map(grade => 
-                        `<option value="${grade}" ${course.grade === grade ? 'selected' : ''}>${grade}</option>`
+                        `<option value="${grade}" ${(gradePoints[course.grade] !== undefined ? course.grade : fallbackGrade) === grade ? 'selected' : ''}>${grade}</option>`
                     ).join('')}
                 </select>
             </div>
@@ -2747,11 +2902,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function getSampleCourses() {
+        const targets = [4.0, 3.5, 3.0, 2.5];
+        const grades = targets.map(point => getClosestGradeToPoint(point)).filter(Boolean);
+        const fallbackGrade = getSortedNumericGrades(true)[0]?.[0] || Object.keys(gradePoints)[0] || '';
         return [
-            { name: t('course') + ' 1', credits: 3, grade: 'AA' },
-            { name: t('course') + ' 2', credits: 3, grade: 'BA' },
-            { name: t('course') + ' 3', credits: 4, grade: 'BB' },
-            { name: t('course') + ' 4', credits: 3, grade: 'CB' }
+            { name: t('course') + ' 1', credits: 3, grade: grades[0] || fallbackGrade },
+            { name: t('course') + ' 2', credits: 3, grade: grades[1] || fallbackGrade },
+            { name: t('course') + ' 3', credits: 4, grade: grades[2] || fallbackGrade },
+            { name: t('course') + ' 4', credits: 3, grade: grades[3] || fallbackGrade }
         ];
     }
     
@@ -2764,7 +2922,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         selects.forEach((select, index) => {
             const grade = select.value;
-            const credits = courses[index]?.credits || 3;
+            const credits = parseFloat(courses[index]?.credits ?? courses[index]?.credit) || 3;
             
             if (!nonGPAGrades.includes(grade) && gradePoints[grade] !== undefined) {
                 totalPoints += gradePoints[grade] * credits;
@@ -2780,7 +2938,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (resultEl) resultEl.textContent = simGPA;
         
         if (changeEl) {
-            const currentGPA = parseFloat(document.getElementById('gpaResult')?.textContent) || 0;
+            const currentGPA = getCurrentGPAValue();
             const change = (parseFloat(simGPA) - currentGPA).toFixed(2);
             const prefix = change >= 0 ? '+' : '';
             changeEl.textContent = `(${prefix}${change})`;
@@ -2811,22 +2969,41 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('resetSimulationBtn')?.addEventListener('click', () => {
             renderSimulationView();
         });
+
+        // Saved scenarios actions
+        document.getElementById('savedScenarios')?.addEventListener('click', (e) => {
+            const loadBtn = e.target.closest('.load-scenario-btn');
+            const deleteBtn = e.target.closest('.delete-scenario-btn');
+            if (loadBtn) {
+                const id = parseInt(loadBtn.dataset.id);
+                loadScenario(id);
+            }
+            if (deleteBtn) {
+                const id = parseInt(deleteBtn.dataset.id);
+                deleteScenario(id);
+            }
+        });
     }
     
     function applyQuickScenario(scenario) {
         const selects = document.querySelectorAll('.sim-grade-select');
         const gradeKeys = Object.keys(gradePoints).filter(g => !nonGPAGrades.includes(g));
+        const topGrade = getSortedNumericGrades(true)[0]?.[0] || gradeKeys[0];
+        const midGrade = getClosestGradeToPoint(3.0) || topGrade;
+        const lowGrade = getClosestGradeToPoint(2.0) || topGrade;
+
+        if (gradeKeys.length === 0) return;
         
         selects.forEach(select => {
             switch(scenario) {
                 case 'all-aa':
-                    select.value = 'AA';
+                    select.value = topGrade;
                     break;
                 case 'all-bb':
-                    select.value = 'BB';
+                    select.value = midGrade;
                     break;
                 case 'all-cc':
-                    select.value = 'CC';
+                    select.value = lowGrade;
                     break;
                 case 'random':
                     select.value = gradeKeys[Math.floor(Math.random() * gradeKeys.length)];
@@ -2879,11 +3056,36 @@ document.addEventListener('DOMContentLoaded', () => {
         `).join('');
     }
 
+    function applySimulationGrades(grades) {
+        const selects = document.querySelectorAll('.sim-grade-select');
+        grades.forEach((grade, index) => {
+            if (selects[index]) {
+                selects[index].value = grade;
+            }
+        });
+        calculateSimulationGPA();
+    }
+
+    function loadScenario(id) {
+        const scenario = state.scenarios.find(s => s.id === id);
+        if (!scenario) return;
+        applySimulationGrades(scenario.grades || []);
+    }
+
+    function deleteScenario(id) {
+        state.scenarios = state.scenarios.filter(s => s.id !== id);
+        saveToLocalStorage();
+        renderSavedScenarios();
+    }
+
     // ============================================
     // Graduation Calculator Functions
     // ============================================
     function initGraduationView() {
-        setupGraduationEventListeners();
+        if (!viewInitFlags.graduation) {
+            setupGraduationEventListeners();
+            viewInitFlags.graduation = true;
+        }
         calculateGraduationProgress();
     }
     
@@ -2904,8 +3106,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const targetGPA = parseFloat(targetGPAInput?.value) || 2.50;
         
         // Calculate current stats
+        calculateGPA();
         const currentCredits = calculateTotalCredits();
-        const currentGPA = parseFloat(document.getElementById('gpaResult')?.textContent) || 0;
+        const currentGPA = getCurrentGPAValue();
         
         // Remaining credits
         const remainingCredits = Math.max(0, targetCredits - currentCredits);
@@ -2935,17 +3138,13 @@ document.addEventListener('DOMContentLoaded', () => {
         
         Object.values(state.semesters).forEach(semester => {
             semester.courses.forEach(course => {
-                if (!nonGPAGrades.includes(course.grade)) {
-                    total += parseFloat(course.credits) || 0;
-                }
+                total += parseFloat(course.credits ?? course.credit) || 0;
             });
         });
         
         // Add current semester courses
         state.courses.forEach(course => {
-            if (!nonGPAGrades.includes(course.grade)) {
-                total += parseFloat(course.credits) || 0;
-            }
+            total += parseFloat(course.credits ?? course.credit) || 0;
         });
         
         return total;
@@ -3041,7 +3240,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function getCurrentGPA() {
-        return parseFloat(document.getElementById('gpaResult')?.textContent) || 0;
+        return getCurrentGPAValue();
     }
     
     function initAchievementsView() {
@@ -3069,6 +3268,10 @@ document.addEventListener('DOMContentLoaded', () => {
             newlyUnlocked.forEach(ach => {
                 showAchievementNotification(ach);
             });
+        }
+
+        if (state.currentView === 'achievements') {
+            renderAchievements();
         }
         
         return newlyUnlocked;
@@ -3136,7 +3339,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function initCalendarView() {
         renderCalendar();
         renderReminders();
-        setupCalendarEventListeners();
+        if (!viewInitFlags.calendar) {
+            setupCalendarEventListeners();
+            viewInitFlags.calendar = true;
+        }
     }
     
     function renderCalendar() {
@@ -3196,12 +3402,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!container) return;
         
         // Sort by date
-        const sortedReminders = [...state.reminders].sort((a, b) => new Date(a.date) - new Date(b.date));
+        const sortedReminders = [...state.reminders].sort((a, b) => {
+            const dateA = new Date(`${a.date}T${a.time || '00:00'}`);
+            const dateB = new Date(`${b.date}T${b.time || '00:00'}`);
+            return dateA - dateB;
+        });
         
         // Filter upcoming
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        const upcoming = sortedReminders.filter(r => new Date(r.date) >= today);
+        const upcoming = sortedReminders.filter(r => new Date(`${r.date}T${r.time || '00:00'}`) >= today);
         
         if (upcoming.length === 0) {
             container.innerHTML = `<p class="empty-message">${t('noReminders')}</p>`;
@@ -3216,13 +3426,20 @@ document.addEventListener('DOMContentLoaded', () => {
             let dateLabel = date.toLocaleDateString();
             if (isToday) dateLabel = t('today');
             if (isTomorrow) dateLabel = t('tomorrow');
+            const timeLabel = reminder.time ? ` • ${reminder.time}` : '';
+            const normalizedType = normalizeReminderType(reminder.type);
+            const safeTitle = escapeHtml(reminder.title);
+            const safeCourse = reminder.course ? escapeHtml(reminder.course) : '';
+            const safeNotes = reminder.notes ? escapeHtml(reminder.notes) : '';
             
             return `
-                <div class="reminder-card ${reminder.type}" data-id="${reminder.id}">
-                    <div class="reminder-icon">${getReminderIcon(reminder.type)}</div>
+                <div class="reminder-card ${normalizedType}" data-id="${reminder.id}">
+                    <div class="reminder-icon">${getReminderIcon(normalizedType)}</div>
                     <div class="reminder-content">
-                        <span class="reminder-title">${reminder.title}</span>
-                        <span class="reminder-date">${dateLabel}</span>
+                        <span class="reminder-title">${safeTitle}</span>
+                        <span class="reminder-date">${dateLabel}${timeLabel}</span>
+                        ${safeCourse ? `<span class="reminder-meta">${t('calendar.reminderCourse')}: ${safeCourse}</span>` : ''}
+                        ${safeNotes ? `<span class="reminder-meta">${t('calendar.reminderNotes')}: ${safeNotes}</span>` : ''}
                     </div>
                     <button class="delete-reminder-btn" data-id="${reminder.id}">&times;</button>
                 </div>
@@ -3231,13 +3448,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function getReminderIcon(type) {
+        const normalizedType = normalizeReminderType(type);
         const icons = {
+            midterm: '📝',
+            final: '📋',
+            assignment: '📄',
+            project: '💻',
             exam: '📝',
-            assignment: '📋',
-            project: '💼',
             other: '📌'
         };
-        return icons[type] || icons.other;
+        return icons[normalizedType] || icons.other;
+    }
+
+    function normalizeReminderType(type) {
+        if (!type) return 'midterm';
+        if (type === 'exam') return 'midterm';
+        return type;
     }
     
     function setupCalendarEventListeners() {
@@ -3249,6 +3475,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 state.calendarYear--;
             }
             renderCalendar();
+            saveToLocalStorage();
         });
         
         document.getElementById('nextMonth')?.addEventListener('click', () => {
@@ -3258,6 +3485,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 state.calendarYear++;
             }
             renderCalendar();
+            saveToLocalStorage();
         });
         
         // Click on day
@@ -3285,8 +3513,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         // Reminder modal
-        document.getElementById('saveReminderBtn')?.addEventListener('click', saveReminder);
-        document.getElementById('cancelReminderBtn')?.addEventListener('click', closeReminderModal);
+        const reminderForm = document.getElementById('reminderForm');
+        const reminderModal = document.getElementById('reminderModal');
+        const reminderModalClose = document.getElementById('reminderModalClose');
+
+        reminderForm?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            saveReminder();
+        });
+
+        reminderModalClose?.addEventListener('click', closeReminderModal);
+
+        reminderModal?.addEventListener('click', (e) => {
+            if (e.target === reminderModal) closeReminderModal();
+        });
         
         // Delete reminder
         document.getElementById('remindersList')?.addEventListener('click', (e) => {
@@ -3297,13 +3537,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    function openReminderModal(date, type = 'exam') {
+    function openReminderModal(date, type = 'midterm') {
         const modal = document.getElementById('reminderModal');
         if (!modal) return;
         
         document.getElementById('reminderDate').value = date;
-        document.getElementById('reminderType').value = type;
+        document.getElementById('reminderType').value = normalizeReminderType(type);
         document.getElementById('reminderTitle').value = '';
+        document.getElementById('reminderTime').value = '09:00';
+        document.getElementById('reminderCourse').value = '';
+        document.getElementById('reminderNotes').value = '';
         
         modal.classList.add('active');
     }
@@ -3316,7 +3559,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function saveReminder() {
         const title = document.getElementById('reminderTitle')?.value.trim();
         const date = document.getElementById('reminderDate')?.value;
-        const type = document.getElementById('reminderType')?.value;
+        const type = normalizeReminderType(document.getElementById('reminderType')?.value);
+        const time = document.getElementById('reminderTime')?.value || '09:00';
+        const course = document.getElementById('reminderCourse')?.value.trim() || '';
+        const notes = document.getElementById('reminderNotes')?.value.trim() || '';
         
         if (!title || !date) {
             showToast(t('fillAllFields'));
@@ -3327,7 +3573,10 @@ document.addEventListener('DOMContentLoaded', () => {
             id: Date.now(),
             title,
             date,
-            type
+            type,
+            time,
+            course,
+            notes
         };
         
         state.reminders.push(reminder);
@@ -3368,7 +3617,6 @@ document.addEventListener('DOMContentLoaded', () => {
         loadFromLocalStorage();
         updateCoursesEmptyState();
         calculateGPA();
-        checkAchievements();
     }
 
     init();

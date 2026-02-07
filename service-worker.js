@@ -3,7 +3,7 @@
  * Enables offline functionality and caching
  */
 
-const CACHE_NAME = 'boun-gpa-v1.1.0';
+const CACHE_NAME = 'boun-gpa-v1.1.1';
 const OFFLINE_URL = '/boun-gpa-calculator/index.html';
 
 // Assets to cache immediately on install
