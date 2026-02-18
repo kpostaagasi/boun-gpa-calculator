@@ -1396,31 +1396,166 @@ input[type="number"] {
 }
 
 /* ============================================
-   Print Styles
+   Transcript Print Styles
    ============================================ */
+
+#transcriptPrint {
+    display: none;
+}
+
 @media print {
-    .sidebar,
-    .main-header,
-    .btn,
-    .nav-item,
-    .theme-toggle,
-    .lang-toggle {
+    body > * {
         display: none !important;
     }
-    
-    .main-content {
-        margin-left: 0;
+
+    #transcriptPrint {
+        display: block !important;
+        font-family: 'Times New Roman', serif;
+        color: #000;
+        background: #fff;
+        font-size: 10pt;
     }
-    
-    .card {
-        break-inside: avoid;
-        box-shadow: none;
-        border: 1px solid #ddd;
+
+    @page {
+        margin: 15mm 20mm;
+        size: A4 portrait;
     }
-    
-    body {
-        background: white;
-        color: black;
+
+    .transcript-header {
+        border-bottom: 2px solid #000;
+        padding-bottom: 10pt;
+        margin-bottom: 12pt;
+        display: flex;
+        align-items: center;
+        gap: 12pt;
+    }
+
+    .transcript-header-text h1 {
+        font-size: 13pt;
+        margin: 0 0 2pt;
+        font-weight: bold;
+    }
+
+    .transcript-header-text p {
+        font-size: 9pt;
+        margin: 0;
+        color: #444;
+    }
+
+    .transcript-section-title {
+        font-size: 10pt;
+        font-weight: bold;
+        border-bottom: 1px solid #888;
+        margin: 10pt 0 6pt;
+        padding-bottom: 2pt;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+
+    .transcript-summary {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4pt 20pt;
+        margin-bottom: 10pt;
+        font-size: 9.5pt;
+    }
+
+    .transcript-summary-item {
+        display: flex;
+        gap: 4pt;
+    }
+
+    .transcript-summary-label {
+        font-weight: bold;
+        min-width: 110pt;
+    }
+
+    .transcript-gpa-row {
+        display: flex;
+        align-items: center;
+        gap: 6pt;
+        margin-bottom: 3pt;
+        font-size: 9pt;
+    }
+
+    .transcript-gpa-label {
+        min-width: 60pt;
+    }
+
+    .transcript-gpa-bar-bg {
+        display: inline-block;
+        background: #ddd;
+        height: 7pt;
+        width: 80pt;
+        vertical-align: middle;
+    }
+
+    .transcript-gpa-bar-fill {
+        display: block;
+        background: #000;
+        height: 100%;
+    }
+
+    .transcript-gpa-value {
+        font-weight: bold;
+        min-width: 24pt;
+    }
+
+    .transcript-semester {
+        page-break-inside: avoid;
+        margin-bottom: 12pt;
+    }
+
+    .transcript-semester-title {
+        font-size: 9.5pt;
+        font-weight: bold;
+        margin: 8pt 0 3pt;
+    }
+
+    .transcript-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 9pt;
+    }
+
+    .transcript-table th {
+        background: #f0f0f0;
+        border: 1px solid #999;
+        padding: 3pt 5pt;
+        text-align: left;
+        font-size: 8.5pt;
+    }
+
+    .transcript-table td {
+        border: 1px solid #ccc;
+        padding: 3pt 5pt;
+    }
+
+    .transcript-table td:nth-child(2),
+    .transcript-table th:nth-child(2) {
+        text-align: center;
+    }
+
+    .transcript-table td:nth-child(3),
+    .transcript-table th:nth-child(3) {
+        text-align: center;
+    }
+
+    .transcript-grade-scale {
+        font-size: 8pt;
+        color: #555;
+        margin-top: 10pt;
+        border-top: 1px solid #ccc;
+        padding-top: 6pt;
+    }
+
+    .transcript-footer {
+        margin-top: 16pt;
+        font-size: 8pt;
+        color: #555;
+        border-top: 1px solid #ccc;
+        padding-top: 6pt;
+        text-align: right;
     }
 }
 

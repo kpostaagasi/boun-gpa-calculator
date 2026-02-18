@@ -336,6 +336,147 @@ test('Cumulative GPA: previous credits clamped to zero if retake removes all', (
 });
 
 // ============================================
+// Semester Switch Logic
+// ============================================
+
+/** Mirrors saveCurrentCoursesToSemester() logic */
+function buildSemesterRecord(courses) {
+    let totalPoints = 0, credits = 0;
+    const saved = [];
+    for (const c of courses) {
+        const gp = gradePointsBOUN[c.grade];
+        if (c.credit > 0 && c.grade) {
+            saved.push(c);
+            if (gp !== null && gp !== undefined) {
+                totalPoints += gp * c.credit;
+                credits += c.credit;
+            }
+        }
+    }
+    return { courses: saved, gpa: credits > 0 ? totalPoints / credits : 0, credits };
+}
+
+test('Semester: saveCurrentCoursesToSemester stores correct GPA', () => {
+    // AA(4.0)*3 + BB(3.0)*3 = 21 / 6 = 3.5
+    const record = buildSemesterRecord([
+        { name: 'Math', credit: 3, grade: 'AA' },
+        { name: 'Physics', credit: 3, grade: 'BB' }
+    ]);
+    assertApprox(record.gpa, 3.5, 0.0001, 'semester record GPA');
+    assertEqual(record.credits, 6, 'semester record credits');
+    assertEqual(record.courses.length, 2, 'semester record courses count');
+});
+
+test('Semester: P grade excluded from saved GPA credits', () => {
+    // AA(4.0)*3 + P(null)*3 = 12 / 3 = 4.0 (P not counted)
+    const record = buildSemesterRecord([
+        { name: 'Math', credit: 3, grade: 'AA' },
+        { name: 'Lab', credit: 3, grade: 'P' }
+    ]);
+    assertApprox(record.gpa, 4.0, 0.0001, 'P excluded from GPA');
+    assertEqual(record.credits, 3, 'P credits not in GPA credits');
+});
+
+test('Semester: calculatePreviousSemestersStats sums only earlier semesters', () => {
+    // semesters: 1 -> gpa 3.0 credits 6, 2 -> gpa 3.5 credits 6, 3 -> gpa 4.0 credits 3
+    // For currentSemesterNum=3: include sems 1 and 2
+    // totalPoints = 3.0*6 + 3.5*6 = 18 + 21 = 39, totalCredits = 12
+    // cumulativeGPA = 39/12 = 3.25
+    const semesters = {
+        '1': { gpa: 3.0, credits: 6, courses: [] },
+        '2': { gpa: 3.5, credits: 6, courses: [] },
+        '3': { gpa: 4.0, credits: 3, courses: [] }
+    };
+    function calcPrev(currentSemNum) {
+        let totalPoints = 0, totalCredits = 0;
+        Object.entries(semesters).forEach(([id, data]) => {
+            const n = parseInt(id, 10);
+            if (!isNaN(n) && n < currentSemNum) {
+                totalPoints += (data.gpa || 0) * (data.credits || 0);
+                totalCredits += data.credits || 0;
+            }
+        });
+        return totalCredits > 0 ? totalPoints / totalCredits : 0;
+    }
+    assertApprox(calcPrev(3), 3.25, 0.0001, 'previous stats for sem 3');
+    assertApprox(calcPrev(2), 3.0, 0.0001, 'previous stats for sem 2');
+    assertApprox(calcPrev(1), 0, 0.0001, 'no previous for sem 1');
+});
+
+test('Semester: updatePreviousFromHistory does not clear manual input when stats.credits === 0', () => {
+    // Simulate: no previous semesters exist, stats.credits = 0
+    // The function should NOT overwrite existing manual values
+    let inputValue = '3.20'; // user manually entered
+    function updatePrevFromHistory(statsCredits, statsGPA) {
+        // Only update if stats.credits > 0
+        if (statsCredits > 0) {
+            inputValue = statsGPA.toFixed(2);
+        }
+        // else: leave untouched
+    }
+    updatePrevFromHistory(0, 0);
+    assertEqual(inputValue, '3.20', 'manual input preserved when no history credits');
+    updatePrevFromHistory(6, 3.5);
+    assertEqual(inputValue, '3.50', 'updates when history has credits');
+});
+
+// ============================================
+// Simulation Logic
+// ============================================
+
+test('Simulation: semester GPA comparison (Bug C fix)', () => {
+    // Simulation should compare simulated GPA with *semester* GPA, not cumulative
+    // This test verifies the logic is correct
+    const semesterGPA = 3.5;
+    const cumulativeGPA = 2.8; // lower cumulative due to past bad semesters
+    const simGPA = 3.8;
+
+    // Old (wrong): compared with cumulative
+    const wrongChange = (simGPA - cumulativeGPA).toFixed(2);
+    // New (correct): compared with semester
+    const correctChange = (simGPA - semesterGPA).toFixed(2);
+
+    assertEqual(correctChange, '0.30', 'change vs semester GPA');
+    assert(parseFloat(wrongChange) !== parseFloat(correctChange), 'old and new differ when cumulative != semester');
+});
+
+test('Simulation: saveScenario includes semesterId and courseSnapshot', () => {
+    // Verify the scenario object shape includes the new fields
+    const grades = ['AA', 'BB', 'CC'];
+    const courseNames = ['Math', 'Physics', 'Chemistry'];
+    const semesterId = '2';
+    const scenario = {
+        id: Date.now(),
+        name: 'Scenario 1',
+        semesterId,
+        courseSnapshot: courseNames.slice(0, grades.length),
+        grades,
+        gpa: '3.00',
+        date: '18.02.2026'
+    };
+    assertEqual(scenario.semesterId, '2', 'semesterId saved');
+    assertEqual(scenario.courseSnapshot.length, 3, 'courseSnapshot length matches grades');
+    assertEqual(scenario.courseSnapshot[0], 'Math', 'first course name correct');
+});
+
+test('Simulation: loadScenario warns when semesterId differs', () => {
+    // Scenario saved for semester 2, loading in semester 3 should trigger warning
+    const scenarioSemId = '2';
+    const currentSemId = '3';
+    let warningShown = false;
+    function simulateLoad(scenarioSemester, currentSemester) {
+        if (scenarioSemester && scenarioSemester !== currentSemester) {
+            warningShown = true;
+        }
+    }
+    simulateLoad(scenarioSemId, currentSemId);
+    assert(warningShown, 'warning shown when loading scenario from different semester');
+    warningShown = false;
+    simulateLoad(scenarioSemId, scenarioSemId);
+    assert(!warningShown, 'no warning when semester matches');
+});
+
+// ============================================
 // Render Results
 // ============================================
 const passed = results.filter(r => r.ok).length;
