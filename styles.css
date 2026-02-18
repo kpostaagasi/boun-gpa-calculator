@@ -1768,6 +1768,43 @@ input[type="number"] {
     background: var(--primary-900);
 }
 
+/* Auto-save Indicator */
+.auto-save-indicator {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--success-600, #16a34a);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    margin-left: var(--space-2);
+    vertical-align: middle;
+}
+
+.auto-save-indicator.visible {
+    opacity: 1;
+}
+
+/* Semester Notes Textarea */
+.semester-notes-input {
+    resize: vertical;
+    min-height: 48px;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.semester-notes-input::placeholder {
+    font-style: italic;
+}
+
+/* Duplicate course warning highlight */
+.course-name.duplicate-warning {
+    border-color: var(--warning-500, #f59e0b);
+    background-color: var(--warning-50, #fffbeb);
+}
+
+[data-theme="dark"] .course-name.duplicate-warning {
+    background-color: rgba(245, 158, 11, 0.1);
+}
+
 /* Toast Notification */
 .toast {
     position: fixed;

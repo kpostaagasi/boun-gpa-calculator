@@ -332,7 +332,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="semesterSelect" data-i18n="calc.selectSemester">Dönem Seçimi</label>
+                            <label class="form-label" for="semesterSelect" data-i18n="calc.selectSemester">Dönem Seçimi <span id="autoSaveIndicator" class="auto-save-indicator"></span></label>
                             <select id="semesterSelect" class="form-select">
                                 <option value="" disabled selected data-i18n="calc.selectSemesterPlaceholder">Dönem Seçin</option>
                                 <option value="1">1. Dönem (Güz)</option>
@@ -351,8 +351,12 @@
                                 <option value="14">14. Dönem (Bahar)</option>
                             </select>
                         </div>
+                        <div class="form-group" style="margin-top: var(--space-3);">
+                            <label class="form-label" for="semesterNotes" data-i18n="calc.semesterNotes">Dönem Notu</label>
+                            <textarea id="semesterNotes" class="form-input semester-notes-input" rows="2" placeholder="" data-i18n-placeholder="calc.semesterNotesPlaceholder"></textarea>
+                        </div>
                     </div>
-                    
+
                     <div class="card" style="margin-top: var(--space-6);">
                         <div class="card-header">
                             <div>

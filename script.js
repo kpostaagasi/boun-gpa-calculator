@@ -311,6 +311,10 @@ document.addEventListener('DOMContentLoaded', () => {
             'achExplorer': 'Kaşif',
             'achExplorerDesc': 'Tüm görünümleri keşfettiniz',
             'fillAllFields': 'Lütfen tüm alanları doldurun',
+            'calc.semesterNotes': 'Dönem Notu',
+            'calc.semesterNotesPlaceholder': 'Bu dönem için not ekleyin… (Erasmus, yaz dönemi, vb.)',
+            'autoSaved': '✓ Kaydedildi',
+            'duplicateCourseWarning': 'Aynı isimli ders zaten mevcut',
             // Transcript
             'transcript.title': 'NOT DÖKÜMÜ / ACADEMIC TRANSCRIPT',
             'transcript.generated': 'Oluşturulma tarihi',
@@ -629,6 +633,10 @@ document.addEventListener('DOMContentLoaded', () => {
             'achExplorer': 'Explorer',
             'achExplorerDesc': 'Explored all views',
             'fillAllFields': 'Please fill all fields',
+            'calc.semesterNotes': 'Semester Notes',
+            'calc.semesterNotesPlaceholder': 'Add a note for this semester… (exchange, summer term, etc.)',
+            'autoSaved': '✓ Saved',
+            'duplicateCourseWarning': 'A course with this name already exists',
             // Transcript
             'transcript.title': 'NOT DÖKÜMÜ / ACADEMIC TRANSCRIPT',
             'transcript.generated': 'Generated on',
@@ -671,9 +679,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         
+        // Handle data-i18n-placeholder (for elements that need both label and placeholder translated)
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
+        });
+
         // Update HTML lang attribute
         document.documentElement.lang = currentLanguage;
-        
+
         // Update dynamic content
         updateDynamicTranslations();
     }
@@ -973,6 +986,8 @@ document.addEventListener('DOMContentLoaded', () => {
         previousGPAInput: document.getElementById('previousGPA'),
         previousCreditsInput: document.getElementById('previousCredits'),
         semesterSelect: document.getElementById('semesterSelect'),
+        semesterNotesInput: document.getElementById('semesterNotes'),
+        autoSaveIndicator: document.getElementById('autoSaveIndicator'),
         resultsGrid: document.getElementById('resultsGrid'),
         emptyCoursesState: document.getElementById('emptyCoursesState'),
         semesterGPA: document.getElementById('semesterGPA'),
@@ -1241,11 +1256,38 @@ document.addEventListener('DOMContentLoaded', () => {
             saveCourses();
         });
         
+        // Duplicate course name detection on blur
+        const nameInput = entry.querySelector('.course-name');
+        nameInput?.addEventListener('blur', () => {
+            const enteredName = nameInput.value.trim().toLowerCase();
+            if (!enteredName) {
+                nameInput.classList.remove('duplicate-warning');
+                return;
+            }
+            const allNames = Array.from(
+                document.querySelectorAll('.course-entry .course-name')
+            ).filter(el => el !== nameInput).map(el => el.value.trim().toLowerCase());
+
+            if (allNames.includes(enteredName)) {
+                nameInput.classList.add('duplicate-warning');
+                showToast(t('duplicateCourseWarning'), 3000);
+            } else {
+                nameInput.classList.remove('duplicate-warning');
+            }
+        });
+        nameInput?.addEventListener('input', () => {
+            nameInput.classList.remove('duplicate-warning');
+        });
+
         // Delete button
         entry.querySelector('.delete-course-btn')?.addEventListener('click', () => {
             entry.classList.add('removing');
             setTimeout(() => {
                 entry.remove();
+                // Clear duplicate warnings that may now be resolved
+                document.querySelectorAll('.course-name.duplicate-warning').forEach(el => {
+                    el.classList.remove('duplicate-warning');
+                });
                 calculateGPA();
                 saveCourses();
                 updateCoursesEmptyState();
@@ -1948,18 +1990,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Build semester detail tables
-        function semesterTableHtml(courses, semLabel, gpa, credits) {
+        function semesterTableHtml(courses, semLabel, gpa, credits, notes) {
             const rows = courses.map(c => `
                 <tr>
                     <td>${escapeHtml(c.name || t('history.unnamed'))}</td>
                     <td>${c.credit || c.credits || 0}</td>
                     <td>${escapeHtml(c.grade || '')}</td>
                 </tr>`).join('');
+            const notesHtml = notes
+                ? `<div style="font-size:8pt;color:#666;font-style:italic;margin-top:3pt">${escapeHtml(notes)}</div>`
+                : '';
             return `
                 <div class="transcript-semester">
                     <div class="transcript-semester-title">
                         ${escapeHtml(semLabel)} &nbsp;·&nbsp; GPA: ${(gpa || 0).toFixed(2)} &nbsp;·&nbsp; ${t('calc.totalCredits')}: ${credits || 0}
                     </div>
+                    ${notesHtml}
                     <table class="transcript-table">
                         <thead><tr>
                             <th>${t('calc.courseName')}</th>
@@ -1980,15 +2026,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     data.courses || [],
                     t('semester.format', { n: id }),
                     data.gpa,
-                    data.credits
+                    data.credits,
+                    data.notes || ''
                 );
             });
             if (currentIsNew) {
+                const currentNotes = elements.semesterNotesInput?.value.trim() || '';
                 semTablesHtml += semesterTableHtml(
                     currentCourses,
                     t('transcript.currentSem'),
                     state.lastCalculatedSemesterGPA || 0,
-                    state.lastCalculatedCreditsForGPA || 0
+                    state.lastCalculatedCreditsForGPA || 0,
+                    currentNotes
                 );
             }
         }
@@ -2179,11 +2228,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        if (courses.length > 0) {
+        const notes = elements.semesterNotesInput?.value.trim() || '';
+        if (courses.length > 0 || notes) {
             state.semesters[semesterId] = {
+                ...(state.semesters[semesterId] || {}),
                 courses,
                 gpa: creditsForGPA > 0 ? totalPoints / creditsForGPA : 0,
-                credits: creditsForGPA
+                credits: creditsForGPA,
+                notes
             };
         }
     }
@@ -2325,6 +2377,17 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         
         localStorage.setItem('gpaSaveData', JSON.stringify(saveData));
+        showAutoSaveIndicator();
+    }
+
+    let _autoSaveTimer = null;
+    function showAutoSaveIndicator() {
+        const el = elements.autoSaveIndicator;
+        if (!el) return;
+        el.textContent = t('autoSaved');
+        el.classList.add('visible');
+        clearTimeout(_autoSaveTimer);
+        _autoSaveTimer = setTimeout(() => el.classList.remove('visible'), 2000);
     }
 
     function loadFromLocalStorage() {
@@ -2364,7 +2427,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.courses && data.courses.length > 0) {
                 data.courses.forEach(course => addCourse(course));
             }
-            
+
+            // Restore semester notes for current semester
+            if (elements.semesterNotesInput && data.semester && state.semesters[data.semester]) {
+                elements.semesterNotesInput.value = state.semesters[data.semester].notes || '';
+            }
+
             updateCoursesEmptyState();
             calculateGPA();
         } catch (error) {
@@ -2453,6 +2521,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             updateCoursesEmptyState();
 
+            // 2b. Restore semester notes
+            if (elements.semesterNotesInput) {
+                elements.semesterNotesInput.value = saved?.notes || '';
+            }
+
             // 3. Update previous GPA/credits from semester history
             const newSemNum = parseInt(newId, 10) || 0;
             updatePreviousFromHistory(newSemNum);
@@ -2477,6 +2550,15 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
         
+        // Semester notes auto-save
+        elements.semesterNotesInput?.addEventListener('input', () => {
+            const currentId = state.semester;
+            if (currentId && state.semesters[currentId]) {
+                state.semesters[currentId].notes = elements.semesterNotesInput.value.trim();
+                saveToLocalStorage();
+            }
+        });
+
         // Export
         elements.exportPNG?.addEventListener('click', exportAsPNG);
         elements.exportPDF?.addEventListener('click', exportAsPDF);
