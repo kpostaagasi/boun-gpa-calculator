@@ -132,6 +132,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     min-height: 100vh;
+    min-height: 100dvh;
 }
 
 /* Remove spinners from number inputs */
@@ -150,6 +151,7 @@ input[type="number"] {
 .app-container {
     display: flex;
     min-height: 100vh;
+    min-height: 100dvh;
 }
 
 /* Sidebar */
@@ -163,6 +165,7 @@ input[type="number"] {
     top: 0;
     left: 0;
     height: 100vh;
+    height: 100dvh;
     z-index: 100;
     transition: transform var(--transition-normal);
 }
@@ -265,6 +268,7 @@ input[type="number"] {
     flex: 1;
     margin-left: var(--sidebar-width);
     min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
 }
@@ -456,7 +460,7 @@ input[type="number"] {
 .form-select {
     width: 100%;
     padding: var(--space-3) var(--space-4);
-    font-size: 0.9375rem;
+    font-size: 1rem;
     font-family: inherit;
     color: var(--text-primary);
     background: var(--bg-tertiary);
@@ -782,8 +786,8 @@ input[type="number"] {
 }
 
 .modal-close {
-    width: 32px;
-    height: 32px;
+    width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1103,8 +1107,8 @@ input[type="number"] {
    Theme Toggle
    ============================================ */
 .theme-toggle {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1226,7 +1230,8 @@ input[type="number"] {
     z-index: 100;
 }
 
-[data-tooltip]:hover::after {
+[data-tooltip]:hover::after,
+[data-tooltip]:focus::after {
     opacity: 1;
     visibility: visible;
 }
@@ -1632,6 +1637,7 @@ input[type="number"] {
 .toast {
     position: fixed;
     bottom: 20px;
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
     left: 50%;
     transform: translateX(-50%);
     background: var(--bg-secondary);
@@ -2323,6 +2329,7 @@ input[type="number"] {
 
 .achievement-notification.show {
     bottom: var(--space-6);
+    bottom: calc(var(--space-6) + env(safe-area-inset-bottom, 0px));
 }
 
 .achievement-notification .achievement-icon {

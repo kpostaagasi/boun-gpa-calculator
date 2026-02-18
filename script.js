@@ -1982,8 +1982,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (semesters.length > 0) {
             // Sort semesters by number
             const sorted = semesters.sort((a, b) => {
-                const numA = parseInt(a[0]) || 0;
-                const numB = parseInt(b[0]) || 0;
+                const numA = parseInt(a[0], 10) || 0;
+                const numB = parseInt(b[0], 10) || 0;
                 return numA - numB;
             });
             
@@ -2204,7 +2204,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add all saved semesters before current one
         Object.entries(state.semesters).forEach(([semesterId, semesterData]) => {
             // Extract semester number from id like "3. Dönem" -> 3
-            const semNum = parseInt(semesterId);
+            const semNum = parseInt(semesterId, 10);
             if (!isNaN(semNum) && semNum < currentSemesterNum) {
                 totalPoints += (semesterData.gpa || 0) * (semesterData.credits || 0);
                 totalCredits += semesterData.credits || 0;
@@ -2219,7 +2219,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updatePreviousFromHistory(currentSemesterNum) {
         // Check if we have any saved semesters before current one
         const hasPreviousSemesters = Object.keys(state.semesters).some(semesterId => {
-            const semNum = parseInt(semesterId);
+            const semNum = parseInt(semesterId, 10);
             return !isNaN(semNum) && semNum < currentSemesterNum;
         });
         
@@ -2236,7 +2236,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Save base semester info when user first enters data
     function saveBaseSemesterInfo() {
-        const currentSemesterNum = parseInt(elements.semesterSelect.value) || 0;
+        const currentSemesterNum = parseInt(elements.semesterSelect.value, 10) || 0;
         
         // Only set base if not already set and we have a semester selected
         if (state.baseSemester === null && currentSemesterNum > 0) {
@@ -2320,7 +2320,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.semesters) state.semesters = data.semesters;
             
             // Load previous GPA/credits
-            const currentSemesterNum = parseInt(data.semester) || 0;
+            const currentSemesterNum = parseInt(data.semester, 10) || 0;
             
             // If we have base info or saved semesters, calculate cumulative
             if (state.baseSemester !== null || Object.keys(state.semesters).length > 0) {
@@ -2399,7 +2399,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         elements.previousCreditsInput?.addEventListener('input', () => {
-            let value = parseInt(elements.previousCreditsInput.value);
+            let value = parseInt(elements.previousCreditsInput.value, 10);
             if (value < 0) elements.previousCreditsInput.value = 0;
             else if (value > 300) elements.previousCreditsInput.value = 300;
             calculateGPA();
@@ -2413,7 +2413,7 @@ document.addEventListener('DOMContentLoaded', () => {
             updateCoursesEmptyState();
             
             // Update previous GPA/credits from semester history
-            const currentSemesterNum = parseInt(elements.semesterSelect.value) || 0;
+            const currentSemesterNum = parseInt(elements.semesterSelect.value, 10) || 0;
             updatePreviousFromHistory(currentSemesterNum);
             
             calculateGPA();
@@ -2975,11 +2975,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const loadBtn = e.target.closest('.load-scenario-btn');
             const deleteBtn = e.target.closest('.delete-scenario-btn');
             if (loadBtn) {
-                const id = parseInt(loadBtn.dataset.id);
+                const id = parseInt(loadBtn.dataset.id, 10);
                 loadScenario(id);
             }
             if (deleteBtn) {
-                const id = parseInt(deleteBtn.dataset.id);
+                const id = parseInt(deleteBtn.dataset.id, 10);
                 deleteScenario(id);
             }
         });
@@ -3217,13 +3217,13 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'first_aa', icon: '⭐', nameKey: 'achFirstAA', descKey: 'achFirstAADesc', condition: (s) => hasGrade(s, 'AA') },
         { id: 'honor_student', icon: '🏆', nameKey: 'achHonor', descKey: 'achHonorDesc', condition: (s) => getCurrentGPA() >= 3.00 },
         { id: 'high_honor', icon: '🥇', nameKey: 'achHighHonor', descKey: 'achHighHonorDesc', condition: (s) => getCurrentGPA() >= 3.50 },
-        { id: 'perfect_gpa', icon: '💎', nameKey: 'achPerfectGPA', descKey: 'achPerfectGPADesc', condition: (s) => getCurrentGPA() >= 4.00 },
+        { id: 'perfect_gpa', icon: '💎', nameKey: 'achPerfectGPA', descKey: 'achPerfectGPADesc', condition: (s) => getCurrentGPA() >= 3.995 },
         { id: 'first_semester', icon: '📅', nameKey: 'achFirstSemester', descKey: 'achFirstSemesterDesc', condition: (s) => Object.keys(s.semesters).length >= 1 },
         { id: 'four_semesters', icon: '🎯', nameKey: 'achFourSemesters', descKey: 'achFourSemestersDesc', condition: (s) => Object.keys(s.semesters).length >= 4 },
         { id: 'eight_semesters', icon: '🎓', nameKey: 'achEightSemesters', descKey: 'achEightSemestersDesc', condition: (s) => Object.keys(s.semesters).length >= 8 },
         { id: 'night_owl', icon: '🦉', nameKey: 'achNightOwl', descKey: 'achNightOwlDesc', condition: () => new Date().getHours() >= 0 && new Date().getHours() < 6 },
         { id: 'early_bird', icon: '🐦', nameKey: 'achEarlyBird', descKey: 'achEarlyBirdDesc', condition: () => new Date().getHours() >= 5 && new Date().getHours() < 8 },
-        { id: 'explorer', icon: '🔍', nameKey: 'achExplorer', descKey: 'achExplorerDesc', condition: () => localStorage.getItem('viewedViews')?.split(',').length >= 5 }
+        { id: 'explorer', icon: '🔍', nameKey: 'achExplorer', descKey: 'achExplorerDesc', condition: () => (localStorage.getItem('viewedViews')?.split(',') ?? []).length >= 5 }
     ];
     
     function getTotalCourseCount(s) {
@@ -3531,7 +3531,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Delete reminder
         document.getElementById('remindersList')?.addEventListener('click', (e) => {
             if (e.target.classList.contains('delete-reminder-btn')) {
-                const id = parseInt(e.target.dataset.id);
+                const id = parseInt(e.target.dataset.id, 10);
                 deleteReminder(id);
             }
         });
