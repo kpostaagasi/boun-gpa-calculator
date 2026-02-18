@@ -2,7 +2,7 @@
 <html lang="tr" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Boğaziçi Üniversitesi GPA Hesaplama | GPA Calculator</title>
     <meta name="description" content="Boğaziçi Üniversitesi öğrencileri için GPA (Not Ortalaması) hesaplama aracı. Dönemlik ve genel not ortalamanızı kolayca hesaplayın.">
     <meta name="keywords" content="Boğaziçi, Boğaziçi Üniversitesi, GPA hesaplama, not ortalaması, BÜGPA, BU GPA">
@@ -119,15 +119,7 @@
                         </svg>
                         <span data-i18n="nav.achievements">Rozetler</span>
                     </button>
-                    <button class="nav-item" data-view="calendar">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                            <line x1="3" y1="10" x2="21" y2="10"></line>
-                        </svg>
-                        <span data-i18n="nav.calendar">Takvim</span>
-                    </button>
+
                 </div>
                 
                 <div class="nav-section">
@@ -178,22 +170,6 @@
                     </button>
                 </div>
 
-                <div class="nav-section">
-                    <div class="nav-section-title" data-i18n="nav.universities">Üniversite</div>
-                    <div class="university-selector">
-                        <select id="universitySelect" class="university-select">
-                            <option value="boun">Boğaziçi Üniversitesi</option>
-                            <option value="itu">İTÜ</option>
-                            <option value="odtu">ODTÜ</option>
-                            <option value="koc">Koç Üniversitesi</option>
-                            <option value="bilkent">Bilkent Üniversitesi</option>
-                            <option value="sabanci">Sabancı Üniversitesi</option>
-                            <option value="ytu">Yıldız Teknik Üniversitesi</option>
-                            <option value="gsu">Galatasaray Üniversitesi</option>
-                            <option value="custom">Özel</option>
-                        </select>
-                    </div>
-                </div>
             </nav>
             
             <div class="sidebar-footer">
@@ -356,7 +332,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="semesterSelect" data-i18n="calc.selectSemester">Dönem Seçimi</label>
+                            <label class="form-label" for="semesterSelect" data-i18n="calc.selectSemester">Dönem Seçimi <span id="autoSaveIndicator" class="auto-save-indicator"></span></label>
                             <select id="semesterSelect" class="form-select">
                                 <option value="" disabled selected data-i18n="calc.selectSemesterPlaceholder">Dönem Seçin</option>
                                 <option value="1">1. Dönem (Güz)</option>
@@ -375,8 +351,12 @@
                                 <option value="14">14. Dönem (Bahar)</option>
                             </select>
                         </div>
+                        <div class="form-group" style="margin-top: var(--space-3);">
+                            <label class="form-label" for="semesterNotes" data-i18n="calc.semesterNotes">Dönem Notu</label>
+                            <textarea id="semesterNotes" class="form-input semester-notes-input" rows="2" placeholder="" data-i18n-placeholder="calc.semesterNotesPlaceholder"></textarea>
+                        </div>
                     </div>
-                    
+
                     <div class="card" style="margin-top: var(--space-6);">
                         <div class="card-header">
                             <div>
@@ -722,52 +702,6 @@
                     </div>
                 </div>
                 
-                <!-- Calendar View -->
-                <div class="view" id="calendarView">
-                    <div class="card">
-                        <div class="card-header">
-                            <div>
-                                <h2 class="card-title" data-i18n="calendar.title">Akademik Takvim</h2>
-                                <p class="card-subtitle" data-i18n="calendar.desc">Önemli tarihleri ve hatırlatıcıları yönetin</p>
-                            </div>
-                        </div>
-                        
-                        <div class="calendar-container">
-                            <div class="calendar-header">
-                                <div class="calendar-nav">
-                                    <button class="calendar-nav-btn" id="prevMonth">&lt;</button>
-                                    <span class="current-month" id="currentMonth">Şubat 2025</span>
-                                    <button class="calendar-nav-btn" id="nextMonth">&gt;</button>
-                                </div>
-                            </div>
-                            
-                            <div class="calendar-grid" id="calendarGrid">
-                                <!-- Calendar will be rendered by JS -->
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Reminders Section -->
-                    <div class="card" style="margin-top: var(--space-6);">
-                        <div class="reminders-section">
-                            <div class="reminders-header">
-                                <h3 data-i18n="calendar.upcoming">Yaklaşan Hatırlatıcılar</h3>
-                                <button class="add-reminder-btn" id="addReminderBtn" data-i18n="calendar.addReminder">Hatırlatıcı Ekle</button>
-                            </div>
-                            
-                            <div class="quick-add-buttons">
-                                <button class="quick-add-btn" data-type="midterm">📝 <span data-i18n="calendar.midterm">Vize</span></button>
-                                <button class="quick-add-btn" data-type="final">📋 <span data-i18n="calendar.final">Final</span></button>
-                                <button class="quick-add-btn" data-type="project">💻 <span data-i18n="calendar.project">Proje</span></button>
-                                <button class="quick-add-btn" data-type="assignment">📄 <span data-i18n="calendar.assignment">Ödev</span></button>
-                            </div>
-                            
-                            <div class="reminders-list" id="remindersList">
-                                <p class="empty-message" data-i18n="noReminders">Henüz hatırlatıcı yok</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Export View -->
                 <div class="view" id="exportView">
@@ -1054,51 +988,9 @@
         </div>
     </div>
     
-    <!-- Add Reminder Modal -->
-    <div class="modal-overlay" id="reminderModal">
-        <div class="modal" role="dialog" aria-labelledby="reminderModalTitle">
-            <div class="modal-header">
-                <h2 class="modal-title" id="reminderModalTitle" data-i18n="calendar.addReminder">Hatırlatıcı Ekle</h2>
-                <button class="modal-close" id="reminderModalClose" aria-label="Kapat">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="reminderForm">
-                    <div class="form-group">
-                        <label for="reminderTitle" data-i18n="calendar.reminderTitle">Başlık</label>
-                        <input type="text" id="reminderTitle" class="form-input" placeholder="Örn: CMPE 250 Final" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="reminderType" data-i18n="calendar.reminderType">Tür</label>
-                        <select id="reminderType" class="form-select">
-                            <option value="midterm">📝 Vize</option>
-                            <option value="final">📋 Final</option>
-                            <option value="project">💻 Proje</option>
-                            <option value="assignment">📄 Ödev</option>
-                            <option value="other">📌 Diğer</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="reminderDate" data-i18n="calendar.reminderDate">Tarih</label>
-                        <input type="date" id="reminderDate" class="form-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="reminderTime" data-i18n="calendar.reminderTime">Saat</label>
-                        <input type="time" id="reminderTime" class="form-input" value="09:00">
-                    </div>
-                    <div class="form-group">
-                        <label for="reminderCourse" data-i18n="calendar.reminderCourse">Ders (İsteğe bağlı)</label>
-                        <input type="text" id="reminderCourse" class="form-input" placeholder="Örn: CMPE 250">
-                    </div>
-                    <div class="form-group">
-                        <label for="reminderNotes" data-i18n="calendar.reminderNotes">Notlar</label>
-                        <textarea id="reminderNotes" class="form-input" rows="2" placeholder="Ek bilgiler..."></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;" data-i18n="calendar.saveReminder">Kaydet</button>
-                </form>
-            </div>
-        </div>
-    </div>
-    
+    <!-- Transcript print container — hidden on screen, shown only in @media print -->
+    <div id="transcriptPrint"></div>
+
     <script src="script.js"></script>
     
     <!-- Service Worker Registration -->

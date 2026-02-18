@@ -167,8 +167,6 @@ document.addEventListener('DOMContentLoaded', () => {
             'nav.import': 'İçe Aktar',
             'nav.feedback': 'Geri Bildirim',
             'nav.shortcuts': 'Kısayollar',
-            'nav.universities': 'Üniversite',
-            
             // Keyboard Shortcuts
             'shortcuts.title': 'Klavye Kısayolları',
             'shortcuts.addCourse': 'Yeni ders ekle',
@@ -208,8 +206,6 @@ document.addEventListener('DOMContentLoaded', () => {
             'nav.simulation': 'Simülasyon',
             'nav.graduation': 'Mezuniyet',
             'nav.achievements': 'Rozetler',
-            'nav.calendar': 'Takvim',
-            
             // Simulation
             'simulation.title': 'GPA Simülasyonu',
             'simulation.desc': '"Eğer şu notları alsam..." senaryolarını deneyin',
@@ -261,29 +257,6 @@ document.addEventListener('DOMContentLoaded', () => {
             'achievements.perfectStreak': 'Mükemmel Dönem',
             'achievements.locked': 'Kilitli',
             'achievements.unlocked': 'Açıldı!',
-            
-            // Calendar
-            'calendar.title': 'Akademik Takvim',
-            'calendar.desc': 'Önemli tarihleri ve hatırlatıcıları yönetin',
-            'calendar.addReminder': 'Hatırlatıcı Ekle',
-            'calendar.upcoming': 'Yaklaşan Hatırlatıcılar',
-            'calendar.noReminders': 'Henüz hatırlatıcı eklenmedi',
-            'calendar.quickAdd': 'Hızlı Ekle',
-            'calendar.midterm': 'Vize',
-            'calendar.final': 'Final',
-            'calendar.project': 'Proje',
-            'calendar.assignment': 'Ödev',
-            'calendar.reminderTitle': 'Başlık',
-            'calendar.reminderType': 'Tür',
-            'calendar.reminderDate': 'Tarih',
-            'calendar.reminderTime': 'Saat',
-            'calendar.reminderCourse': 'Ders (İsteğe bağlı)',
-            'calendar.reminderNotes': 'Notlar',
-            'calendar.saveReminder': 'Kaydet',
-            'calendar.today': 'Bugün',
-            'calendar.daysLeft': '{days} gün kaldı',
-            'calendar.tomorrow': 'Yarın',
-            'calendar.delete': 'Sil',
             
             // Months
             'month.0': 'Ocak',
@@ -337,12 +310,25 @@ document.addEventListener('DOMContentLoaded', () => {
             'achEarlyBirdDesc': 'Sabah erken saatlerde çalışıyorsunuz',
             'achExplorer': 'Kaşif',
             'achExplorerDesc': 'Tüm görünümleri keşfettiniz',
-            'noReminders': 'Henüz hatırlatıcı yok',
-            'today': 'Bugün',
-            'tomorrow': 'Yarın',
             'fillAllFields': 'Lütfen tüm alanları doldurun',
-            'reminderAdded': 'Hatırlatıcı eklendi',
-            'reminderDeleted': 'Hatırlatıcı silindi',
+            'calc.semesterNotes': 'Dönem Notu',
+            'calc.semesterNotesPlaceholder': 'Bu dönem için not ekleyin… (Erasmus, yaz dönemi, vb.)',
+            'autoSaved': '✓ Kaydedildi',
+            'duplicateCourseWarning': 'Aynı isimli ders zaten mevcut',
+            // Transcript
+            'transcript.title': 'NOT DÖKÜMÜ / ACADEMIC TRANSCRIPT',
+            'transcript.generated': 'Oluşturulma tarihi',
+            'transcript.summary': 'GENEL ÖZET',
+            'transcript.semCount': 'Dönem Sayısı',
+            'transcript.honorStatus': 'Öğrenci Durumu',
+            'transcript.noHonor': 'Normal Öğrenci',
+            'transcript.honor': 'Onur Öğrencisi',
+            'transcript.highHonor': 'Yüksek Onur Öğrencisi',
+            'transcript.gpaProgress': 'GPA SEYRİ',
+            'transcript.semHeader': 'DÖNEM DETAYLARı',
+            'transcript.noSemesters': 'Kayıtlı dönem verisi bulunamadı.',
+            'transcript.currentSem': 'Mevcut Dönem',
+            'transcript.gradeScale': 'NOT SİSTEMİ',
         },
         en: {
             // Navigation
@@ -503,8 +489,6 @@ document.addEventListener('DOMContentLoaded', () => {
             'nav.import': 'Import',
             'nav.feedback': 'Feedback',
             'nav.shortcuts': 'Shortcuts',
-            'nav.universities': 'University',
-            
             // Keyboard Shortcuts
             'shortcuts.title': 'Keyboard Shortcuts',
             'shortcuts.addCourse': 'Add new course',
@@ -544,8 +528,6 @@ document.addEventListener('DOMContentLoaded', () => {
             'nav.simulation': 'Simulation',
             'nav.graduation': 'Graduation',
             'nav.achievements': 'Achievements',
-            'nav.calendar': 'Calendar',
-            
             // Simulation
             'simulation.title': 'GPA Simulation',
             'simulation.desc': 'Try "What if I got these grades..." scenarios',
@@ -597,29 +579,6 @@ document.addEventListener('DOMContentLoaded', () => {
             'achievements.perfectStreak': 'Perfect Semester',
             'achievements.locked': 'Locked',
             'achievements.unlocked': 'Unlocked!',
-            
-            // Calendar
-            'calendar.title': 'Academic Calendar',
-            'calendar.desc': 'Manage important dates and reminders',
-            'calendar.addReminder': 'Add Reminder',
-            'calendar.upcoming': 'Upcoming Reminders',
-            'calendar.noReminders': 'No reminders added yet',
-            'calendar.quickAdd': 'Quick Add',
-            'calendar.midterm': 'Midterm',
-            'calendar.final': 'Final',
-            'calendar.project': 'Project',
-            'calendar.assignment': 'Assignment',
-            'calendar.reminderTitle': 'Title',
-            'calendar.reminderType': 'Type',
-            'calendar.reminderDate': 'Date',
-            'calendar.reminderTime': 'Time',
-            'calendar.reminderCourse': 'Course (Optional)',
-            'calendar.reminderNotes': 'Notes',
-            'calendar.saveReminder': 'Save',
-            'calendar.today': 'Today',
-            'calendar.daysLeft': '{days} days left',
-            'calendar.tomorrow': 'Tomorrow',
-            'calendar.delete': 'Delete',
             
             // Months
             'month.0': 'January',
@@ -673,12 +632,25 @@ document.addEventListener('DOMContentLoaded', () => {
             'achEarlyBirdDesc': 'Working early in the morning',
             'achExplorer': 'Explorer',
             'achExplorerDesc': 'Explored all views',
-            'noReminders': 'No reminders yet',
-            'today': 'Today',
-            'tomorrow': 'Tomorrow',
             'fillAllFields': 'Please fill all fields',
-            'reminderAdded': 'Reminder added',
-            'reminderDeleted': 'Reminder deleted',
+            'calc.semesterNotes': 'Semester Notes',
+            'calc.semesterNotesPlaceholder': 'Add a note for this semester… (exchange, summer term, etc.)',
+            'autoSaved': '✓ Saved',
+            'duplicateCourseWarning': 'A course with this name already exists',
+            // Transcript
+            'transcript.title': 'NOT DÖKÜMÜ / ACADEMIC TRANSCRIPT',
+            'transcript.generated': 'Generated on',
+            'transcript.summary': 'SUMMARY',
+            'transcript.semCount': 'Semesters',
+            'transcript.honorStatus': 'Student Status',
+            'transcript.noHonor': 'Regular Student',
+            'transcript.honor': 'Honor Student',
+            'transcript.highHonor': 'High Honor Student',
+            'transcript.gpaProgress': 'GPA PROGRESS',
+            'transcript.semHeader': 'SEMESTER DETAILS',
+            'transcript.noSemesters': 'No saved semester data found.',
+            'transcript.currentSem': 'Current Semester',
+            'transcript.gradeScale': 'GRADE SCALE',
         }
     };
 
@@ -707,9 +679,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         
+        // Handle data-i18n-placeholder (for elements that need both label and placeholder translated)
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
+        });
+
         // Update HTML lang attribute
         document.documentElement.lang = currentLanguage;
-        
+
         // Update dynamic content
         updateDynamicTranslations();
     }
@@ -764,11 +741,6 @@ document.addEventListener('DOMContentLoaded', () => {
             renderSavedScenarios();
         }
 
-        if (state.currentView === 'calendar') {
-            renderCalendar();
-            renderReminders();
-        }
-
         if (state.currentView === 'graduation') {
             calculateGraduationProgress();
         }
@@ -807,152 +779,37 @@ document.addEventListener('DOMContentLoaded', () => {
     // Grade System Configuration
     // ============================================
     
-    // University grade systems - each university may have different scales
-    const universityGradeSystems = {
-        boun: {
-            name: 'Boğaziçi Üniversitesi',
-            grades: {
-                'AA': 4.0, 'BA': 3.5, 'BB': 3.0, 'CB': 2.5, 'CC': 2.0,
-                'DC': 1.5, 'DD': 1.0, 'FF': 0.0, 'P': null
-            },
-            retakeable: ['FF', 'DD', 'DC'],
-            nonGPA: ['P']
-        },
-        itu: {
-            name: 'İstanbul Teknik Üniversitesi',
-            grades: {
-                'AA': 4.0, 'BA': 3.5, 'BB': 3.0, 'CB': 2.5, 'CC': 2.0,
-                'DC': 1.5, 'DD': 1.0, 'FD': 0.5, 'FF': 0.0, 'P': null
-            },
-            retakeable: ['FF', 'FD', 'DD', 'DC'],
-            nonGPA: ['P']
-        },
-        odtu: {
-            name: 'Orta Doğu Teknik Üniversitesi',
-            grades: {
-                'AA': 4.0, 'BA': 3.5, 'BB': 3.0, 'CB': 2.5, 'CC': 2.0,
-                'DC': 1.5, 'DD': 1.0, 'FF': 0.0, 'S': null, 'U': 0.0
-            },
-            retakeable: ['FF', 'DD', 'DC', 'U'],
-            nonGPA: ['S']
-        },
-        koc: {
-            name: 'Koç Üniversitesi',
-            grades: {
-                'A': 4.0, 'A-': 3.7, 'B+': 3.3, 'B': 3.0, 'B-': 2.7,
-                'C+': 2.3, 'C': 2.0, 'C-': 1.7, 'D+': 1.3, 'D': 1.0, 'F': 0.0, 'P': null
-            },
-            retakeable: ['F', 'D', 'D+'],
-            nonGPA: ['P']
-        },
-        bilkent: {
-            name: 'Bilkent Üniversitesi',
-            grades: {
-                'A': 4.0, 'A-': 3.7, 'B+': 3.3, 'B': 3.0, 'B-': 2.7,
-                'C+': 2.3, 'C': 2.0, 'C-': 1.7, 'D+': 1.3, 'D': 1.0, 'F': 0.0, 'P': null
-            },
-            retakeable: ['F', 'D', 'D+'],
-            nonGPA: ['P']
-        },
-        sabanci: {
-            name: 'Sabancı Üniversitesi',
-            grades: {
-                'A': 4.0, 'A-': 3.7, 'B+': 3.3, 'B': 3.0, 'B-': 2.7,
-                'C+': 2.3, 'C': 2.0, 'C-': 1.7, 'D+': 1.3, 'D': 1.0, 'F': 0.0, 'P': null
-            },
-            retakeable: ['F', 'D', 'D+'],
-            nonGPA: ['P']
-        },
-        ytu: {
-            name: 'Yıldız Teknik Üniversitesi',
-            grades: {
-                'AA': 4.0, 'BA': 3.5, 'BB': 3.0, 'CB': 2.5, 'CC': 2.0,
-                'DC': 1.5, 'DD': 1.0, 'FF': 0.0, 'G': null
-            },
-            retakeable: ['FF', 'DD', 'DC'],
-            nonGPA: ['G']
-        },
-        gsu: {
-            name: 'Galatasaray Üniversitesi',
-            grades: {
-                'AA': 4.0, 'BA': 3.5, 'BB': 3.0, 'CB': 2.5, 'CC': 2.0,
-                'DC': 1.5, 'DD': 1.0, 'FF': 0.0, 'P': null
-            },
-            retakeable: ['FF', 'DD', 'DC'],
-            nonGPA: ['P']
-        },
-        custom: {
-            name: 'Özel',
-            grades: {
-                'A': 4.0, 'A-': 3.7, 'B+': 3.3, 'B': 3.0, 'B-': 2.7,
-                'C+': 2.3, 'C': 2.0, 'C-': 1.7, 'D+': 1.3, 'D': 1.0, 'F': 0.0, 'P': null
-            },
-            retakeable: ['F', 'D', 'D+'],
-            nonGPA: ['P']
-        }
+    // Boğaziçi University (BOUN) grade system — hardcoded as the sole supported system
+    const gradePoints = {
+        'AA': 4.0, 'BA': 3.5, 'BB': 3.0, 'CB': 2.5, 'CC': 2.0,
+        'DC': 1.5, 'DD': 1.0, 'FF': 0.0, 'P': null
     };
-    
-    // Current university (default: boun)
-    let currentUniversity = localStorage.getItem('university') || 'boun';
-    
-    // Get current grade system
-    function getGradeSystem() {
-        return universityGradeSystems[currentUniversity] || universityGradeSystems.boun;
-    }
-    
-    // Dynamic grade points based on selected university
-    let gradePoints = { ...getGradeSystem().grades };
-    let retakeableGrades = [...getGradeSystem().retakeable];
-    let nonGPAGrades = [...getGradeSystem().nonGPA];
-    
-    // Update grade system when university changes
-    function updateGradeSystem(universityKey) {
-        currentUniversity = universityKey;
-        localStorage.setItem('university', universityKey);
-        
-        const system = getGradeSystem();
-        gradePoints = { ...system.grades };
-        retakeableGrades = [...system.retakeable];
-        nonGPAGrades = [...system.nonGPA];
-        
-        // Update all course grade selects
-        updateAllGradeSelects();
-        
-        // Recalculate GPA
-        calculateGPA();
+    const retakeableGrades = ['FF', 'DD', 'DC'];
+    const nonGPAGrades = ['P'];
+    const allGrades = ['AA', 'BA', 'BB', 'CB', 'CC', 'DC', 'DD', 'FF', 'P'];
 
-        // Refresh view-specific content
-        if (state.currentView === 'charts') {
-            initializeCharts();
-        }
-        if (state.currentView === 'simulation') {
-            initSimulationView();
-        }
-        if (state.currentView === 'graduation') {
-            calculateGraduationProgress();
-        }
-        if (state.currentView === 'achievements') {
-            renderAchievements();
-        }
+    // Returns BOUN grade system (kept for call-site compatibility)
+    function getGradeSystem() {
+        return { grades: gradePoints, retakeable: retakeableGrades, nonGPA: nonGPAGrades };
     }
-    
-    // Update all grade select dropdowns
+
+    // Re-render all grade selects (called after language change)
     function updateAllGradeSelects() {
         document.querySelectorAll('.course-grade').forEach(select => {
             const currentValue = select.value;
             select.innerHTML = `
                 <option value="" disabled>${t('calc.grade')}</option>
-                ${Object.entries(gradePoints).map(([grade, point]) => 
+                ${Object.keys(gradePoints).map(grade =>
                     `<option value="${grade}" ${currentValue === grade ? 'selected' : ''}>${grade}</option>`
                 ).join('')}
             `;
         });
-        
+
         document.querySelectorAll('.previous-grade').forEach(select => {
             const currentValue = select.value;
             select.innerHTML = `
                 <option value="" disabled>${t('calc.previousGrade')}</option>
-                ${retakeableGrades.map(grade => 
+                ${retakeableGrades.map(grade =>
                     `<option value="${grade}" ${currentValue === grade ? 'selected' : ''}>${grade} (${gradePoints[grade]})</option>`
                 ).join('')}
             `;
@@ -1082,30 +939,25 @@ document.addEventListener('DOMContentLoaded', () => {
         courses: [],
         previousGPA: 0,
         previousCredits: 0,
-        semester: '',
+        semester: '',        // ID of the currently active semester (synced to semesterSelect.value)
         semesters: {},
-        currentSemesterId: null,
         charts: {},
         // Base values: the semester user started with and their cumulative GPA/credits before that
         baseSemester: null,  // The first semester user started using the app
         baseGPA: 0,          // Cumulative GPA before baseSemester
         baseCredits: 0,      // Total credits before baseSemester
-        // New features
-        reminders: [],       // Calendar reminders
         achievements: {},    // Unlocked achievements
         scenarios: [],       // Simulation scenarios
-        calendarMonth: new Date().getMonth(),
-        calendarYear: new Date().getFullYear(),
         // Last calculated values (single source of truth for GPA-related views)
         lastCalculatedGPA: 0,
+        lastCalculatedSemesterGPA: 0,
         lastCalculatedCreditsForGPA: 0,
         lastCalculatedTotalCredits: 0
     };
 
     const viewInitFlags = {
         simulation: false,
-        graduation: false,
-        calendar: false
+        graduation: false
     };
 
     // ============================================
@@ -1134,6 +986,8 @@ document.addEventListener('DOMContentLoaded', () => {
         previousGPAInput: document.getElementById('previousGPA'),
         previousCreditsInput: document.getElementById('previousCredits'),
         semesterSelect: document.getElementById('semesterSelect'),
+        semesterNotesInput: document.getElementById('semesterNotes'),
+        autoSaveIndicator: document.getElementById('autoSaveIndicator'),
         resultsGrid: document.getElementById('resultsGrid'),
         emptyCoursesState: document.getElementById('emptyCoursesState'),
         semesterGPA: document.getElementById('semesterGPA'),
@@ -1204,8 +1058,7 @@ document.addEventListener('DOMContentLoaded', () => {
         get export() { return t('nav.export'); },
         get simulation() { return t('nav.simulation'); },
         get graduation() { return t('nav.graduation'); },
-        get achievements() { return t('nav.achievements'); },
-        get calendar() { return t('nav.calendar'); }
+        get achievements() { return t('nav.achievements'); }
     };
 
     function switchView(viewId) {
@@ -1245,8 +1098,6 @@ document.addEventListener('DOMContentLoaded', () => {
             initGraduationView();
         } else if (viewId === 'achievements') {
             initAchievementsView();
-        } else if (viewId === 'calendar') {
-            initCalendarView();
         }
     }
 
@@ -1405,11 +1256,38 @@ document.addEventListener('DOMContentLoaded', () => {
             saveCourses();
         });
         
+        // Duplicate course name detection on blur
+        const nameInput = entry.querySelector('.course-name');
+        nameInput?.addEventListener('blur', () => {
+            const enteredName = nameInput.value.trim().toLowerCase();
+            if (!enteredName) {
+                nameInput.classList.remove('duplicate-warning');
+                return;
+            }
+            const allNames = Array.from(
+                document.querySelectorAll('.course-entry .course-name')
+            ).filter(el => el !== nameInput).map(el => el.value.trim().toLowerCase());
+
+            if (allNames.includes(enteredName)) {
+                nameInput.classList.add('duplicate-warning');
+                showToast(t('duplicateCourseWarning'), 3000);
+            } else {
+                nameInput.classList.remove('duplicate-warning');
+            }
+        });
+        nameInput?.addEventListener('input', () => {
+            nameInput.classList.remove('duplicate-warning');
+        });
+
         // Delete button
         entry.querySelector('.delete-course-btn')?.addEventListener('click', () => {
             entry.classList.add('removing');
             setTimeout(() => {
                 entry.remove();
+                // Clear duplicate warnings that may now be resolved
+                document.querySelectorAll('.course-name.duplicate-warning').forEach(el => {
+                    el.classList.remove('duplicate-warning');
+                });
                 calculateGPA();
                 saveCourses();
                 updateCoursesEmptyState();
@@ -1521,6 +1399,7 @@ document.addEventListener('DOMContentLoaded', () => {
         state.semester = semesterValue;
 
         state.lastCalculatedGPA = cumulativeGPA;
+        state.lastCalculatedSemesterGPA = semesterGPA;
         state.lastCalculatedCreditsForGPA = creditsForGPA;
         state.lastCalculatedTotalCredits = totalCredits;
 
@@ -1982,8 +1861,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (semesters.length > 0) {
             // Sort semesters by number
             const sorted = semesters.sort((a, b) => {
-                const numA = parseInt(a[0]) || 0;
-                const numB = parseInt(b[0]) || 0;
+                const numA = parseInt(a[0], 10) || 0;
+                const numB = parseInt(b[0], 10) || 0;
                 return numA - numB;
             });
             
@@ -2048,8 +1927,177 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function exportAsPDF() {
+        buildTranscript();
         window.print();
     }
+
+    function buildTranscript() {
+        const el = document.getElementById('transcriptPrint');
+        if (!el) return;
+
+        const now = new Date().toLocaleDateString(currentLanguage === 'tr' ? 'tr-TR' : 'en-US', {
+            year: 'numeric', month: 'long', day: 'numeric'
+        });
+
+        // Collect all semester data, sorted by numeric ID
+        const semesterEntries = Object.entries(state.semesters)
+            .map(([id, data]) => ({ id, num: parseInt(id, 10) || 0, data }))
+            .sort((a, b) => a.num - b.num);
+
+        // Include the current semester if it has courses
+        const currentSemId = state.semester;
+        const currentCourses = [];
+        document.querySelectorAll('.course-entry').forEach(entry => {
+            const name = entry.querySelector('.course-name').value.trim();
+            const credit = parseFloat(entry.querySelector('.course-credit').value);
+            const grade = entry.querySelector('.course-grade').value;
+            if (credit && grade) currentCourses.push({ name, credit, grade });
+        });
+        const currentIsNew = currentSemId && !semesterEntries.find(e => e.id === currentSemId) && currentCourses.length > 0;
+
+        // Compute overall cumulative GPA
+        const cumulativeGPA = state.lastCalculatedGPA || 0;
+        const totalCreditsAll = state.lastCalculatedTotalCredits || 0;
+        const semCount = semesterEntries.length + (currentIsNew ? 1 : 0);
+
+        // Honor status
+        let honorKey = 'transcript.noHonor';
+        if (cumulativeGPA >= 3.5) honorKey = 'transcript.highHonor';
+        else if (cumulativeGPA >= 3.0) honorKey = 'transcript.honor';
+
+        // GPA progress bar HTML
+        function gpaBarHtml(label, gpa) {
+            const pct = Math.min(100, (gpa / 4.0) * 100).toFixed(1);
+            return `
+                <div class="transcript-gpa-row">
+                    <span class="transcript-gpa-label">${escapeHtml(label)}</span>
+                    <span class="transcript-gpa-bar-bg"><span class="transcript-gpa-bar-fill" style="width:${pct}%"></span></span>
+                    <span class="transcript-gpa-value">${gpa.toFixed(2)}</span>
+                </div>`;
+        }
+
+        // Build GPA progress section
+        let progressHtml = '';
+        semesterEntries.forEach(({ id, data }) => {
+            const label = `${t('semester.format', { n: id })}`;
+            progressHtml += gpaBarHtml(label, data.gpa || 0);
+        });
+        if (currentIsNew) {
+            progressHtml += gpaBarHtml(t('transcript.currentSem'), state.lastCalculatedSemesterGPA || 0);
+        }
+        if (!progressHtml) {
+            progressHtml = `<p style="font-size:9pt;color:#777">${t('transcript.noSemesters')}</p>`;
+        }
+
+        // Build semester detail tables
+        function semesterTableHtml(courses, semLabel, gpa, credits, notes) {
+            const rows = courses.map(c => `
+                <tr>
+                    <td>${escapeHtml(c.name || t('history.unnamed'))}</td>
+                    <td>${c.credit || c.credits || 0}</td>
+                    <td>${escapeHtml(c.grade || '')}</td>
+                </tr>`).join('');
+            const notesHtml = notes
+                ? `<div style="font-size:8pt;color:#666;font-style:italic;margin-top:3pt">${escapeHtml(notes)}</div>`
+                : '';
+            return `
+                <div class="transcript-semester">
+                    <div class="transcript-semester-title">
+                        ${escapeHtml(semLabel)} &nbsp;·&nbsp; GPA: ${(gpa || 0).toFixed(2)} &nbsp;·&nbsp; ${t('calc.totalCredits')}: ${credits || 0}
+                    </div>
+                    ${notesHtml}
+                    <table class="transcript-table">
+                        <thead><tr>
+                            <th>${t('calc.courseName')}</th>
+                            <th>${t('calc.credit')}</th>
+                            <th>${t('calc.grade')}</th>
+                        </tr></thead>
+                        <tbody>${rows}</tbody>
+                    </table>
+                </div>`;
+        }
+
+        let semTablesHtml = '';
+        if (semesterEntries.length === 0 && !currentIsNew) {
+            semTablesHtml = `<p style="font-size:9pt;color:#777">${t('transcript.noSemesters')}</p>`;
+        } else {
+            semesterEntries.forEach(({ id, data }) => {
+                semTablesHtml += semesterTableHtml(
+                    data.courses || [],
+                    t('semester.format', { n: id }),
+                    data.gpa,
+                    data.credits,
+                    data.notes || ''
+                );
+            });
+            if (currentIsNew) {
+                const currentNotes = elements.semesterNotesInput?.value.trim() || '';
+                semTablesHtml += semesterTableHtml(
+                    currentCourses,
+                    t('transcript.currentSem'),
+                    state.lastCalculatedSemesterGPA || 0,
+                    state.lastCalculatedCreditsForGPA || 0,
+                    currentNotes
+                );
+            }
+        }
+
+        // Grade scale
+        const gradeScaleEntries = Object.entries(gradePoints)
+            .filter(([, v]) => v !== null)
+            .map(([g, v]) => `${g}=${v.toFixed(1)}`)
+            .join(' &nbsp;|&nbsp; ');
+        const nonGpaStr = nonGPAGrades.join(', ');
+
+        el.innerHTML = `
+            <div class="transcript-header">
+                <div class="transcript-header-text">
+                    <h1>Boğaziçi Üniversitesi</h1>
+                    <p>${t('transcript.title')}</p>
+                    <p>${t('transcript.generated')}: ${escapeHtml(now)}</p>
+                </div>
+            </div>
+
+            <div class="transcript-section-title">${t('transcript.summary')}</div>
+            <div class="transcript-summary">
+                <div class="transcript-summary-item">
+                    <span class="transcript-summary-label">${t('calc.overallGpa')}:</span>
+                    <span>${cumulativeGPA.toFixed(2)}</span>
+                </div>
+                <div class="transcript-summary-item">
+                    <span class="transcript-summary-label">${t('calc.totalCredits')}:</span>
+                    <span>${totalCreditsAll}</span>
+                </div>
+                <div class="transcript-summary-item">
+                    <span class="transcript-summary-label">${t('transcript.semCount')}:</span>
+                    <span>${semCount}</span>
+                </div>
+                <div class="transcript-summary-item">
+                    <span class="transcript-summary-label">${t('transcript.honorStatus')}:</span>
+                    <span>${t(honorKey)}</span>
+                </div>
+            </div>
+
+            <div class="transcript-section-title">${t('transcript.gpaProgress')}</div>
+            ${progressHtml}
+
+            <div class="transcript-section-title">${t('transcript.semHeader')}</div>
+            ${semTablesHtml}
+
+            <div class="transcript-grade-scale">
+                <strong>${t('transcript.gradeScale')}:</strong> ${gradeScaleEntries}
+                &nbsp;&nbsp; Non-GPA: ${escapeHtml(nonGpaStr)}
+            </div>
+            <div class="transcript-footer">
+                ${t('transcript.generated')}: ${escapeHtml(now)} — boun-gpa-calculator
+            </div>
+        `;
+    }
+
+    window.addEventListener('afterprint', () => {
+        const el = document.getElementById('transcriptPrint');
+        if (el) el.innerHTML = '';
+    });
 
     async function shareResults() {
         const { cumulativeGPA, totalCredits } = calculateGPA();
@@ -2157,6 +2205,48 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.semesterContent.innerHTML = content;
     }
 
+    // Save courses currently in the DOM to a specific semester ID
+    function saveCurrentCoursesToSemester(semesterId) {
+        if (!semesterId) return;
+        const courses = [];
+        let totalPoints = 0;
+        let creditsForGPA = 0;
+
+        document.querySelectorAll('.course-entry').forEach(entry => {
+            const name = entry.querySelector('.course-name').value.trim();
+            const credit = parseFloat(entry.querySelector('.course-credit').value);
+            const grade = entry.querySelector('.course-grade').value;
+            const isRetake = entry.querySelector('.is-retake').checked;
+            const previousGrade = entry.querySelector('.previous-grade').value;
+
+            if (credit && grade) {
+                courses.push({ name, credit, grade, isRetake, previousGrade });
+                if (!nonGPAGrades.includes(grade)) {
+                    totalPoints += credit * gradePoints[grade];
+                    creditsForGPA += credit;
+                }
+            }
+        });
+
+        const notes = elements.semesterNotesInput?.value.trim() || '';
+        if (courses.length > 0 || notes) {
+            state.semesters[semesterId] = {
+                ...(state.semesters[semesterId] || {}),
+                courses,
+                gpa: creditsForGPA > 0 ? totalPoints / creditsForGPA : 0,
+                credits: creditsForGPA,
+                notes
+            };
+        }
+    }
+
+    // Load saved courses into the DOM (without triggering extra calculateGPA calls)
+    function loadCoursesFromSemester(courses) {
+        courses.forEach(course => {
+            addCourse(course);
+        });
+    }
+
     function saveSemester() {
         const semesterValue = elements.semesterSelect.value;
         if (!semesterValue) return;
@@ -2204,7 +2294,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add all saved semesters before current one
         Object.entries(state.semesters).forEach(([semesterId, semesterData]) => {
             // Extract semester number from id like "3. Dönem" -> 3
-            const semNum = parseInt(semesterId);
+            const semNum = parseInt(semesterId, 10);
             if (!isNaN(semNum) && semNum < currentSemesterNum) {
                 totalPoints += (semesterData.gpa || 0) * (semesterData.credits || 0);
                 totalCredits += semesterData.credits || 0;
@@ -2219,24 +2309,27 @@ document.addEventListener('DOMContentLoaded', () => {
     function updatePreviousFromHistory(currentSemesterNum) {
         // Check if we have any saved semesters before current one
         const hasPreviousSemesters = Object.keys(state.semesters).some(semesterId => {
-            const semNum = parseInt(semesterId);
+            const semNum = parseInt(semesterId, 10);
             return !isNaN(semNum) && semNum < currentSemesterNum;
         });
-        
+
         // Only update if we have base data OR saved semester history
         // Otherwise keep user's manual input untouched
         if (state.baseSemester !== null || hasPreviousSemesters) {
             const stats = calculatePreviousSemestersStats(currentSemesterNum);
-            // Always show calculated values if we have history (even if 0)
-            elements.previousGPAInput.value = stats.credits > 0 ? stats.gpa.toFixed(2) : '';
-            elements.previousCreditsInput.value = stats.credits > 0 ? stats.credits : '';
+            // Only update fields when we have real credit data — never clear user's manual input
+            if (stats.credits > 0) {
+                elements.previousGPAInput.value = stats.gpa.toFixed(2);
+                elements.previousCreditsInput.value = stats.credits;
+            }
+            // If stats.credits === 0, leave the fields untouched
         }
         // If no history and no base, don't touch the fields - user may have entered values manually
     }
 
     // Save base semester info when user first enters data
     function saveBaseSemesterInfo() {
-        const currentSemesterNum = parseInt(elements.semesterSelect.value) || 0;
+        const currentSemesterNum = parseInt(elements.semesterSelect.value, 10) || 0;
         
         // Only set base if not already set and we have a semester selected
         if (state.baseSemester === null && currentSemesterNum > 0) {
@@ -2271,7 +2364,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function saveToLocalStorage() {
         const saveData = {
             courses: state.courses,
-            semester: elements.semesterSelect.value,
+            semester: state.semester,
             previousGPA: elements.previousGPAInput.value,
             previousCredits: elements.previousCreditsInput.value,
             semesters: state.semesters,
@@ -2279,15 +2372,22 @@ document.addEventListener('DOMContentLoaded', () => {
             baseSemester: state.baseSemester,
             baseGPA: state.baseGPA,
             baseCredits: state.baseCredits,
-            // New features
-            reminders: state.reminders,
             achievements: state.achievements,
-            scenarios: state.scenarios,
-            calendarMonth: state.calendarMonth,
-            calendarYear: state.calendarYear
+            scenarios: state.scenarios
         };
         
         localStorage.setItem('gpaSaveData', JSON.stringify(saveData));
+        showAutoSaveIndicator();
+    }
+
+    let _autoSaveTimer = null;
+    function showAutoSaveIndicator() {
+        const el = elements.autoSaveIndicator;
+        if (!el) return;
+        el.textContent = t('autoSaved');
+        el.classList.add('visible');
+        clearTimeout(_autoSaveTimer);
+        _autoSaveTimer = setTimeout(() => el.classList.remove('visible'), 2000);
     }
 
     function loadFromLocalStorage() {
@@ -2302,25 +2402,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.baseGPA !== undefined) state.baseGPA = data.baseGPA;
             if (data.baseCredits !== undefined) state.baseCredits = data.baseCredits;
             
-            // Load new features data
-            if (Array.isArray(data.reminders)) state.reminders = data.reminders;
+            // Load features data
             if (data.achievements && typeof data.achievements === 'object') state.achievements = data.achievements;
             if (Array.isArray(data.scenarios)) state.scenarios = data.scenarios;
-            if (data.calendarMonth !== undefined) {
-                const month = parseInt(data.calendarMonth, 10);
-                if (!Number.isNaN(month)) state.calendarMonth = month;
-            }
-            if (data.calendarYear !== undefined) {
-                const year = parseInt(data.calendarYear, 10);
-                if (!Number.isNaN(year)) state.calendarYear = year;
-            }
             
             // Load semester and history
             if (data.semester) elements.semesterSelect.value = data.semester;
             if (data.semesters) state.semesters = data.semesters;
             
             // Load previous GPA/credits
-            const currentSemesterNum = parseInt(data.semester) || 0;
+            const currentSemesterNum = parseInt(data.semester, 10) || 0;
             
             // If we have base info or saved semesters, calculate cumulative
             if (state.baseSemester !== null || Object.keys(state.semesters).length > 0) {
@@ -2336,7 +2427,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.courses && data.courses.length > 0) {
                 data.courses.forEach(course => addCourse(course));
             }
-            
+
+            // Restore semester notes for current semester
+            if (elements.semesterNotesInput && data.semester && state.semesters[data.semester]) {
+                elements.semesterNotesInput.value = state.semesters[data.semester].notes || '';
+            }
+
             updateCoursesEmptyState();
             calculateGPA();
         } catch (error) {
@@ -2399,7 +2495,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         elements.previousCreditsInput?.addEventListener('input', () => {
-            let value = parseInt(elements.previousCreditsInput.value);
+            let value = parseInt(elements.previousCreditsInput.value, 10);
             if (value < 0) elements.previousCreditsInput.value = 0;
             else if (value > 300) elements.previousCreditsInput.value = 300;
             calculateGPA();
@@ -2407,17 +2503,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         elements.semesterSelect?.addEventListener('change', () => {
-            // Clear existing courses when semester changes
+            const oldId = state.semester;           // still OLD value (calculateGPA hasn't run yet)
+            const newId = elements.semesterSelect.value;
+
+            // 1. Save current DOM courses to the OLD semester before switching
+            if (oldId) {
+                saveCurrentCoursesToSemester(oldId);
+            }
+
+            // 2. Load saved courses for the NEW semester, or start fresh
             elements.courseList.innerHTML = '';
-            addCourse(); // Add one empty course entry
+            const saved = state.semesters[newId];
+            if (saved && saved.courses && saved.courses.length > 0) {
+                loadCoursesFromSemester(saved.courses);
+            } else {
+                addCourse();
+            }
             updateCoursesEmptyState();
-            
-            // Update previous GPA/credits from semester history
-            const currentSemesterNum = parseInt(elements.semesterSelect.value) || 0;
-            updatePreviousFromHistory(currentSemesterNum);
-            
+
+            // 2b. Restore semester notes
+            if (elements.semesterNotesInput) {
+                elements.semesterNotesInput.value = saved?.notes || '';
+            }
+
+            // 3. Update previous GPA/credits from semester history
+            const newSemNum = parseInt(newId, 10) || 0;
+            updatePreviousFromHistory(newSemNum);
+
             calculateGPA();
-            saveCourses();
+            saveToLocalStorage();
         });
         
         // Templates
@@ -2436,6 +2550,15 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
         
+        // Semester notes auto-save
+        elements.semesterNotesInput?.addEventListener('input', () => {
+            const currentId = state.semester;
+            if (currentId && state.semesters[currentId]) {
+                state.semesters[currentId].notes = elements.semesterNotesInput.value.trim();
+                saveToLocalStorage();
+            }
+        });
+
         // Export
         elements.exportPNG?.addEventListener('click', exportAsPNG);
         elements.exportPDF?.addEventListener('click', exportAsPDF);
@@ -2455,15 +2578,6 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.addSemesterBtn?.addEventListener('click', () => {
             switchView('calculator');
         });
-        
-        // University selector
-        const universitySelect = document.getElementById('universitySelect');
-        if (universitySelect) {
-            universitySelect.value = currentUniversity;
-            universitySelect.addEventListener('change', (e) => {
-                updateGradeSystem(e.target.value);
-            });
-        }
         
         // Feedback modal
         const feedbackBtn = document.getElementById('feedbackBtn');
@@ -2667,23 +2781,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // ============================================
     function exportAsJSON() {
         const data = {
-            version: '2.1',
+            version: '2.2',
             exportDate: new Date().toISOString(),
-            university: currentUniversity,
             language: currentLanguage,
             courses: state.courses,
-            semester: elements.semesterSelect?.value,
+            semester: state.semester,
             previousGPA: elements.previousGPAInput?.value,
             previousCredits: elements.previousCreditsInput?.value,
             semesters: state.semesters,
             baseSemester: state.baseSemester,
             baseGPA: state.baseGPA,
             baseCredits: state.baseCredits,
-            reminders: state.reminders,
             achievements: state.achievements,
-            scenarios: state.scenarios,
-            calendarMonth: state.calendarMonth,
-            calendarYear: state.calendarYear
+            scenarios: state.scenarios
         };
         
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -2712,13 +2822,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error('Invalid data structure');
             }
             
-            // Import university setting
-            if (data.university && universityGradeSystems[data.university]) {
-                updateGradeSystem(data.university);
-                const universitySelect = document.getElementById('universitySelect');
-                if (universitySelect) universitySelect.value = data.university;
-            }
-            
             // Import language
             if (data.language) {
                 setLanguage(data.language);
@@ -2743,34 +2846,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 elements.previousCreditsInput.value = data.previousCredits;
             }
 
-            // Import reminders and other extras
-            if (Array.isArray(data.reminders)) state.reminders = data.reminders;
+            // Import achievements and scenarios
             if (data.achievements && typeof data.achievements === 'object') state.achievements = data.achievements;
             if (Array.isArray(data.scenarios)) state.scenarios = data.scenarios;
-            if (data.calendarMonth !== undefined) {
-                const month = parseInt(data.calendarMonth, 10);
-                if (!Number.isNaN(month)) state.calendarMonth = month;
-            }
-            if (data.calendarYear !== undefined) {
-                const year = parseInt(data.calendarYear, 10);
-                if (!Number.isNaN(year)) state.calendarYear = year;
-            }
-            
+
             // Import courses
             if (data.courses && elements.courseList) {
                 elements.courseList.innerHTML = '';
                 data.courses.forEach(course => addCourse(course));
             }
-            
+
             // Save and update
             saveToLocalStorage();
             updateCoursesEmptyState();
             calculateGPA();
 
-            if (state.currentView === 'calendar') {
-                renderCalendar();
-                renderReminders();
-            }
             if (state.currentView === 'simulation') {
                 initSimulationView();
             }
@@ -2851,19 +2941,6 @@ document.addEventListener('DOMContentLoaded', () => {
         updateLangToggle();
     }
     
-    function initUniversity() {
-        currentUniversity = localStorage.getItem('university') || 'boun';
-        const universitySelect = document.getElementById('universitySelect');
-        if (universitySelect) {
-            universitySelect.value = currentUniversity;
-        }
-        // Update grade system
-        const system = getGradeSystem();
-        gradePoints = { ...system.grades };
-        retakeableGrades = [...system.retakeable];
-        nonGPAGrades = [...system.nonGPA];
-    }
-
     // ============================================
     // Simulation View Functions
     // ============================================
@@ -2938,8 +3015,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (resultEl) resultEl.textContent = simGPA;
         
         if (changeEl) {
-            const currentGPA = getCurrentGPAValue();
-            const change = (parseFloat(simGPA) - currentGPA).toFixed(2);
+            const currentSemGPA = state.lastCalculatedSemesterGPA || 0;
+            const change = (parseFloat(simGPA) - currentSemGPA).toFixed(2);
             const prefix = change >= 0 ? '+' : '';
             changeEl.textContent = `(${prefix}${change})`;
             changeEl.className = 'gpa-change ' + (change >= 0 ? 'positive' : 'negative');
@@ -2975,11 +3052,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const loadBtn = e.target.closest('.load-scenario-btn');
             const deleteBtn = e.target.closest('.delete-scenario-btn');
             if (loadBtn) {
-                const id = parseInt(loadBtn.dataset.id);
+                const id = parseInt(loadBtn.dataset.id, 10);
                 loadScenario(id);
             }
             if (deleteBtn) {
-                const id = parseInt(deleteBtn.dataset.id);
+                const id = parseInt(deleteBtn.dataset.id, 10);
                 deleteScenario(id);
             }
         });
@@ -3018,10 +3095,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const selects = document.querySelectorAll('.sim-grade-select');
         const grades = Array.from(selects).map(s => s.value);
         const simGPA = document.getElementById('simulatedGPA')?.textContent || '0.00';
-        
+        const courses = state.courses.length > 0 ? state.courses : getSampleCourses();
+        const courseSnapshot = courses.map(c => c.name || '').slice(0, grades.length);
+
         const scenario = {
             id: Date.now(),
             name: `${t('scenario')} ${state.scenarios.length + 1}`,
+            semesterId: state.semester,
+            courseSnapshot,
             grades: grades,
             gpa: simGPA,
             date: new Date().toLocaleDateString()
@@ -3069,6 +3150,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function loadScenario(id) {
         const scenario = state.scenarios.find(s => s.id === id);
         if (!scenario) return;
+        if (scenario.semesterId && scenario.semesterId !== state.semester) {
+            showToast(currentLanguage === 'tr'
+                ? 'Bu senaryo farklı bir dönem için kaydedildi'
+                : 'This scenario was saved for a different semester');
+        }
         applySimulationGrades(scenario.grades || []);
     }
 
@@ -3217,13 +3303,13 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'first_aa', icon: '⭐', nameKey: 'achFirstAA', descKey: 'achFirstAADesc', condition: (s) => hasGrade(s, 'AA') },
         { id: 'honor_student', icon: '🏆', nameKey: 'achHonor', descKey: 'achHonorDesc', condition: (s) => getCurrentGPA() >= 3.00 },
         { id: 'high_honor', icon: '🥇', nameKey: 'achHighHonor', descKey: 'achHighHonorDesc', condition: (s) => getCurrentGPA() >= 3.50 },
-        { id: 'perfect_gpa', icon: '💎', nameKey: 'achPerfectGPA', descKey: 'achPerfectGPADesc', condition: (s) => getCurrentGPA() >= 4.00 },
+        { id: 'perfect_gpa', icon: '💎', nameKey: 'achPerfectGPA', descKey: 'achPerfectGPADesc', condition: (s) => getCurrentGPA() >= 3.995 },
         { id: 'first_semester', icon: '📅', nameKey: 'achFirstSemester', descKey: 'achFirstSemesterDesc', condition: (s) => Object.keys(s.semesters).length >= 1 },
         { id: 'four_semesters', icon: '🎯', nameKey: 'achFourSemesters', descKey: 'achFourSemestersDesc', condition: (s) => Object.keys(s.semesters).length >= 4 },
         { id: 'eight_semesters', icon: '🎓', nameKey: 'achEightSemesters', descKey: 'achEightSemestersDesc', condition: (s) => Object.keys(s.semesters).length >= 8 },
         { id: 'night_owl', icon: '🦉', nameKey: 'achNightOwl', descKey: 'achNightOwlDesc', condition: () => new Date().getHours() >= 0 && new Date().getHours() < 6 },
         { id: 'early_bird', icon: '🐦', nameKey: 'achEarlyBird', descKey: 'achEarlyBirdDesc', condition: () => new Date().getHours() >= 5 && new Date().getHours() < 8 },
-        { id: 'explorer', icon: '🔍', nameKey: 'achExplorer', descKey: 'achExplorerDesc', condition: () => localStorage.getItem('viewedViews')?.split(',').length >= 5 }
+        { id: 'explorer', icon: '🔍', nameKey: 'achExplorer', descKey: 'achExplorerDesc', condition: () => (localStorage.getItem('viewedViews')?.split(',') ?? []).length >= 5 }
     ];
     
     function getTotalCourseCount(s) {
@@ -3333,269 +3419,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }).join('');
     }
 
-    // ============================================
-    // Calendar View Functions
-    // ============================================
-    function initCalendarView() {
-        renderCalendar();
-        renderReminders();
-        if (!viewInitFlags.calendar) {
-            setupCalendarEventListeners();
-            viewInitFlags.calendar = true;
-        }
-    }
-    
-    function renderCalendar() {
-        const container = document.getElementById('calendarGrid');
-        const monthLabel = document.getElementById('currentMonth');
-        if (!container) return;
-        
-        const year = state.calendarYear;
-        const month = state.calendarMonth;
-        
-        const monthNames = currentLanguage === 'tr' 
-            ? ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık']
-            : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        
-        if (monthLabel) monthLabel.textContent = `${monthNames[month]} ${year}`;
-        
-        const firstDay = new Date(year, month, 1).getDay();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-        const today = new Date();
-        
-        // Day headers
-        const dayNames = currentLanguage === 'tr' 
-            ? ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz']
-            : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-        
-        let html = dayNames.map(d => `<div class="calendar-day-header">${d}</div>`).join('');
-        
-        // Adjust for Monday start
-        const startDay = firstDay === 0 ? 6 : firstDay - 1;
-        
-        // Empty cells before first day
-        for (let i = 0; i < startDay; i++) {
-            html += '<div class="calendar-day empty"></div>';
-        }
-        
-        // Days of month
-        for (let day = 1; day <= daysInMonth; day++) {
-            const date = new Date(year, month, day);
-            const dateStr = date.toISOString().split('T')[0];
-            const isToday = date.toDateString() === today.toDateString();
-            const hasReminder = state.reminders.some(r => r.date === dateStr);
-            
-            html += `
-                <div class="calendar-day ${isToday ? 'today' : ''} ${hasReminder ? 'has-reminder' : ''}" 
-                     data-date="${dateStr}">
-                    <span class="day-number">${day}</span>
-                    ${hasReminder ? '<span class="reminder-dot"></span>' : ''}
-                </div>
-            `;
-        }
-        
-        container.innerHTML = html;
-    }
-    
-    function renderReminders() {
-        const container = document.getElementById('remindersList');
-        if (!container) return;
-        
-        // Sort by date
-        const sortedReminders = [...state.reminders].sort((a, b) => {
-            const dateA = new Date(`${a.date}T${a.time || '00:00'}`);
-            const dateB = new Date(`${b.date}T${b.time || '00:00'}`);
-            return dateA - dateB;
-        });
-        
-        // Filter upcoming
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const upcoming = sortedReminders.filter(r => new Date(`${r.date}T${r.time || '00:00'}`) >= today);
-        
-        if (upcoming.length === 0) {
-            container.innerHTML = `<p class="empty-message">${t('noReminders')}</p>`;
-            return;
-        }
-        
-        container.innerHTML = upcoming.map(reminder => {
-            const date = new Date(reminder.date);
-            const isToday = date.toDateString() === today.toDateString();
-            const isTomorrow = date.toDateString() === new Date(today.getTime() + 86400000).toDateString();
-            
-            let dateLabel = date.toLocaleDateString();
-            if (isToday) dateLabel = t('today');
-            if (isTomorrow) dateLabel = t('tomorrow');
-            const timeLabel = reminder.time ? ` • ${reminder.time}` : '';
-            const normalizedType = normalizeReminderType(reminder.type);
-            const safeTitle = escapeHtml(reminder.title);
-            const safeCourse = reminder.course ? escapeHtml(reminder.course) : '';
-            const safeNotes = reminder.notes ? escapeHtml(reminder.notes) : '';
-            
-            return `
-                <div class="reminder-card ${normalizedType}" data-id="${reminder.id}">
-                    <div class="reminder-icon">${getReminderIcon(normalizedType)}</div>
-                    <div class="reminder-content">
-                        <span class="reminder-title">${safeTitle}</span>
-                        <span class="reminder-date">${dateLabel}${timeLabel}</span>
-                        ${safeCourse ? `<span class="reminder-meta">${t('calendar.reminderCourse')}: ${safeCourse}</span>` : ''}
-                        ${safeNotes ? `<span class="reminder-meta">${t('calendar.reminderNotes')}: ${safeNotes}</span>` : ''}
-                    </div>
-                    <button class="delete-reminder-btn" data-id="${reminder.id}">&times;</button>
-                </div>
-            `;
-        }).join('');
-    }
-    
-    function getReminderIcon(type) {
-        const normalizedType = normalizeReminderType(type);
-        const icons = {
-            midterm: '📝',
-            final: '📋',
-            assignment: '📄',
-            project: '💻',
-            exam: '📝',
-            other: '📌'
-        };
-        return icons[normalizedType] || icons.other;
-    }
-
-    function normalizeReminderType(type) {
-        if (!type) return 'midterm';
-        if (type === 'exam') return 'midterm';
-        return type;
-    }
-    
-    function setupCalendarEventListeners() {
-        // Month navigation
-        document.getElementById('prevMonth')?.addEventListener('click', () => {
-            state.calendarMonth--;
-            if (state.calendarMonth < 0) {
-                state.calendarMonth = 11;
-                state.calendarYear--;
-            }
-            renderCalendar();
-            saveToLocalStorage();
-        });
-        
-        document.getElementById('nextMonth')?.addEventListener('click', () => {
-            state.calendarMonth++;
-            if (state.calendarMonth > 11) {
-                state.calendarMonth = 0;
-                state.calendarYear++;
-            }
-            renderCalendar();
-            saveToLocalStorage();
-        });
-        
-        // Click on day
-        document.getElementById('calendarGrid')?.addEventListener('click', (e) => {
-            const dayEl = e.target.closest('.calendar-day:not(.empty)');
-            if (dayEl) {
-                const date = dayEl.dataset.date;
-                openReminderModal(date);
-            }
-        });
-        
-        // Add reminder button
-        document.getElementById('addReminderBtn')?.addEventListener('click', () => {
-            const today = new Date().toISOString().split('T')[0];
-            openReminderModal(today);
-        });
-        
-        // Quick add buttons
-        document.querySelectorAll('.quick-add-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const type = btn.dataset.type;
-                const today = new Date().toISOString().split('T')[0];
-                openReminderModal(today, type);
-            });
-        });
-        
-        // Reminder modal
-        const reminderForm = document.getElementById('reminderForm');
-        const reminderModal = document.getElementById('reminderModal');
-        const reminderModalClose = document.getElementById('reminderModalClose');
-
-        reminderForm?.addEventListener('submit', (e) => {
-            e.preventDefault();
-            saveReminder();
-        });
-
-        reminderModalClose?.addEventListener('click', closeReminderModal);
-
-        reminderModal?.addEventListener('click', (e) => {
-            if (e.target === reminderModal) closeReminderModal();
-        });
-        
-        // Delete reminder
-        document.getElementById('remindersList')?.addEventListener('click', (e) => {
-            if (e.target.classList.contains('delete-reminder-btn')) {
-                const id = parseInt(e.target.dataset.id);
-                deleteReminder(id);
-            }
-        });
-    }
-    
-    function openReminderModal(date, type = 'midterm') {
-        const modal = document.getElementById('reminderModal');
-        if (!modal) return;
-        
-        document.getElementById('reminderDate').value = date;
-        document.getElementById('reminderType').value = normalizeReminderType(type);
-        document.getElementById('reminderTitle').value = '';
-        document.getElementById('reminderTime').value = '09:00';
-        document.getElementById('reminderCourse').value = '';
-        document.getElementById('reminderNotes').value = '';
-        
-        modal.classList.add('active');
-    }
-    
-    function closeReminderModal() {
-        const modal = document.getElementById('reminderModal');
-        if (modal) modal.classList.remove('active');
-    }
-    
-    function saveReminder() {
-        const title = document.getElementById('reminderTitle')?.value.trim();
-        const date = document.getElementById('reminderDate')?.value;
-        const type = normalizeReminderType(document.getElementById('reminderType')?.value);
-        const time = document.getElementById('reminderTime')?.value || '09:00';
-        const course = document.getElementById('reminderCourse')?.value.trim() || '';
-        const notes = document.getElementById('reminderNotes')?.value.trim() || '';
-        
-        if (!title || !date) {
-            showToast(t('fillAllFields'));
-            return;
-        }
-        
-        const reminder = {
-            id: Date.now(),
-            title,
-            date,
-            type,
-            time,
-            course,
-            notes
-        };
-        
-        state.reminders.push(reminder);
-        saveToLocalStorage();
-        
-        closeReminderModal();
-        renderCalendar();
-        renderReminders();
-        showToast(t('reminderAdded'));
-    }
-    
-    function deleteReminder(id) {
-        state.reminders = state.reminders.filter(r => r.id !== id);
-        saveToLocalStorage();
-        renderCalendar();
-        renderReminders();
-        showToast(t('reminderDeleted'));
-    }
-    
     // Track viewed views for explorer achievement
     function trackViewedView(view) {
         const viewed = localStorage.getItem('viewedViews')?.split(',') || [];
@@ -3608,12 +3431,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function init() {
         initTheme();
         initLanguage();
-        initUniversity();
         initNavigation();
         initEventListeners();
         initHelpModal();
         initKeyboardShortcuts();
         initDragAndDrop();
+        // Initialize state.semester to match the current select value before loading
+        state.semester = elements.semesterSelect?.value || '';
         loadFromLocalStorage();
         updateCoursesEmptyState();
         calculateGPA();
