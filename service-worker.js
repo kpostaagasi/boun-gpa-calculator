@@ -3,7 +3,8 @@
  * Enables offline functionality and caching
  */
 
-const CACHE_NAME = 'boun-gpa-v1.1.1';
+// Bump this version when deploying changes to force cache refresh for returning visitors
+const CACHE_NAME = 'boun-gpa-v2.0.0';
 const OFFLINE_URL = '/boun-gpa-calculator/index.html';
 
 // Assets to cache immediately on install
@@ -11,7 +12,14 @@ const PRECACHE_ASSETS = [
     '/boun-gpa-calculator/',
     '/boun-gpa-calculator/index.html',
     '/boun-gpa-calculator/styles.css',
-    '/boun-gpa-calculator/script.js',
+    '/boun-gpa-calculator/src/main.js',
+    '/boun-gpa-calculator/src/state.js',
+    '/boun-gpa-calculator/src/i18n.js',
+    '/boun-gpa-calculator/src/grades.js',
+    '/boun-gpa-calculator/src/gpa.js',
+    '/boun-gpa-calculator/src/ui.js',
+    '/boun-gpa-calculator/src/charts.js',
+    '/boun-gpa-calculator/src/features.js',
     '/boun-gpa-calculator/site.webmanifest',
     '/boun-gpa-calculator/assets/images/boun-logo.png',
     '/boun-gpa-calculator/assets/favicon/favicon.ico',
@@ -162,15 +170,7 @@ self.addEventListener('message', (event) => {
     }
 });
 
-// Background sync for offline data (future use)
-self.addEventListener('sync', (event) => {
-    if (event.tag === 'sync-data') {
-        console.log('[SW] Background sync triggered');
-        // Placeholder for future sync functionality
-    }
-});
-
-// Push notifications (future use)
+// Push notifications (not currently active — no push subscriptions are created in the app)
 self.addEventListener('push', (event) => {
     if (event.data) {
         const data = event.data.json();

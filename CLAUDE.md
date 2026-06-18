@@ -2,13 +2,13 @@
 
 ## Project Overview
 
-Boğaziçi University GPA Calculator - A static web application for calculating GPA using the Turkish university grade system (AA/BA/BB/CB/CC/DC/DD/FF). Now supports multiple Turkish universities!
+Boğaziçi University GPA Calculator - A static web application for calculating GPA using the BOUN grade system (AA/BA/BB/CB/CC/DC/DD/FF). Built with native ES modules — no framework, no build step, no bundler.
 
 **Live site:** https://kpostaagasi.github.io/boun-gpa-calculator
 
 ## Tech Stack
 
-- **Frontend:** Vanilla HTML, CSS, JavaScript (no build tools or frameworks)
+- **Frontend:** Vanilla HTML, CSS, JavaScript (native ES modules, no build tools or frameworks)
 - **Hosting:** GitHub Pages (static site)
 - **Storage:** LocalStorage for data persistence
 - **PWA:** Progressive Web App with service worker for offline functionality
@@ -17,22 +17,33 @@ Boğaziçi University GPA Calculator - A static web application for calculating 
 
 ```
 boun-gpa-calculator/
-├── index.html          # Main HTML file with UI structure
-├── script.js           # All JavaScript logic (GPA calculation, storage, theme)
-├── styles.css          # Styling with CSS variables for theming
-├── service-worker.js   # PWA service worker for offline support
-├── site.webmanifest    # PWA manifest
+├── index.html              # Main HTML file with UI structure
+├── styles.css              # Styling with CSS variables for theming
+├── service-worker.js       # PWA service worker for offline support
+├── site.webmanifest        # PWA manifest
+├── package.json            # {"type":"module"} — for Node.js test compatibility
+├── src/
+│   ├── main.js             # Entry point (imports ui.js + side-effect modules)
+│   ├── state.js            # Application state + DOM element references
+│   ├── i18n.js             # Translations (TR+EN), t(), language switching
+│   ├── grades.js           # BOUN grade system, helpers, escapeHtml, templates
+│   ├── gpa.js              # Pure GPA math (no DOM access)
+│   ├── ui.js               # DOM manipulation, calculateGPA(), storage, navigation
+│   ├── charts.js           # Chart.js rendering
+│   └── features.js         # Goal, export, history, simulation, graduation, achievements
 ├── assets/
-│   ├── favicon/        # Favicon files
-│   └── images/         # Logo and social preview images
-└── README.md           # Project documentation (Turkish)
+│   ├── favicon/            # Favicon files
+│   └── images/             # Logo and social preview images
+├── tests/
+│   ├── tests.js            # Regression tests (pure functions mirroring production logic)
+│   └── test-runner.html    # Browser test runner page
+└── README.md               # Project documentation (Turkish)
 ```
 
 ## Key Features
 
 ### Core Features
-- GPA calculation with Turkish grade system (4.0 scale)
-- **Multi-university support:** BOUN, İTÜ, ODTÜ, Koç, Bilkent, Sabancı, YTÜ, GSÜ
+- GPA calculation with BOUN grade system (4.0 scale)
 - Previous GPA/credit input for cumulative calculations
 - **Course retake support** - for courses previously taken with FF/DD/DC grades
 - Semester selection (8 semesters)
@@ -49,7 +60,7 @@ boun-gpa-calculator/
 - **User feedback form**
 - **Full offline PWA support**
 
-### New Features (v1.1.0)
+### Additional Features
 - **GPA Simulation:** "What if" scenarios - try different grade combinations
 - **Quick Scenarios:** Instantly see what happens with all AA, BB, CC or random grades
 - **Save Scenarios:** Store multiple grade scenarios for comparison
@@ -60,21 +71,6 @@ boun-gpa-calculator/
   - First AA, Honor Student, High Honor, Perfect GPA
   - First Semester, Four Semesters, Eight Semesters
   - Night Owl, Early Bird, Explorer
-- **Academic Calendar:** Add reminders for exams, assignments, projects
-- **Quick Add Reminders:** Fast buttons for common reminder types
-
-## Supported Universities
-
-| University | Grade System |
-|------------|--------------|
-| Boğaziçi (BOUN) | AA/BA/BB/CB/CC/DC/DD/FF |
-| İTÜ | AA/BA/BB/CB/CC/DC/DD/FD/FF |
-| ODTÜ | AA/BA/BB/CB/CC/DC/DD/FF (S/U) |
-| Koç | A/A-/B+/B/B-/C+/C/C-/D+/D/F |
-| Bilkent | A/A-/B+/B/B-/C+/C/C-/D+/D/F |
-| Sabancı | A/A-/B+/B/B-/C+/C/C-/D+/D/F |
-| YTÜ | AA/BA/BB/CB/CC/DC/DD/FF |
-| GSÜ | AA/BA/BB/CB/CC/DC/DD/FF |
 
 ## Keyboard Shortcuts
 
@@ -92,15 +88,16 @@ boun-gpa-calculator/
 
 ## Development
 
-No build process required. Simply edit the files and open `index.html` in a browser.
+ES modules require an HTTP server — you cannot open `index.html` directly via `file://`.
 
 ### Testing locally
 ```bash
-# Using Python
-python -m http.server 8000
+# Start a local server
+python3 -m http.server 8000
+# then open http://localhost:8000
 
-# Using Node.js
-npx serve
+# Run regression tests via CLI
+node tests/tests.js
 ```
 
 ### Deployment
@@ -108,9 +105,10 @@ Push to `main` branch - GitHub Pages auto-deploys from the repository root.
 
 ## Code Conventions
 
-- **Language:** UI text is in Turkish and English (i18n support)
-- **CSS:** Uses CSS custom properties (variables) for theming
-- **JavaScript:** ES6+ syntax, all in single file with DOMContentLoaded wrapper
+- **Language:** UI text is in Turkish and English (i18n support via `data-i18n` attributes + `t()` function)
+- **CSS:** Uses CSS custom properties (variables) for theming, including dark/light mode
+- **JavaScript:** Native ES modules (`export`/`import`), no build tool. Entry point: `src/main.js`
+- **Architecture:** Registration pattern for view init (`registerViewInit`) and view refresh (`registerViewRefresh`) avoids circular imports between modules
 - **Accessibility:** ARIA labels on interactive elements
 
 ## Course Retake Logic
@@ -125,9 +123,10 @@ When a student retakes a course (previously FF/DD/DC):
 
 ## Important Files
 
-- `script.js:505-620` - University grade system configurations
-- `script.js:935-1000` - Course entry creation with drag support
-- `script.js:2150-2250` - Keyboard shortcuts implementation
-- `script.js:2260-2350` - Import/Export JSON functions
-- `styles.css:1530-1750` - New features styles (shortcuts, drag, toast)
-- `service-worker.js` - PWA offline caching
+- `src/grades.js:11` - BOUN grade system configuration (`gradePoints` map)
+- `src/ui.js:308` - `calculateGPA()` — the main GPA orchestrator (reads DOM, calls pure math, writes DOM)
+- `src/gpa.js` - Pure GPA math functions (no DOM access, testable)
+- `src/i18n.js:12` - Translations (TR + EN)
+- `src/ui.js:924` - Keyboard shortcuts implementation
+- `src/features.js` - Export/import JSON, simulation, graduation, achievements
+- `service-worker.js` - PWA offline caching (bump `CACHE_NAME` when deploying changes)

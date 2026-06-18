@@ -11,6 +11,18 @@
 :root {
     /* Typography */
     --font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-xs: 0.75rem;
+    --font-sm: 0.875rem;
+    --font-base: 1rem;
+    --font-lg: 1.125rem;
+    --font-xl: 1.25rem;
+    --font-2xl: 1.5rem;
+    --font-3xl: 2rem;
+    --font-4xl: 2.5rem;
+    --font-5xl: 3rem;
+    
+    /* Text on colored backgrounds */
+    --text-inverse: #ffffff;
     
     /* Primary Colors */
     --primary-50: #eff6ff;
@@ -44,6 +56,9 @@
     --warning-500: #f59e0b;
     --warning-600: #d97706;
     --danger-50: #fef2f2;
+    --danger-100: #fee2e2;
+    --danger-200: #fecaca;
+    --danger-300: #fca5a5;
     --danger-500: #ef4444;
     --danger-600: #dc2626;
     
@@ -125,14 +140,19 @@ html {
 
 body {
     font-family: var(--font-family);
-    font-size: 1rem;
+    font-size: var(--font-base);
     line-height: 1.6;
     color: var(--text-primary);
     background-color: var(--bg-primary);
+    background-image: radial-gradient(ellipse 80% 40% at 50% -5%, rgba(59, 130, 246, 0.08) 0%, transparent 55%);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     min-height: 100vh;
     min-height: 100dvh;
+}
+
+[data-theme="dark"] body {
+    background-image: radial-gradient(ellipse 80% 40% at 50% -5%, rgba(59, 130, 246, 0.12) 0%, transparent 55%);
 }
 
 /* Remove spinners from number inputs */
@@ -168,6 +188,7 @@ input[type="number"] {
     height: 100dvh;
     z-index: 100;
     transition: transform var(--transition-normal);
+    will-change: transform;
 }
 
 .sidebar-header {
@@ -190,7 +211,7 @@ input[type="number"] {
 }
 
 .sidebar-logo-text {
-    font-size: 1.125rem;
+    font-size: var(--font-lg);
     font-weight: 700;
     letter-spacing: -0.025em;
 }
@@ -210,7 +231,7 @@ input[type="number"] {
 }
 
 .nav-section-title {
-    font-size: 0.75rem;
+    font-size: var(--font-xs);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -229,7 +250,7 @@ input[type="number"] {
     text-decoration: none;
     font-weight: 500;
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: background-color var(--transition-fast), color var(--transition-fast);
     border: none;
     background: none;
     width: 100%;
@@ -240,6 +261,12 @@ input[type="number"] {
 .nav-item:hover {
     background: var(--bg-hover);
     color: var(--text-primary);
+}
+
+.nav-item:focus-visible {
+    outline: 2px solid var(--primary-500);
+    outline-offset: -2px;
+    background: var(--bg-hover);
 }
 
 .nav-item.active {
@@ -287,7 +314,7 @@ input[type="number"] {
 }
 
 .header-title {
-    font-size: 1.25rem;
+    font-size: var(--font-xl);
     font-weight: 600;
     color: var(--text-primary);
 }
@@ -311,11 +338,11 @@ input[type="number"] {
    ============================================ */
 .view {
     display: none;
-    animation: fadeIn var(--transition-normal) ease;
 }
 
 .view.active {
     display: block;
+    animation: fadeIn var(--transition-normal) ease;
 }
 
 @keyframes fadeIn {
@@ -331,11 +358,12 @@ input[type="number"] {
     border: 1px solid var(--border-color);
     border-radius: var(--radius-xl);
     padding: var(--space-6);
-    transition: box-shadow var(--transition-normal);
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
 }
 
 .card:hover {
     box-shadow: var(--shadow-md);
+    border-color: var(--border-color-strong);
 }
 
 .card-header {
@@ -346,7 +374,7 @@ input[type="number"] {
 }
 
 .card-title {
-    font-size: 1.125rem;
+    font-size: var(--font-lg);
     font-weight: 600;
     color: var(--text-primary);
 }
@@ -372,12 +400,13 @@ input[type="number"] {
     border: 1px solid var(--border-color);
     border-radius: var(--radius-xl);
     padding: var(--space-6);
-    transition: all var(--transition-normal);
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
 }
 
 .stat-card:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
+    border-color: var(--border-color-strong);
 }
 
 .stat-card-icon {
@@ -411,7 +440,7 @@ input[type="number"] {
 }
 
 .stat-card-value {
-    font-size: 2rem;
+    font-size: var(--font-3xl);
     font-weight: 700;
     color: var(--text-primary);
     line-height: 1.2;
@@ -428,7 +457,7 @@ input[type="number"] {
     display: flex;
     align-items: center;
     gap: var(--space-1);
-    font-size: 0.75rem;
+    font-size: var(--font-xs);
     font-weight: 600;
     margin-top: var(--space-2);
 }
@@ -460,13 +489,13 @@ input[type="number"] {
 .form-select {
     width: 100%;
     padding: var(--space-3) var(--space-4);
-    font-size: 1rem;
+    font-size: var(--font-base);
     font-family: inherit;
     color: var(--text-primary);
     background: var(--bg-tertiary);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
-    transition: all var(--transition-fast);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
     outline: none;
 }
 
@@ -520,7 +549,7 @@ input[type="number"] {
     font-family: inherit;
     border-radius: var(--radius-lg);
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: transform var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
     border: none;
     outline: none;
     text-decoration: none;
@@ -531,15 +560,25 @@ input[type="number"] {
     cursor: not-allowed;
 }
 
+.btn:focus-visible {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
+}
+
 .btn-primary {
     background: var(--primary-600);
-    color: white;
+    color: var(--text-inverse);
 }
 
 .btn-primary:hover:not(:disabled) {
     background: var(--primary-700);
     transform: translateY(-1px);
     box-shadow: var(--shadow-md);
+}
+
+.btn-primary:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
 }
 
 .btn-secondary {
@@ -553,13 +592,32 @@ input[type="number"] {
     border-color: var(--border-color-strong);
 }
 
+.btn-secondary:active:not(:disabled) {
+    background: var(--bg-hover);
+}
+
+.btn-secondary:focus-visible {
+    outline-color: var(--primary-300);
+}
+
 .btn-danger {
     background: var(--danger-500);
-    color: white;
+    color: var(--text-inverse);
 }
 
 .btn-danger:hover:not(:disabled) {
     background: var(--danger-600);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-danger:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-danger:focus-visible {
+    outline-color: var(--danger-300);
 }
 
 .btn-ghost {
@@ -591,7 +649,7 @@ input[type="number"] {
 
 .btn-lg {
     padding: var(--space-4) var(--space-6);
-    font-size: 1rem;
+    font-size: var(--font-base);
 }
 
 .btn-block {
@@ -609,12 +667,13 @@ input[type="number"] {
 
 .course-entry {
     display: grid;
-    grid-template-columns: 1fr 140px 140px 40px;
+    grid-template-columns: auto 1fr auto auto auto;
     gap: var(--space-3);
     padding: var(--space-4);
     background: var(--bg-tertiary);
     border-radius: var(--radius-lg);
     align-items: start;
+    position: relative;
     animation: slideIn var(--transition-normal) ease;
 }
 
@@ -650,7 +709,7 @@ input[type="number"] {
     align-items: center;
     gap: var(--space-2);
     cursor: pointer;
-    font-size: 0.8125rem;
+    font-size: var(--font-sm);
     color: var(--text-secondary);
 }
 
@@ -663,7 +722,7 @@ input[type="number"] {
 
 .retake-select {
     padding: var(--space-2) var(--space-3);
-    font-size: 0.8125rem;
+    font-size: var(--font-sm);
 }
 
 .delete-course-btn {
@@ -677,12 +736,17 @@ input[type="number"] {
     border-radius: var(--radius-md);
     color: var(--text-tertiary);
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
 .delete-course-btn:hover {
     background: var(--danger-50);
     color: var(--danger-500);
+}
+
+.delete-course-btn:focus-visible {
+    outline: 2px solid var(--danger-500);
+    outline-offset: 2px;
 }
 
 [data-theme="dark"] .delete-course-btn:hover {
@@ -709,7 +773,7 @@ input[type="number"] {
 }
 
 .result-label {
-    font-size: 0.8125rem;
+    font-size: var(--font-sm);
     font-weight: 500;
     color: var(--text-secondary);
     margin-bottom: var(--space-2);
@@ -747,7 +811,7 @@ input[type="number"] {
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
-    transition: all var(--transition-normal);
+    transition: opacity var(--transition-normal), visibility var(--transition-normal);
 }
 
 .modal-overlay.active {
@@ -781,7 +845,7 @@ input[type="number"] {
 }
 
 .modal-title {
-    font-size: 1.125rem;
+    font-size: var(--font-lg);
     font-weight: 600;
 }
 
@@ -796,12 +860,17 @@ input[type="number"] {
     border-radius: var(--radius-md);
     color: var(--text-secondary);
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
 .modal-close:hover {
     background: var(--bg-hover);
     color: var(--text-primary);
+}
+
+.modal-close:focus-visible {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
 }
 
 .modal-body {
@@ -830,7 +899,7 @@ input[type="number"] {
 }
 
 .template-category-title {
-    font-size: 0.75rem;
+    font-size: var(--font-xs);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -846,11 +915,12 @@ input[type="number"] {
     background: var(--bg-tertiary);
     border-radius: var(--radius-lg);
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
 }
 
 .template-item:hover {
     background: var(--bg-hover);
+    transform: translateX(2px);
 }
 
 .template-item-info {
@@ -864,7 +934,7 @@ input[type="number"] {
 }
 
 .template-item-meta {
-    font-size: 0.8125rem;
+    font-size: var(--font-sm);
     color: var(--text-secondary);
 }
 
@@ -879,12 +949,13 @@ input[type="number"] {
     border: none;
     border-radius: var(--radius-md);
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 
 .template-item-add:hover {
     background: var(--primary-600);
-    color: white;
+    color: var(--text-inverse);
+    transform: scale(1.05);
 }
 
 /* ============================================
@@ -944,13 +1015,13 @@ input[type="number"] {
 }
 
 .goal-result-title {
-    font-size: 1.25rem;
+    font-size: var(--font-xl);
     font-weight: 600;
     margin-bottom: var(--space-2);
 }
 
 .goal-result-value {
-    font-size: 2.5rem;
+    font-size: var(--font-4xl);
     font-weight: 700;
     color: var(--primary-600);
     line-height: 1;
@@ -1040,7 +1111,7 @@ input[type="number"] {
    ============================================ */
 .charts-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
     gap: var(--space-6);
 }
 
@@ -1066,13 +1137,14 @@ input[type="number"] {
     background: var(--bg-tertiary);
     border-radius: var(--radius-xl);
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: border-color var(--transition-fast), background-color var(--transition-fast), transform var(--transition-fast);
     border: 2px solid transparent;
 }
 
 .export-option:hover {
     border-color: var(--primary-300);
     background: var(--bg-hover);
+    transform: translateY(-2px);
 }
 
 .export-option-icon {
@@ -1098,7 +1170,7 @@ input[type="number"] {
 }
 
 .export-option-desc {
-    font-size: 0.8125rem;
+    font-size: var(--font-sm);
     color: var(--text-secondary);
     text-align: center;
 }
@@ -1116,13 +1188,18 @@ input[type="number"] {
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
     color: var(--text-secondary);
 }
 
 .theme-toggle:hover {
     background: var(--bg-hover);
     color: var(--text-primary);
+}
+
+.theme-toggle:focus-visible {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
 }
 
 .theme-toggle svg {
@@ -1140,10 +1217,10 @@ input[type="number"] {
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
     color: var(--text-secondary);
     font-family: var(--font-family);
-    font-size: 0.875rem;
+    font-size: var(--font-sm);
     font-weight: 500;
 }
 
@@ -1151,6 +1228,11 @@ input[type="number"] {
     background: var(--bg-hover);
     color: var(--text-primary);
     border-color: var(--border-color-strong);
+}
+
+.lang-toggle:focus-visible {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
 }
 
 .lang-toggle .lang-flag {
@@ -1173,6 +1255,7 @@ input[type="number"] {
     justify-content: center;
     padding: var(--space-12);
     text-align: center;
+    animation: fadeIn var(--transition-normal) ease;
 }
 
 .empty-state-icon {
@@ -1219,14 +1302,14 @@ input[type="number"] {
     transform: translateX(-50%) translateY(-4px);
     padding: var(--space-2) var(--space-3);
     background: var(--neutral-800);
-    color: white;
-    font-size: 0.75rem;
+    color: var(--text-inverse);
+    font-size: var(--font-xs);
     font-weight: 500;
     border-radius: var(--radius-md);
     white-space: nowrap;
     opacity: 0;
     visibility: hidden;
-    transition: all var(--transition-fast);
+    transition: opacity var(--transition-fast), visibility var(--transition-fast), transform var(--transition-fast);
     z-index: 100;
 }
 
@@ -1247,8 +1330,19 @@ input[type="number"] {
     justify-content: center;
     background: transparent;
     border: none;
+    border-radius: var(--radius-lg);
     color: var(--text-primary);
     cursor: pointer;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.mobile-menu-toggle:hover {
+    background: var(--bg-hover);
+}
+
+.mobile-menu-toggle:focus-visible {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
 }
 
 .mobile-menu-toggle svg {
@@ -1264,10 +1358,10 @@ input[type="number"] {
 }
 
 .animate-slide-up {
-    animation: slideUp var(--transition-normal) ease forwards;
+    animation: slideUpContent var(--transition-normal) ease forwards;
 }
 
-@keyframes slideUp {
+@keyframes slideUpContent {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
@@ -1332,7 +1426,7 @@ input[type="number"] {
         z-index: 99;
         opacity: 0;
         visibility: hidden;
-        transition: all var(--transition-normal);
+        transition: opacity var(--transition-normal), visibility var(--transition-normal);
     }
     
     .sidebar-overlay.active {
@@ -1358,15 +1452,6 @@ input[type="number"] {
     
     .lang-toggle {
         padding: var(--space-2);
-    }
-    
-    .course-entry {
-        grid-template-columns: 1fr;
-        gap: var(--space-3);
-    }
-    
-    .course-entry > *:last-child {
-        justify-self: end;
     }
     
     .results-grid {
@@ -1404,6 +1489,16 @@ input[type="number"] {
 }
 
 @media print {
+    :root {
+        --print-text: #000;
+        --print-text-muted: #444;
+        --print-text-faint: #555;
+        --print-border: #888;
+        --print-border-light: #ccc;
+        --print-bg-muted: #f0f0f0;
+        --print-bg-bar: #ddd;
+    }
+
     body > * {
         display: none !important;
     }
@@ -1411,8 +1506,8 @@ input[type="number"] {
     #transcriptPrint {
         display: block !important;
         font-family: 'Times New Roman', serif;
-        color: #000;
-        background: #fff;
+        color: var(--print-text);
+        background: var(--text-inverse);
         font-size: 10pt;
     }
 
@@ -1422,7 +1517,7 @@ input[type="number"] {
     }
 
     .transcript-header {
-        border-bottom: 2px solid #000;
+        border-bottom: 2px solid var(--print-text);
         padding-bottom: 10pt;
         margin-bottom: 12pt;
         display: flex;
@@ -1439,13 +1534,13 @@ input[type="number"] {
     .transcript-header-text p {
         font-size: 9pt;
         margin: 0;
-        color: #444;
+        color: var(--print-text-muted);
     }
 
     .transcript-section-title {
         font-size: 10pt;
         font-weight: bold;
-        border-bottom: 1px solid #888;
+        border-bottom: 1px solid var(--print-border);
         margin: 10pt 0 6pt;
         padding-bottom: 2pt;
         text-transform: uppercase;
@@ -1484,7 +1579,7 @@ input[type="number"] {
 
     .transcript-gpa-bar-bg {
         display: inline-block;
-        background: #ddd;
+        background: var(--print-bg-bar);
         height: 7pt;
         width: 80pt;
         vertical-align: middle;
@@ -1492,7 +1587,7 @@ input[type="number"] {
 
     .transcript-gpa-bar-fill {
         display: block;
-        background: #000;
+        background: var(--print-text);
         height: 100%;
     }
 
@@ -1519,15 +1614,15 @@ input[type="number"] {
     }
 
     .transcript-table th {
-        background: #f0f0f0;
-        border: 1px solid #999;
+        background: var(--print-bg-muted);
+        border: 1px solid var(--print-border);
         padding: 3pt 5pt;
         text-align: left;
         font-size: 8.5pt;
     }
 
     .transcript-table td {
-        border: 1px solid #ccc;
+        border: 1px solid var(--print-border-light);
         padding: 3pt 5pt;
     }
 
@@ -1543,17 +1638,17 @@ input[type="number"] {
 
     .transcript-grade-scale {
         font-size: 8pt;
-        color: #555;
+        color: var(--print-text-faint);
         margin-top: 10pt;
-        border-top: 1px solid #ccc;
+        border-top: 1px solid var(--print-border-light);
         padding-top: 6pt;
     }
 
     .transcript-footer {
         margin-top: 16pt;
         font-size: 8pt;
-        color: #555;
-        border-top: 1px solid #ccc;
+        color: var(--print-text-faint);
+        border-top: 1px solid var(--print-border-light);
         padding-top: 6pt;
         text-align: right;
     }
@@ -1602,7 +1697,7 @@ input[type="number"] {
     border: none;
     border-radius: var(--radius-md);
     cursor: pointer;
-    font-size: 1.25rem;
+    font-size: var(--font-xl);
     color: var(--text-secondary);
     transition: all var(--transition-fast);
 }
@@ -1694,7 +1789,11 @@ input[type="number"] {
 .university-select:focus {
     outline: none;
     border-color: var(--primary-500);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 3px var(--primary-100);
+}
+
+[data-theme="dark"] .university-select:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
 /* Keyboard Shortcuts Modal */
@@ -1726,7 +1825,7 @@ input[type="number"] {
     border: 1px solid var(--border-color);
     border-radius: var(--radius-sm);
     font-family: var(--font-family);
-    font-size: 0.75rem;
+    font-size: var(--font-xs);
     font-weight: 600;
     color: var(--text-primary);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -1808,13 +1907,13 @@ input[type="number"] {
 /* Toast Notification */
 .toast {
     position: fixed;
-    bottom: 20px;
-    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    bottom: var(--space-5);
+    bottom: calc(var(--space-5) + env(safe-area-inset-bottom, 0px));
     left: 50%;
     transform: translateX(-50%);
     background: var(--bg-secondary);
     color: var(--text-primary);
-    padding: 12px 24px;
+    padding: var(--space-3) var(--space-6);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
     z-index: 10000;
@@ -1859,14 +1958,20 @@ input[type="number"] {
 #feedbackModal input,
 #feedbackModal textarea {
     width: 100%;
-    padding: var(--space-3);
+    padding: var(--space-3) var(--space-4);
     background: var(--bg-tertiary);
     border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     color: var(--text-primary);
     font-family: var(--font-family);
-    font-size: 1rem;
-    transition: all var(--transition-fast);
+    font-size: var(--font-base);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+}
+
+#feedbackModal select:hover,
+#feedbackModal input:hover,
+#feedbackModal textarea:hover {
+    border-color: var(--border-color-strong);
 }
 
 #feedbackModal select:focus,
@@ -1874,7 +1979,14 @@ input[type="number"] {
 #feedbackModal textarea:focus {
     outline: none;
     border-color: var(--primary-500);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 3px var(--primary-100);
+    background: var(--bg-secondary);
+}
+
+[data-theme="dark"] #feedbackModal select:focus,
+[data-theme="dark"] #feedbackModal input:focus,
+[data-theme="dark"] #feedbackModal textarea:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
 #feedbackModal textarea {
@@ -1896,21 +2008,30 @@ input[type="number"] {
 
 #importModal textarea {
     width: 100%;
-    padding: var(--space-3);
+    padding: var(--space-3) var(--space-4);
     background: var(--bg-tertiary);
     border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     color: var(--text-primary);
     font-family: monospace;
-    font-size: 0.85rem;
+    font-size: var(--font-sm);
     resize: vertical;
-    transition: all var(--transition-fast);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+}
+
+#importModal textarea:hover {
+    border-color: var(--border-color-strong);
 }
 
 #importModal textarea:focus {
     outline: none;
     border-color: var(--primary-500);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 3px var(--primary-100);
+    background: var(--bg-secondary);
+}
+
+[data-theme="dark"] #importModal textarea:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
 /* Export JSON Button */
@@ -1920,7 +2041,7 @@ input[type="number"] {
     gap: var(--space-2);
     padding: var(--space-3) var(--space-4);
     background: var(--success-500);
-    color: white;
+    color: var(--text-inverse);
     border: none;
     border-radius: var(--radius-md);
     font-weight: 500;
@@ -1931,14 +2052,6 @@ input[type="number"] {
 .export-json-btn:hover {
     background: var(--success-600);
     transform: translateY(-1px);
-}
-
-/* Update course-entry grid for drag handle */
-.course-entry {
-    display: grid;
-    grid-template-columns: auto 1fr auto auto auto;
-    gap: var(--space-3);
-    align-items: start;
 }
 
 @media (max-width: 768px) {
@@ -2032,21 +2145,30 @@ input[type="number"] {
 
 .sim-grade-select {
     padding: var(--space-2) var(--space-4);
-    border: 2px solid var(--neutral-300);
-    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
     font-size: var(--font-base);
     font-weight: 600;
-    background: var(--bg-primary);
+    background: var(--bg-secondary);
     color: var(--text-primary);
     cursor: pointer;
     min-width: 80px;
-    transition: all var(--transition-fast);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+}
+
+.sim-grade-select:hover {
+    border-color: var(--border-color-strong);
 }
 
 .sim-grade-select:focus {
     outline: none;
     border-color: var(--primary-500);
     box-shadow: 0 0 0 3px var(--primary-100);
+    background: var(--bg-secondary);
+}
+
+[data-theme="dark"] .sim-grade-select:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
 .simulation-result {
@@ -2076,7 +2198,7 @@ input[type="number"] {
 }
 
 .simulation-result-value {
-    font-size: 3rem;
+    font-size: var(--font-5xl);
     font-weight: 700;
     color: var(--primary-600);
 }
@@ -2095,7 +2217,7 @@ input[type="number"] {
 }
 
 .gpa-change.negative {
-    color: var(--error-600);
+    color: var(--danger-600);
 }
 
 .quick-scenarios {
@@ -2187,7 +2309,7 @@ input[type="number"] {
 
 .load-scenario-btn {
     background: var(--primary-500);
-    color: white;
+    color: var(--text-inverse);
 }
 
 .load-scenario-btn:hover {
@@ -2195,12 +2317,12 @@ input[type="number"] {
 }
 
 .delete-scenario-btn {
-    background: var(--error-100);
-    color: var(--error-600);
+    background: var(--danger-100);
+    color: var(--danger-600);
 }
 
 .delete-scenario-btn:hover {
-    background: var(--error-200);
+    background: var(--danger-200);
 }
 
 /* ============================================
@@ -2232,19 +2354,28 @@ input[type="number"] {
 }
 
 .graduation-input-group input {
-    padding: var(--space-3);
-    border: 2px solid var(--neutral-300);
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     font-size: var(--font-base);
-    background: var(--bg-primary);
+    background: var(--bg-tertiary);
     color: var(--text-primary);
-    transition: all var(--transition-fast);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+}
+
+.graduation-input-group input:hover {
+    border-color: var(--border-color-strong);
 }
 
 .graduation-input-group input:focus {
     outline: none;
     border-color: var(--primary-500);
     box-shadow: 0 0 0 3px var(--primary-100);
+    background: var(--bg-secondary);
+}
+
+[data-theme="dark"] .graduation-input-group input:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
 .progress-section {
@@ -2300,7 +2431,7 @@ input[type="number"] {
 }
 
 .required-gpa-value {
-    font-size: 2.5rem;
+    font-size: var(--font-4xl);
     font-weight: 700;
 }
 
@@ -2313,7 +2444,7 @@ input[type="number"] {
 }
 
 .required-gpa-value.impossible {
-    color: var(--error-600);
+    color: var(--danger-600);
 }
 
 .graduation-message {
@@ -2328,7 +2459,7 @@ input[type="number"] {
 }
 
 .graduation-message .warning {
-    color: var(--error-600);
+    color: var(--danger-600);
 }
 
 .graduation-message .caution {
@@ -2477,8 +2608,13 @@ input[type="number"] {
     color: var(--text-secondary);
 }
 
-.badge-date {
+.badge-date,
+.achievement-date {
     font-size: var(--font-xs);
+    color: var(--text-tertiary);
+}
+
+.badge-date.unlocked {
     color: var(--success-600);
 }
 
@@ -2492,7 +2628,7 @@ input[type="number"] {
     gap: var(--space-4);
     padding: var(--space-4) var(--space-6);
     background: linear-gradient(135deg, var(--success-500), var(--success-600));
-    color: white;
+    color: var(--text-inverse);
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow-lg);
     z-index: 1000;
@@ -2622,7 +2758,7 @@ input[type="number"] {
 
 .calendar-day.today {
     background: var(--primary-500);
-    color: white;
+    color: var(--text-inverse);
 }
 
 .calendar-day.today:hover {
@@ -2635,7 +2771,7 @@ input[type="number"] {
     bottom: 4px;
     width: 6px;
     height: 6px;
-    background: var(--error-500);
+    background: var(--danger-500);
     border-radius: 50%;
 }
 
@@ -2662,7 +2798,7 @@ input[type="number"] {
 .add-reminder-btn {
     padding: var(--space-2) var(--space-4);
     background: var(--primary-500);
-    color: white;
+    color: var(--text-inverse);
     border: none;
     border-radius: var(--radius-lg);
     cursor: pointer;
@@ -2692,7 +2828,7 @@ input[type="number"] {
 
 .reminder-card.exam,
 .reminder-card.midterm {
-    border-left-color: var(--error-500);
+    border-left-color: var(--danger-500);
 }
 
 .reminder-card.final {
@@ -2739,8 +2875,8 @@ input[type="number"] {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--error-100);
-    color: var(--error-600);
+    background: var(--danger-100);
+    color: var(--danger-600);
     border: none;
     border-radius: var(--radius-full);
     cursor: pointer;
@@ -2749,7 +2885,7 @@ input[type="number"] {
 }
 
 .delete-reminder-btn:hover {
-    background: var(--error-200);
+    background: var(--danger-200);
 }
 
 .quick-add-buttons {

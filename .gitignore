@@ -30,6 +30,9 @@ dist/
 build/
 out/ 
 
+# Deepwork progress files (local session state)
+.slim/deepwork/
+
 # Auto Claude data directory
 .auto-claude/
 

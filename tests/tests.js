@@ -8,6 +8,12 @@
  * corresponding implementations below to stay in sync.
  */
 
+// NOTE: Functions are defined locally rather than imported from src/ modules
+// because the import chain (gpa.js → grades.js → i18n.js → state.js) triggers
+// DOM access (document.getElementById) that fails in Node.js.
+// In a browser, test-runner.html uses <script type="module"> — the browser
+// can resolve the same imports via the test-runner page context.
+
 // ============================================
 // Minimal Test Runner
 // ============================================
@@ -48,19 +54,18 @@ function assertApprox(actual, expected, tolerance, message) {
 // Pure functions mirroring script.js logic
 // ============================================
 
-const gradePointsBOUN = {
-    AA: 4.0, BA: 3.5, BB: 3.0, CB: 2.5,
-    CC: 2.0, DC: 1.5, DD: 1.0, FF: 0.0,
-    P: null, S: null, U: 0.0
+// Data constants (defined locally to avoid DOM-dependent import chain)
+const gradePoints = {
+    'AA': 4.0, 'BA': 3.5, 'BB': 3.0, 'CB': 2.5, 'CC': 2.0,
+    'DC': 1.5, 'DD': 1.0, 'FF': 0.0, 'P': null
 };
-
-const nonGPAGrades = ['P', 'S'];
+const nonGPAGrades = ['P'];
 
 /** Mirrors the semester GPA branch of calculateGPA() in script.js */
 function computeSemesterGPA(courses) {
     let points = 0, credits = 0;
     for (const c of courses) {
-        const gp = gradePointsBOUN[c.grade];
+        const gp = gradePoints[c.grade];
         if (gp !== null && gp !== undefined && c.credits > 0) {
             points += gp * c.credits;
             credits += c.credits;
@@ -80,7 +85,7 @@ function computeCumulativeGPA(semCourses, previousGPA, previousCredits, retakes)
     let retakeCredits = 0, retakeOldPoints = 0;
 
     for (const c of semCourses) {
-        const gp = gradePointsBOUN[c.grade];
+        const gp = gradePoints[c.grade];
         if (gp !== null && gp !== undefined && c.credits > 0) {
             semPoints += gp * c.credits;
             semCredits += c.credits;
@@ -90,7 +95,7 @@ function computeCumulativeGPA(semCourses, previousGPA, previousCredits, retakes)
     for (const r of retakes) {
         if (!nonGPAGrades.includes(r.oldGrade)) {
             retakeCredits += r.credits;
-            retakeOldPoints += (gradePointsBOUN[r.oldGrade] || 0) * r.credits;
+            retakeOldPoints += (gradePoints[r.oldGrade] || 0) * r.credits;
         }
     }
 
@@ -344,7 +349,7 @@ function buildSemesterRecord(courses) {
     let totalPoints = 0, credits = 0;
     const saved = [];
     for (const c of courses) {
-        const gp = gradePointsBOUN[c.grade];
+        const gp = gradePoints[c.grade];
         if (c.credit > 0 && c.grade) {
             saved.push(c);
             if (gp !== null && gp !== undefined) {
@@ -474,6 +479,229 @@ test('Simulation: loadScenario warns when semesterId differs', () => {
     warningShown = false;
     simulateLoad(scenarioSemId, scenarioSemId);
     assert(!warningShown, 'no warning when semester matches');
+});
+
+// ============================================
+// Goal Calculator Logic (mirrors calculateGoal in script.js)
+// ============================================
+
+/**
+ * Mirrors the pure math of calculateGoal() in script.js.
+ * requiredGPA = (targetGPA * (currentCredits + plannedCredits) - currentGPA * currentCredits) / plannedCredits
+ */
+function calculateGoalRequirement(currentGPA, currentCredits, targetGPA, plannedCredits) {
+    if (plannedCredits <= 0) return { valid: false, status: 'invalid', requiredGPA: null };
+    if (targetGPA <= 0) return { valid: false, status: 'invalid', requiredGPA: null };
+
+    const targetTotalPoints = targetGPA * (currentCredits + plannedCredits);
+    const currentPoints = currentGPA * currentCredits;
+    const requiredGPA = (targetTotalPoints - currentPoints) / plannedCredits;
+
+    let status;
+    if (requiredGPA > 4.0) status = 'impossible';
+    else if (requiredGPA < 0) status = 'alreadyAchieved';
+    else if (requiredGPA >= 3.5) status = 'difficult';
+    else status = 'achievable';
+
+    return { valid: true, status, requiredGPA };
+}
+
+// ============================================
+// Goal Calculator Tests
+// ============================================
+
+test('Goal: invalid when plannedCredits is 0', () => {
+    const result = calculateGoalRequirement(3.0, 30, 3.5, 0);
+    assert(!result.valid, 'plannedCredits=0 should be invalid');
+});
+
+test('Goal: invalid when targetGPA is 0', () => {
+    const result = calculateGoalRequirement(3.0, 30, 0, 10);
+    assert(!result.valid, 'targetGPA=0 should be invalid');
+});
+
+test('Goal: achievable when required GPA is moderate', () => {
+    // current: 3.0 over 30 credits, target: 3.2, planned: 30 credits
+    // required = (3.2 * 60 - 3.0 * 30) / 30 = (192 - 90) / 30 = 102/30 = 3.4
+    const result = calculateGoalRequirement(3.0, 30, 3.2, 30);
+    assert(result.valid, 'should be valid');
+    assertEqual(result.status, 'achievable', '3.4 required GPA is achievable');
+    assertApprox(result.requiredGPA, 3.4, 0.0001, 'required GPA calculation');
+});
+
+test('Goal: difficult when required GPA is between 3.5 and 4.0', () => {
+    // current: 3.0 over 30 credits, target: 3.5, planned: 30 credits
+    // required = (3.5 * 60 - 3.0 * 30) / 30 = (210 - 90) / 30 = 120/30 = 4.0
+    // 4.0 is NOT > 4.0, so it's 'difficult' (>= 3.5)
+    const result = calculateGoalRequirement(3.0, 30, 3.5, 30);
+    assertEqual(result.status, 'difficult', '4.0 required GPA is difficult (not impossible)');
+    assertApprox(result.requiredGPA, 4.0, 0.0001, 'required GPA at boundary');
+});
+
+test('Goal: impossible when required GPA exceeds 4.0', () => {
+    // current: 2.0 over 30 credits, target: 3.5, planned: 10 credits
+    // required = (3.5 * 40 - 2.0 * 30) / 10 = (140 - 60) / 10 = 80/10 = 8.0
+    const result = calculateGoalRequirement(2.0, 30, 3.5, 10);
+    assertEqual(result.status, 'impossible', '8.0 required GPA is impossible');
+    assert(result.requiredGPA > 4.0, 'required GPA should exceed 4.0');
+});
+
+test('Goal: already achieved when required GPA is negative', () => {
+    // current: 4.0 over 100 credits, target: 2.0, planned: 10 credits
+    // required = (2.0 * 110 - 4.0 * 100) / 10 = (220 - 400) / 10 = -18
+    const result = calculateGoalRequirement(4.0, 100, 2.0, 10);
+    assertEqual(result.status, 'alreadyAchieved', 'negative required GPA means already achieved');
+    assert(result.requiredGPA < 0, 'required GPA should be negative');
+});
+
+test('Goal: boundary - exactly 3.5 required is difficult', () => {
+    // current: 3.0/30, target: 3.25, planned: 30
+    // required = (3.25 * 60 - 3.0 * 30) / 30 = (195 - 90) / 30 = 3.5
+    const result = calculateGoalRequirement(3.0, 30, 3.25, 30);
+    assertApprox(result.requiredGPA, 3.5, 0.0001, 'required GPA should be exactly 3.5');
+    assertEqual(result.status, 'difficult', '3.5 exactly is difficult (>= 3.5 check)');
+});
+
+test('Goal: boundary - just below 3.5 is achievable', () => {
+    // current: 3.0/30, target: 3.24, planned: 30
+    // required = (3.24 * 60 - 90) / 30 = (194.4 - 90) / 30 = 104.4 / 30 = 3.48
+    const result = calculateGoalRequirement(3.0, 30, 3.24, 30);
+    assert(result.requiredGPA < 3.5, 'required GPA should be below 3.5');
+    assertEqual(result.status, 'achievable', 'below 3.5 is achievable');
+});
+
+// ============================================
+// Achievement Conditions (mirrors checkAchievements in script.js)
+// ============================================
+
+/** Mirrors getTotalCourseCount() in script.js */
+function getTotalCourseCount(s) {
+    let count = s.courses.length;
+    Object.values(s.semesters).forEach(sem => {
+        count += sem.courses.length;
+    });
+    return count;
+}
+
+/** Mirrors hasGrade() in script.js */
+function hasGrade(s, grade) {
+    if (s.courses.some(c => c.grade === grade)) return true;
+    return Object.values(s.semesters).some(sem => sem.courses.some(c => c.grade === grade));
+}
+
+/** Mirrors the achievement condition checks (excluding time-based and localStorage-based) */
+function checkAchievementConditions(s, currentGPA) {
+    return {
+        first_course: getTotalCourseCount(s) >= 1,
+        five_courses: getTotalCourseCount(s) >= 5,
+        twenty_courses: getTotalCourseCount(s) >= 20,
+        first_aa: hasGrade(s, 'AA'),
+        honor_student: currentGPA >= 3.00,
+        high_honor: currentGPA >= 3.50,
+        perfect_gpa: currentGPA >= 3.995,
+        first_semester: Object.keys(s.semesters).length >= 1,
+        four_semesters: Object.keys(s.semesters).length >= 4,
+        eight_semesters: Object.keys(s.semesters).length >= 8,
+    };
+}
+
+// ============================================
+// Achievement Conditions Tests
+// ============================================
+
+test('Achievements: empty state unlocks nothing', () => {
+    const s = { courses: [], semesters: {} };
+    const result = checkAchievementConditions(s, 0);
+    Object.values(result).forEach(unlocked => {
+        assert(!unlocked, 'no achievement should unlock with empty state');
+    });
+});
+
+test('Achievements: single course unlocks first_course', () => {
+    const s = { courses: [{ grade: 'BB', credit: 3 }], semesters: {} };
+    const result = checkAchievementConditions(s, 0);
+    assert(result.first_course, 'first_course should unlock with 1 course');
+    assert(!result.five_courses, 'five_courses should NOT unlock with 1 course');
+});
+
+test('Achievements: five courses unlocks five_courses', () => {
+    const s = { courses: Array(5).fill({ grade: 'BB', credit: 3 }), semesters: {} };
+    const result = checkAchievementConditions(s, 0);
+    assert(result.first_course, 'first_course should unlock');
+    assert(result.five_courses, 'five_courses should unlock with 5 courses');
+    assert(!result.twenty_courses, 'twenty_courses should NOT unlock with 5 courses');
+});
+
+test('Achievements: twenty courses unlocks twenty_courses', () => {
+    const s = { courses: Array(20).fill({ grade: 'BB', credit: 3 }), semesters: {} };
+    const result = checkAchievementConditions(s, 0);
+    assert(result.twenty_courses, 'twenty_courses should unlock with 20 courses');
+});
+
+test('Achievements: first_aa unlocks when any course has AA grade', () => {
+    const s = { courses: [{ grade: 'AA', credit: 3 }, { grade: 'BB', credit: 3 }], semesters: {} };
+    const result = checkAchievementConditions(s, 0);
+    assert(result.first_aa, 'first_aa should unlock when a course has AA');
+});
+
+test('Achievements: first_aa unlocks when AA is in a saved semester', () => {
+    const s = {
+        courses: [{ grade: 'BB', credit: 3 }],
+        semesters: { '1': { courses: [{ grade: 'AA', credit: 3 }] } }
+    };
+    const result = checkAchievementConditions(s, 0);
+    assert(result.first_aa, 'first_aa should unlock from semester history');
+});
+
+test('Achievements: first_aa does NOT unlock without any AA grade', () => {
+    const s = { courses: [{ grade: 'BB', credit: 3 }], semesters: {} };
+    const result = checkAchievementConditions(s, 0);
+    assert(!result.first_aa, 'first_aa should NOT unlock without AA');
+});
+
+test('Achievements: honor_student unlocks at GPA >= 3.00', () => {
+    const s = { courses: [], semesters: {} };
+    assert(checkAchievementConditions(s, 3.00).honor_student, '3.00 should unlock honor_student');
+    assert(checkAchievementConditions(s, 2.99).honor_student === false, '2.99 should NOT unlock honor_student');
+});
+
+test('Achievements: high_honor unlocks at GPA >= 3.50', () => {
+    const s = { courses: [], semesters: {} };
+    assert(checkAchievementConditions(s, 3.50).high_honor, '3.50 should unlock high_honor');
+    assert(checkAchievementConditions(s, 3.49).high_honor === false, '3.49 should NOT unlock high_honor');
+});
+
+test('Achievements: perfect_gpa unlocks at GPA >= 3.995', () => {
+    const s = { courses: [], semesters: {} };
+    assert(checkAchievementConditions(s, 3.995).perfect_gpa, '3.995 should unlock perfect_gpa');
+    assert(checkAchievementConditions(s, 3.994).perfect_gpa === false, '3.994 should NOT unlock perfect_gpa');
+    assert(checkAchievementConditions(s, 4.0).perfect_gpa, '4.0 should unlock perfect_gpa');
+});
+
+test('Achievements: semester count achievements', () => {
+    const makeState = (n) => {
+        const semesters = {};
+        for (let i = 1; i <= n; i++) semesters[i] = { courses: [] };
+        return { courses: [], semesters };
+    };
+    assert(checkAchievementConditions(makeState(0), 0).first_semester === false, '0 semesters: no first_semester');
+    assert(checkAchievementConditions(makeState(1), 0).first_semester, '1 semester: first_semester unlocks');
+    assert(checkAchievementConditions(makeState(1), 0).four_semesters === false, '1 semester: no four_semesters');
+    assert(checkAchievementConditions(makeState(4), 0).four_semesters, '4 semesters: four_semesters unlocks');
+    assert(checkAchievementConditions(makeState(4), 0).eight_semesters === false, '4 semesters: no eight_semesters');
+    assert(checkAchievementConditions(makeState(8), 0).eight_semesters, '8 semesters: eight_semesters unlocks');
+});
+
+test('Achievements: course count includes both current and saved semester courses', () => {
+    const s = {
+        courses: [{ grade: 'BB', credit: 3 }, { grade: 'CC', credit: 3 }],
+        semesters: {
+            '1': { courses: [{ grade: 'AA', credit: 3 }, { grade: 'BA', credit: 3 }, { grade: 'BB', credit: 3 }] }
+        }
+    };
+    assertEqual(getTotalCourseCount(s), 5, '2 current + 3 saved = 5 total');
+    const result = checkAchievementConditions(s, 0);
+    assert(result.five_courses, 'five_courses should unlock with 5 total courses');
 });
 
 // ============================================
