@@ -1,0 +1,3 @@
+# Let OpenCode read deepwork progress files even though git ignores them
+!.slim/deepwork/
+!.slim/deepwork/**
