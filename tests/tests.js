@@ -14,6 +14,14 @@
 // In a browser, test-runner.html uses <script type="module"> — the browser
 // can resolve the same imports via the test-runner page context.
 
+// BOUN Pusula pure utilities ARE safe to import directly: pusula-utils.js has no
+// DOM/state imports, so the Node ESM loader (and the browser module runner)
+// resolve them cleanly — unlike the GPA chain noted above. Test the real code.
+import {
+    parseHM, jsDayToMon, blocksOverlap, scheduleHasOverlap,
+    nextDeparture, urgencyTier, countdownInfo
+} from '../src/pusula-utils.js';
+
 // ============================================
 // Minimal Test Runner
 // ============================================
@@ -702,6 +710,75 @@ test('Achievements: course count includes both current and saved semester course
     assertEqual(getTotalCourseCount(s), 5, '2 current + 3 saved = 5 total');
     const result = checkAchievementConditions(s, 0);
     assert(result.five_courses, 'five_courses should unlock with 5 total courses');
+});
+
+// ============================================
+// BOUN Pusula — pure utility tests (imported from src/pusula-utils.js)
+// ============================================
+test('Pusula: parseHM converts HH:MM to minutes', () => {
+    assertEqual(parseHM('00:00'), 0, 'midnight');
+    assertEqual(parseHM('09:30'), 570, '09:30');
+    assertEqual(parseHM('23:59'), 1439, 'end of day');
+});
+
+test('Pusula: jsDayToMon maps Sunday-indexed to Monday-indexed', () => {
+    assertEqual(jsDayToMon(1), 0, 'Mon -> 0');
+    assertEqual(jsDayToMon(0), 6, 'Sun -> 6');
+    assertEqual(jsDayToMon(6), 5, 'Sat -> 5');
+});
+
+test('Pusula: blocksOverlap detects same-day time intersections only', () => {
+    const a = { day: 0, start: '09:00', end: '10:50' };
+    assert(blocksOverlap(a, { day: 0, start: '10:00', end: '11:00' }), 'overlapping same day');
+    assert(blocksOverlap(a, { day: 1, start: '10:00', end: '11:00' }) === false, 'different day never overlaps');
+    assert(blocksOverlap(a, { day: 0, start: '10:50', end: '12:00' }) === false, 'touching edges do not overlap (half-open)');
+});
+
+test('Pusula: scheduleHasOverlap scans all blocks across courses', () => {
+    const clean = [
+        { blocks: [{ day: 0, start: '09:00', end: '10:00' }] },
+        { blocks: [{ day: 0, start: '10:00', end: '11:00' }, { day: 1, start: '09:00', end: '10:00' }] }
+    ];
+    const clash = [
+        { blocks: [{ day: 2, start: '09:00', end: '11:00' }] },
+        { blocks: [{ day: 2, start: '10:00', end: '12:00' }] }
+    ];
+    assert(scheduleHasOverlap(clean) === false, 'no overlaps');
+    assert(scheduleHasOverlap(clash) === true, 'overlapping blocks detected');
+    assert(scheduleHasOverlap([]) === false, 'empty schedule');
+});
+
+test('Pusula: nextDeparture finds next time and wraps to tomorrow', () => {
+    const times = ['09:00', '12:00', '18:00'];
+    assertEqual(nextDeparture(times, parseHM('08:00')).time, '09:00', 'before first');
+    assert(nextDeparture(times, parseHM('08:00')).tomorrow === false, 'not tomorrow');
+    assertEqual(nextDeparture(times, parseHM('09:00')).time, '09:00', 'exact match counts (>=)');
+    assertEqual(nextDeparture(times, parseHM('12:30')).time, '18:00', 'next after 12:30');
+    assertEqual(nextDeparture(times, parseHM('19:00')).time, '09:00', 'wraps past last run');
+    assert(nextDeparture(times, parseHM('19:00')).tomorrow === true, 'wrap flagged tomorrow');
+    assert(nextDeparture([], 600) === null, 'no times -> null');
+});
+
+test('Pusula: urgencyTier thresholds (overdue/<2d danger, <=7d warning, else neutral)', () => {
+    assertEqual(urgencyTier(-1), 'danger', 'overdue');
+    assertEqual(urgencyTier(1 * 86400000), 'danger', '1 day left');
+    assertEqual(urgencyTier(5 * 86400000), 'warning', '5 days left');
+    assertEqual(urgencyTier(7 * 86400000), 'warning', '7 days (inclusive)');
+    assertEqual(urgencyTier(8 * 86400000), 'neutral', '8 days left');
+});
+
+test('Pusula: countdownInfo computes signed days/hours and overdue flag', () => {
+    const now = new Date('2026-06-30T12:00:00Z');
+    const future = new Date(now.getTime() + 3 * 86400000).toISOString();
+    const past = new Date(now.getTime() - 2 * 86400000).toISOString();
+    const f = countdownInfo(future, now);
+    assertEqual(f.overdue, false, 'future not overdue');
+    assertEqual(f.daysLeft, 3, '3 days left');
+    assertEqual(f.tier, 'warning', '3 days -> warning');
+    const p = countdownInfo(past, now);
+    assertEqual(p.overdue, true, 'past overdue');
+    assertEqual(p.tier, 'danger', 'overdue -> danger');
+    assert(p.daysLeft < 0, 'negative days when overdue');
 });
 
 // ============================================

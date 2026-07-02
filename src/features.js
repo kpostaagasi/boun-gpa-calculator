@@ -5,7 +5,7 @@
  * graduation, and achievements rendering.
  */
 import { state, elements, viewInitFlags } from './state.js';
-import { t, currentLanguage, registerViewRefresh } from './i18n.js';
+import { t, currentLanguage, registerViewRefresh, refreshView } from './i18n.js';
 import { gradePoints, retakeableGrades, nonGPAGrades, getClosestGradeToPoint, getSortedNumericGrades, escapeHtml, getGradeLabels, formatGradePoint, getGradeAtLeastPoint } from './grades.js';
 import { calculateGPA, getCurrentGPAValue, registerViewInit, closeMobileMenu, showToast, saveToLocalStorage, switchView, achievementsList, checkAchievements, addCourse, updateCoursesEmptyState } from './ui.js';
 import { computeSemesterGPA, computeCumulativeGPA, calculateGoalRequirement, getTotalCourseCount, hasGrade } from './gpa.js';
@@ -330,9 +330,21 @@ export async function shareResults() {
     }
 }
 
+// Collect every BOUN Pusula module blob ('pusula:*') as raw JSON strings.
+function collectPusulaModules() {
+    const out = {};
+    Object.keys(localStorage).forEach(k => {
+        if (k.startsWith('pusula:')) out[k] = localStorage.getItem(k);
+    });
+    return out;
+}
+
 export function exportAsJSON() {
     const data = {
-        version: '2.2',
+        // schemaVersion 3 = BOUN Pusula envelope (GPA data + module data).
+        // Legacy GPA-only backups (no schemaVersion / no pusulaModules) still import.
+        schemaVersion: 3,
+        version: '3.0',
         exportDate: new Date().toISOString(),
         language: currentLanguage,
         courses: state.courses,
@@ -344,13 +356,14 @@ export function exportAsJSON() {
         baseGPA: state.baseGPA,
         baseCredits: state.baseCredits,
         achievements: state.achievements,
-        scenarios: state.scenarios
+        scenarios: state.scenarios,
+        pusulaModules: collectPusulaModules()
     };
 
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
-    link.download = `boun-gpa-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    link.download = `boun-pusula-backup-${new Date().toISOString().slice(0, 10)}.json`;
     link.href = url;
     link.click();
     URL.revokeObjectURL(url);
@@ -403,6 +416,13 @@ export function importData() {
         if (data.achievements && typeof data.achievements === 'object') state.achievements = data.achievements;
         if (Array.isArray(data.scenarios)) state.scenarios = data.scenarios;
 
+        // Import BOUN Pusula module data (schemaVersion 3+). Absent in legacy backups.
+        if (data.pusulaModules && typeof data.pusulaModules === 'object') {
+            Object.entries(data.pusulaModules).forEach(([k, v]) => {
+                if (k.startsWith('pusula:') && typeof v === 'string') localStorage.setItem(k, v);
+            });
+        }
+
         // Import courses
         if (data.courses && elements.courseList) {
             elements.courseList.innerHTML = '';
@@ -422,6 +442,10 @@ export function importData() {
         }
         if (state.currentView === 'graduation') {
             calculateGraduationProgress();
+        }
+        // Re-render any BOUN Pusula module view that's currently open
+        if (['home', 'schedule', 'planner', 'notes', 'campus', 'gradeGuide'].includes(state.currentView)) {
+            refreshView(state.currentView);
         }
 
         // Close modal

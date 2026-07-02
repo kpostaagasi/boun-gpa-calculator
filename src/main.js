@@ -13,6 +13,14 @@ import { init } from './ui.js';
 import './charts.js';   // side-effect: registers 'charts' view init + refresh
 import './features.js'; // side-effect: registers view inits + refreshes + event bindings
 
+// BOUN Pusula SuperApp modules — each self-registers its view init/refresh on load.
+import './schedule.js';
+import './planner.js';
+import './notes.js';
+import './campus.js';
+import './gradeGuide.js';
+import './home.js';
+
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
 } else {
