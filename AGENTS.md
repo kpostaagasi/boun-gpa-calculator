@@ -2,7 +2,9 @@
 
 ## What this project is
 
-A static GPA calculator PWA for Boğaziçi University (BOUN) hosted on GitHub Pages. The codebase uses native ES modules (no build step, no bundler) loaded via `<script type="module">`. A minimal `package.json` with `"type": "module"` exists only so Node.js treats `.js` files as ES modules for the test suite.
+**BOUN Pusula** — a static, offline-first PWA that is a multi-module student SuperApp for Boğaziçi University (BOUN), hosted on GitHub Pages. The GPA calculator is now one module among several (Home hub, Weekly Schedule, Planner, Notes & Tasks, Campus, Grade Guide). The codebase uses native ES modules (no build step, no bundler) loaded via `<script type="module">`. A minimal `package.json` with `"type": "module"` exists only so Node.js treats `.js` files as ES modules for the test suite.
+
+**Adding a SuperApp module** (see CLAUDE.md → "SuperApp Module Architecture" for the full contract): create `src/<key>.js`, add a `<div class="view" id="<key>View">` + a `data-view="<key>"` nav button in `index.html`, `registerViewInit`/`registerViewRefresh` at module top level, `import './<key>.js'` in `main.js`, persist via `store.js` (`loadModule`/`saveModule` + `registerAppKey`), escape user text with `escapeHtml`, and add the file to `service-worker.js` `PRECACHE_ASSETS`. Do NOT rewrite `switchView`'s dispatch into a registry.
 
 ## Key files at a glance
 
@@ -19,8 +21,17 @@ A static GPA calculator PWA for Boğaziçi University (BOUN) hosted on GitHub Pa
 | `src/gpa.js` | Pure GPA math (no DOM): `computeSemesterGPA`, `computeCumulativeGPA`, etc. | 109 |
 | `src/ui.js` | DOM manipulation, `calculateGPA()`, storage, navigation, achievements, `init()` | 1178 |
 | `src/charts.js` | Chart.js rendering; registers `'charts'` view init + refresh | 341 |
-| `src/features.js` | Goal calculator, export, semester history, simulation, graduation, achievements rendering | 962 |
-| `tests/tests.js` | Regression tests (pure functions mirroring production logic) | 741 |
+| `src/features.js` | Goal calculator, export/import (versioned envelope), semester history, simulation, graduation, achievements | 970+ |
+| `src/store.js` | Per-module storage helper: `loadModule`/`saveModule` (`pusula:*`), `APP_KEYS`, `registerAppKey`, `pickLang`, `uid` | ~65 |
+| `src/pusula-utils.js` | PURE time/schedule math (no DOM) — imported directly by tests | ~90 |
+| `src/campus-seed.js` | Static bundled campus data (`export default`; links, ring/shuttle, contacts, calendar) | ~140 |
+| `src/home.js` | Home hub ("Bugün") — read-only widget aggregation over other modules + 60s tick | ~230 |
+| `src/schedule.js` | Weekly timetable grid module | ~250 |
+| `src/planner.js` | Exam/assignment planner with countdowns + `.ics` export | ~230 |
+| `src/notes.js` | Notes (pin/search) + tasks module | ~200 |
+| `src/campus.js` | Campus links / transport / contacts (render-only from seed) | ~110 |
+| `src/gradeGuide.js` | Read-only grade table + FAQ derived from `grades.js`/`gpa.js` | ~90 |
+| `tests/tests.js` | Regression tests (mirror GPA logic; import `pusula-utils.js` directly) | 800+ |
 | `tests/test-runner.html` | Browser test runner page (loads tests.js as `type="module"`) | 23 |
 
 Source modules live in `src/`. Assets live under `assets/favicon/` and `assets/images/`.

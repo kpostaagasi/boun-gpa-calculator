@@ -36,7 +36,13 @@ function initViewIfNeeded(viewId) {
 // Dynamic View Titles
 // ============================================
 export const viewTitles = {
-    get dashboard() { return t('nav.dashboard'); },
+    get home() { return t('nav.home'); },
+    get schedule() { return t('nav.schedule'); },
+    get planner() { return t('nav.planner'); },
+    get notes() { return t('nav.notes'); },
+    get campus() { return t('nav.campus'); },
+    get gradeGuide() { return t('nav.gradeGuide'); },
+    get dashboard() { return t('nav.home'); },
     get calculator() { return t('nav.calculator'); },
     get goal() { return t('nav.goal'); },
     get history() { return t('nav.history'); },
@@ -87,6 +93,10 @@ export function switchView(viewId) {
         initViewIfNeeded('graduation');
     } else if (viewId === 'achievements') {
         initViewIfNeeded('achievements');
+    } else if (['home', 'schedule', 'planner', 'notes', 'campus', 'gradeGuide'].includes(viewId)) {
+        // BOUN Pusula modules: bind delegated listeners once, then (re)render each visit
+        initViewIfNeeded(viewId);
+        refreshView(viewId);
     }
 }
 
@@ -745,6 +755,10 @@ export function loadFromLocalStorage() {
 export function clearAllData() {
     if (confirm(t('alert.clearConfirm'))) {
         localStorage.removeItem('gpaSaveData');
+        // Remove all BOUN Pusula module data (pusula:*) as well
+        Object.keys(localStorage)
+            .filter(k => k.startsWith('pusula:'))
+            .forEach(k => localStorage.removeItem(k));
         location.reload();
     }
 }
@@ -956,7 +970,7 @@ export function initKeyboardShortcuts() {
                     break;
                 case 'd':
                     e.preventDefault();
-                    switchView('dashboard');
+                    switchView('home');
                     break;
                 case 'k':
                     e.preventDefault();
@@ -1175,4 +1189,13 @@ export function init() {
     state.semester = elements.semesterSelect?.value || state.semester;
     updateCoursesEmptyState();
     calculateGPA();
+
+    // BOUN Pusula: render the initial landing view (Home) via the registration pattern.
+    switchView(state.currentView);
+
+    // Live tick — keep Home's countdowns / current-class fresh without a reload.
+    // Timer only (never a fetch); runs renderHome() only while Home is the active view.
+    setInterval(() => {
+        if (state.currentView === 'home') refreshView('home');
+    }, 60000);
 }

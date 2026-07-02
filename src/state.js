@@ -9,7 +9,7 @@
 // Application State
 // ============================================
 export const state = {
-    currentView: 'dashboard',
+    currentView: 'home',
     courses: [],
     previousGPA: 0,
     previousCredits: 0,
@@ -34,7 +34,13 @@ export const state = {
 // ============================================
 export const viewInitFlags = {
     simulation: false,
-    graduation: false
+    graduation: false,
+    // BOUN Pusula SuperApp modules
+    home: false,
+    schedule: false,
+    planner: false,
+    notes: false,
+    campus: false
 };
 
 // ============================================
@@ -110,6 +116,14 @@ export const elements = {
     exportSemesterGPA: document.getElementById('exportSemesterGPA'),
     exportGPA: document.getElementById('exportGPA'),
     exportCredits: document.getElementById('exportCredits'),
+
+    // BOUN Pusula SuperApp module view containers
+    homeView: document.getElementById('homeView'),
+    scheduleView: document.getElementById('scheduleView'),
+    plannerView: document.getElementById('plannerView'),
+    notesView: document.getElementById('notesView'),
+    campusView: document.getElementById('campusView'),
+    gradeGuideView: document.getElementById('gradeGuideView'),
 
     // Theme
     themeToggle: document.getElementById('themeToggle'),
