@@ -9,7 +9,7 @@
 import { state, elements, viewInitFlags } from './state.js';
 import { t, translatePage, setLanguage, toggleLanguage, updateLangToggle, initLanguage, registerViewRefresh, refreshView } from './i18n.js';
 import { gradePoints, retakeableGrades, nonGPAGrades, allGrades, getGradeSystem, updateAllGradeSelects, escapeHtml, getCourseTemplates, getClosestGradeToPoint, getSortedNumericGrades, formatGradePoint, getGradeAtLeastPoint, getGradeLabels } from './grades.js';
-import { computeSemesterGPA, computeCumulativeGPA, calculateGoalRequirement, getTotalCourseCount, hasGrade } from './gpa.js';
+import { computeSemesterStats, computeCumulativeStats, calculateGoalRequirement, getTotalCourseCount, hasGrade } from './gpa.js';
 
 // ============================================
 // View Initialization Registration Pattern
@@ -36,13 +36,9 @@ function initViewIfNeeded(viewId) {
 // Dynamic View Titles
 // ============================================
 export const viewTitles = {
-    get home() { return t('nav.home'); },
-    get schedule() { return t('nav.schedule'); },
-    get planner() { return t('nav.planner'); },
-    get notes() { return t('nav.notes'); },
-    get campus() { return t('nav.campus'); },
     get gradeGuide() { return t('nav.gradeGuide'); },
-    get dashboard() { return t('nav.home'); },
+    get finalGrade() { return t('nav.finalGrade'); },
+    get coursePlanner() { return t('nav.coursePlanner'); },
     get calculator() { return t('nav.calculator'); },
     get goal() { return t('nav.goal'); },
     get history() { return t('nav.history'); },
@@ -60,6 +56,8 @@ export function switchView(viewId) {
     // Update nav items
     elements.navItems.forEach(item => {
         item.classList.toggle('active', item.dataset.view === viewId);
+        if (item.dataset.view === viewId) item.setAttribute('aria-current', 'page');
+        else item.removeAttribute('aria-current');
     });
 
     // Update views
@@ -93,7 +91,7 @@ export function switchView(viewId) {
         initViewIfNeeded('graduation');
     } else if (viewId === 'achievements') {
         initViewIfNeeded('achievements');
-    } else if (['home', 'schedule', 'planner', 'notes', 'campus', 'gradeGuide'].includes(viewId)) {
+    } else if (['gradeGuide', 'finalGrade', 'coursePlanner'].includes(viewId)) {
         // BOUN Pusula modules: bind delegated listeners once, then (re)render each visit
         initViewIfNeeded(viewId);
         refreshView(viewId);
@@ -114,6 +112,19 @@ export function initNavigation() {
     elements.mobileMenuToggle?.addEventListener('click', toggleMobileMenu);
     elements.sidebarOverlay?.addEventListener('click', closeMobileMenu);
 
+    // Keep the accessibility state in sync when the viewport crosses the
+    // mobile breakpoint without requiring another menu interaction.
+    const mobileMediaQuery = window.matchMedia?.('(max-width: 768px)');
+    if (mobileMediaQuery) {
+        const handleMobileBreakpointChange = () => syncMobileMenuA11y();
+        if (mobileMediaQuery.addEventListener) {
+            mobileMediaQuery.addEventListener('change', handleMobileBreakpointChange);
+        } else if (mobileMediaQuery.addListener) {
+            // Safari versions predating MediaQueryList.addEventListener.
+            mobileMediaQuery.addListener(handleMobileBreakpointChange);
+        }
+    }
+
     // Dashboard quick actions
     document.querySelectorAll('[data-action]').forEach(el => {
         el.addEventListener('click', () => {
@@ -131,13 +142,88 @@ export function initNavigation() {
 }
 
 export function toggleMobileMenu() {
-    elements.sidebar?.classList.toggle('open');
-    elements.sidebarOverlay?.classList.toggle('active');
+    const isOpen = !elements.sidebar?.classList.contains('open');
+    elements.sidebar?.classList.toggle('open', isOpen);
+    elements.sidebarOverlay?.classList.toggle('active', isOpen);
+    // Focus the menu only when opening it as a direct result of the user's
+    // toggle action. Breakpoint/initialization synchronization must not steal
+    // focus from whatever the user is currently using.
+    syncMobileMenuA11y({ focusOnOpen: isOpen, restoreFocusOnClose: !isOpen });
 }
 
 export function closeMobileMenu() {
     elements.sidebar?.classList.remove('open');
     elements.sidebarOverlay?.classList.remove('active');
+    syncMobileMenuA11y({ restoreFocusOnClose: true });
+}
+
+function syncMobileMenuA11y({ focusOnOpen = false, restoreFocusOnClose = false } = {}) {
+    const toggle = elements.mobileMenuToggle;
+    const sidebar = elements.sidebar;
+    const isOpen = sidebar?.classList.contains('open') || false;
+    // Only hide the sidebar from the accessibility tree on mobile. On desktop
+    // it is part of the persistent page navigation even without `.open`.
+    const isMobile = window.matchMedia?.('(max-width: 768px)').matches || false;
+    if (sidebar) {
+        sidebar.setAttribute('aria-hidden', String(isMobile && !isOpen));
+        sidebar.inert = isMobile && !isOpen;
+    }
+    if (!toggle) return;
+    toggle.setAttribute('aria-expanded', String(isOpen));
+    if (sidebar?.id) toggle.setAttribute('aria-controls', sidebar.id);
+    toggle.setAttribute('aria-label', isOpen ? t('common.close') : t('nav.menu'));
+    if (focusOnOpen && isMobile && isOpen) {
+        const firstFocusable = getModalFocusables(sidebar)[0];
+        firstFocusable?.focus();
+    } else if (restoreFocusOnClose && isMobile && !isOpen && sidebar?.contains(document.activeElement)) {
+        toggle.focus();
+    }
+}
+
+const modalReturnFocus = new WeakMap();
+
+function getModalFocusables(modal) {
+    return [...modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')]
+        .filter(el => !el.disabled && el.offsetParent !== null);
+}
+
+export function openModal(modal, focusTarget) {
+    if (!modal) return;
+    modalReturnFocus.set(modal, document.activeElement);
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    const dialog = modal.querySelector('[role="dialog"]') || modal.firstElementChild;
+    if (dialog) {
+        dialog.setAttribute('role', 'dialog');
+        dialog.setAttribute('aria-modal', 'true');
+    }
+    document.body.style.overflow = 'hidden';
+    (focusTarget || getModalFocusables(modal)[0] || dialog)?.focus?.();
+}
+
+export function closeModal(modal) {
+    if (!modal) return;
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    const returnFocus = modalReturnFocus.get(modal);
+    modalReturnFocus.delete(modal);
+    if (!document.querySelector('.modal-overlay.active')) document.body.style.overflow = '';
+    if (returnFocus?.focus) returnFocus.focus();
+}
+
+function initModalA11y(modal) {
+    if (!modal || modal.dataset.a11yReady) return;
+    modal.dataset.a11yReady = 'true';
+    modal.setAttribute('aria-hidden', modal.classList.contains('active') ? 'false' : 'true');
+    modal.addEventListener('keydown', e => {
+        if (e.key !== 'Tab') return;
+        const focusables = getModalFocusables(modal);
+        if (!focusables.length) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
 }
 
 // ============================================
@@ -316,58 +402,28 @@ export function updateCoursesEmptyState() {
 // GPA Calculation
 // ============================================
 export function calculateGPA() {
-    let semesterPoints = 0;
-    let semesterCredits = 0;
-    let retakeCredits = 0;
-    let retakeOldPoints = 0;
-
-    // Calculate current semester
-    let semesterCreditsForGPA = 0;  // Credits used for GPA calculation (excludes P)
-    let totalSemesterCredits = 0;   // All credits including P
-
+    const courses = [];
+    const retakes = [];
     document.querySelectorAll('.course-entry').forEach(entry => {
-        const credit = parseFloat(entry.querySelector('.course-credit').value);
+        const credit = Number.parseFloat(entry.querySelector('.course-credit').value);
         const grade = entry.querySelector('.course-grade').value;
-        const isRetake = entry.querySelector('.is-retake').checked;
         const previousGrade = entry.querySelector('.previous-grade').value;
-
-        if (credit && grade) {
-            totalSemesterCredits += credit;
-
-            // Handle retake adjustment FIRST (even for P grades, old grade must be removed from cumulative)
-            // This ensures that if someone retakes FF and gets P, the FF is still removed
-            if (isRetake && previousGrade && !nonGPAGrades.includes(previousGrade)) {
-                retakeCredits += credit;
-                retakeOldPoints += credit * gradePoints[previousGrade];
-            }
-
-            // P grade doesn't affect GPA but counts as credit
-            if (!nonGPAGrades.includes(grade)) {
-                semesterPoints += credit * gradePoints[grade];
-                semesterCreditsForGPA += credit;
+        if (Number.isFinite(credit) && credit > 0 && grade) {
+            courses.push({ credits: credit, grade });
+            if (entry.querySelector('.is-retake').checked && previousGrade) {
+                retakes.push({ credits: credit, oldGrade: previousGrade });
             }
         }
     });
 
-    semesterCredits = semesterCreditsForGPA;
-
     // Get previous values
     const previousGPA = parseFloat(elements.previousGPAInput.value) || 0;
     const previousCredits = parseFloat(elements.previousCreditsInput.value) || 0;
-    const previousPoints = previousGPA * previousCredits;
-
-    // Calculate semester GPA
-    const semesterGPA = semesterCredits > 0 ? (semesterPoints / semesterCredits) : 0;
-
-    // Calculate cumulative GPA (with retake adjustment)
-    const adjustedPreviousCredits = Math.max(0, previousCredits - retakeCredits);
-    const adjustedPreviousPoints = Math.max(0, previousPoints - retakeOldPoints);
-    const creditsForGPA = semesterCredits + adjustedPreviousCredits;
-    const totalPoints = semesterPoints + adjustedPreviousPoints;
-    const cumulativeGPA = creditsForGPA > 0 ? (totalPoints / creditsForGPA) : 0;
-
-    // Total credits includes P grades
-    const totalCredits = totalSemesterCredits + adjustedPreviousCredits;
+    const stats = computeCumulativeStats(courses, previousGPA, previousCredits, retakes);
+    const semesterGPA = computeSemesterStats(courses).gpa;
+    const cumulativeGPA = stats.gpa;
+    const creditsForGPA = stats.gpaCredits;
+    const totalCredits = stats.totalCredits;
 
     // Update displays with animation
     animateValue(elements.semesterGPA, semesterGPA.toFixed(2));
@@ -463,7 +519,7 @@ export function renderTemplates(filter = '') {
                                 <div class="template-item-name">${course.code}</div>
                                 <div class="template-item-meta">${course.name} • ${course.credit} ${t('templates.credit')}</div>
                             </div>
-                            <button class="template-item-add">
+                            <button class="template-item-add" aria-label="${t('common.add')}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <line x1="12" y1="5" x2="12" y2="19"></line>
                                     <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -496,14 +552,14 @@ export function renderTemplates(filter = '') {
 }
 
 export function openTemplatesModal() {
-    elements.templatesModal.classList.add('active');
+    openModal(elements.templatesModal, elements.templateSearch);
     renderTemplates();
     elements.templateSearch.value = '';
     elements.templateSearch.focus();
 }
 
 export function closeTemplatesModal() {
-    elements.templatesModal.classList.remove('active');
+    closeModal(elements.templatesModal);
 }
 
 // ============================================
@@ -770,8 +826,7 @@ export function initHelpModal() {
     const closeBtn = elements.helpModal?.querySelector('.close');
 
     elements.helpBtn?.addEventListener('click', () => {
-        elements.helpModal.classList.add('active');
-        document.body.style.overflow = 'hidden';
+        openModal(elements.helpModal);
     });
 
     closeBtn?.addEventListener('click', closeHelpModal);
@@ -790,8 +845,7 @@ export function initHelpModal() {
 }
 
 export function closeHelpModal() {
-    elements.helpModal?.classList.remove('active');
-    document.body.style.overflow = '';
+    closeModal(elements.helpModal);
 }
 
 // ============================================
@@ -888,16 +942,16 @@ export function initEventListeners() {
     const feedbackForm = document.getElementById('feedbackForm');
 
     feedbackBtn?.addEventListener('click', () => {
-        feedbackModal?.classList.add('active');
+        openModal(feedbackModal);
         closeMobileMenu();
     });
 
     feedbackModalClose?.addEventListener('click', () => {
-        feedbackModal?.classList.remove('active');
+        closeModal(feedbackModal);
     });
 
     feedbackModal?.addEventListener('click', (e) => {
-        if (e.target === feedbackModal) feedbackModal.classList.remove('active');
+        if (e.target === feedbackModal) closeModal(feedbackModal);
     });
 
     feedbackForm?.addEventListener('submit', (e) => {
@@ -910,7 +964,7 @@ export function initEventListeners() {
         };
         alert(t('alert.feedbackSuccess'));
         feedbackForm.reset();
-        feedbackModal?.classList.remove('active');
+        closeModal(feedbackModal);
     });
 
     // Shortcuts modal
@@ -919,16 +973,16 @@ export function initEventListeners() {
     const shortcutsModalClose = document.getElementById('shortcutsModalClose');
 
     shortcutsBtn?.addEventListener('click', () => {
-        shortcutsModal?.classList.add('active');
+        openModal(shortcutsModal);
         closeMobileMenu();
     });
 
     shortcutsModalClose?.addEventListener('click', () => {
-        shortcutsModal?.classList.remove('active');
+        closeModal(shortcutsModal);
     });
 
     shortcutsModal?.addEventListener('click', (e) => {
-        if (e.target === shortcutsModal) shortcutsModal.classList.remove('active');
+        if (e.target === shortcutsModal) closeModal(shortcutsModal);
     });
 }
 
@@ -968,10 +1022,6 @@ export function initKeyboardShortcuts() {
                     e.preventDefault();
                     switchView('export');
                     break;
-                case 'd':
-                    e.preventDefault();
-                    switchView('home');
-                    break;
                 case 'k':
                     e.preventDefault();
                     switchView('calculator');
@@ -991,7 +1041,7 @@ export function initKeyboardShortcuts() {
         if (!e.ctrlKey && !e.metaKey && !e.altKey) {
             switch (e.key) {
                 case '?':
-                    elements.helpModal?.classList.add('active');
+                    openModal(elements.helpModal);
                     break;
                 case 'Escape':
                     closeAllModals();
@@ -1003,7 +1053,7 @@ export function initKeyboardShortcuts() {
 
 export function closeAllModals() {
     document.querySelectorAll('.modal-overlay').forEach(modal => {
-        modal.classList.remove('active');
+        closeModal(modal);
     });
     document.body.style.overflow = '';
 }
@@ -1014,6 +1064,9 @@ export function showToast(message, duration = 2000) {
 
     const toast = document.createElement('div');
     toast.className = 'toast';
+    toast.setAttribute('role', 'status');
+    toast.setAttribute('aria-live', 'polite');
+    toast.setAttribute('aria-atomic', 'true');
     toast.textContent = message;
     toast.style.cssText = `
         position: fixed;
@@ -1181,6 +1234,13 @@ export function init() {
     initNavigation();
     initEventListeners();
     initHelpModal();
+    document.querySelectorAll('.modal-overlay').forEach(initModalA11y);
+    syncMobileMenuA11y();
+    if (elements.resultsGrid) {
+        elements.resultsGrid.setAttribute('role', 'status');
+        elements.resultsGrid.setAttribute('aria-live', 'polite');
+        elements.resultsGrid.setAttribute('aria-atomic', 'true');
+    }
     initKeyboardShortcuts();
     initDragAndDrop();
     // Initialize state.semester to match the current select value before loading
@@ -1190,12 +1250,5 @@ export function init() {
     updateCoursesEmptyState();
     calculateGPA();
 
-    // BOUN Pusula: render the initial landing view (Home) via the registration pattern.
     switchView(state.currentView);
-
-    // Live tick — keep Home's countdowns / current-class fresh without a reload.
-    // Timer only (never a fetch); runs renderHome() only while Home is the active view.
-    setInterval(() => {
-        if (state.currentView === 'home') refreshView('home');
-    }, 60000);
 }

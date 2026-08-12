@@ -1,7 +1,7 @@
 {
-    "name": "BOUN Pusula",
-    "short_name": "Pusula",
-    "description": "Boğaziçi Üniversitesi öğrencileri için çevrimdışı günlük uygulama: GPA, ders programı, sınav & ödev planı, notlar ve kampüs.",
+    "name": "BOUN GPA Calculator",
+    "short_name": "GPA Calculator",
+    "description": "Boğaziçi Üniversitesi öğrencileri için hızlı ve çevrimdışı GPA hesaplama aracı.",
     "start_url": "/boun-gpa-calculator/",
     "icons": [
         {

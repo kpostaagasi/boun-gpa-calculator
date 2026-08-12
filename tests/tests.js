@@ -21,6 +21,20 @@ import {
     parseHM, jsDayToMon, blocksOverlap, scheduleHasOverlap,
     nextDeparture, urgencyTier, countdownInfo
 } from '../src/pusula-utils.js';
+import {
+    computeCurrentPoints, requiredFinalScore, achievablePoint, validateWeightTotal, scoreThresholds
+} from '../src/final-grade-math.js';
+import {
+    creditTotal, gpaCreditTotal, projectedGPA, requiredPlannedGPA
+} from '../src/course-planner-math.js';
+// gpa.js shares the grade configuration module, whose dependency graph includes
+// state.js. Provide only the DOM surface needed during Node module evaluation.
+if (typeof document === 'undefined') {
+    globalThis.document = { getElementById: () => null, querySelectorAll: () => [] };
+    globalThis.window = { addEventListener: () => {} };
+}
+const { computeSemesterGPA, computeCumulativeGPA, computeSemesterStats, computeCumulativeStats } = await import('../src/gpa.js');
+const { gradePoints } = await import('../src/grades.js');
 
 // ============================================
 // Minimal Test Runner
@@ -61,59 +75,6 @@ function assertApprox(actual, expected, tolerance, message) {
 // ============================================
 // Pure functions mirroring script.js logic
 // ============================================
-
-// Data constants (defined locally to avoid DOM-dependent import chain)
-const gradePoints = {
-    'AA': 4.0, 'BA': 3.5, 'BB': 3.0, 'CB': 2.5, 'CC': 2.0,
-    'DC': 1.5, 'DD': 1.0, 'FF': 0.0, 'P': null
-};
-const nonGPAGrades = ['P'];
-
-/** Mirrors the semester GPA branch of calculateGPA() in script.js */
-function computeSemesterGPA(courses) {
-    let points = 0, credits = 0;
-    for (const c of courses) {
-        const gp = gradePoints[c.grade];
-        if (gp !== null && gp !== undefined && c.credits > 0) {
-            points += gp * c.credits;
-            credits += c.credits;
-        }
-    }
-    return credits > 0 ? points / credits : 0;
-}
-
-/**
- * Mirrors the cumulative GPA branch of calculateGPA() in script.js,
- * including the retake adjustment logic.
- *
- * retakes: [{ credits, oldGrade }]
- */
-function computeCumulativeGPA(semCourses, previousGPA, previousCredits, retakes) {
-    let semPoints = 0, semCredits = 0;
-    let retakeCredits = 0, retakeOldPoints = 0;
-
-    for (const c of semCourses) {
-        const gp = gradePoints[c.grade];
-        if (gp !== null && gp !== undefined && c.credits > 0) {
-            semPoints += gp * c.credits;
-            semCredits += c.credits;
-        }
-    }
-
-    for (const r of retakes) {
-        if (!nonGPAGrades.includes(r.oldGrade)) {
-            retakeCredits += r.credits;
-            retakeOldPoints += (gradePoints[r.oldGrade] || 0) * r.credits;
-        }
-    }
-
-    const prevPoints = previousGPA * previousCredits;
-    const adjPrevCredits = Math.max(0, previousCredits - retakeCredits);
-    const adjPrevPoints = Math.max(0, prevPoints - retakeOldPoints);
-    const totalCredits = semCredits + adjPrevCredits;
-    const totalPoints = semPoints + adjPrevPoints;
-    return totalCredits > 0 ? totalPoints / totalCredits : 0;
-}
 
 /** Mirrors the fixed explorer achievement condition (Bug #1) */
 function explorerCondition(viewedViewsStr) {
@@ -229,6 +190,17 @@ test('GPA: P grade is excluded from GPA (counts credits but not points)', () => 
     assertApprox(gpa, 4.0, 0.0001, 'P grade should not affect GPA');
 });
 
+test('GPA stats: P contributes total credits but not GPA credits or points', () => {
+    const stats = computeSemesterStats([
+        { grade: 'AA', credits: 3 },
+        { grade: 'P', credits: 4 },
+    ]);
+    assertEqual(stats.totalCredits, 7, 'P should count toward total credits');
+    assertEqual(stats.gpaCredits, 3, 'P should not count toward GPA credits');
+    assertEqual(stats.points, 12, 'P should not contribute points');
+    assertApprox(stats.gpa, 4, 0.0001, 'semester GPA with P');
+});
+
 test('GPA: S grade is excluded from GPA calculation', () => {
     const gpa = computeSemesterGPA([
         { grade: 'BB', credits: 3 },
@@ -281,15 +253,13 @@ test('Cumulative GPA: retake adjusts previous credits and points', () => {
     // Retake: FF (0.0) 3cr -> removes 3 credits and 0 points from previous
     // Semester: AA(4.0) 3cr -> 12 points
     // adjPrevCredits = 6-3=3, adjPrevPoints = 18-0=18
-    // cumulative = (12 + 18) / (3 + 3) = 30/6 = 5.0
-    // Note: this can exceed 4.0 in this test because previous GPA was 3.0 and
-    // we removed an FF (0 points). This is mathematically valid for the formula.
+    // The inconsistent baseline/retake record is safely bounded at 4.0.
     const gpa = computeCumulativeGPA(
         [{ grade: 'AA', credits: 3 }],
         3.0, 6,
         [{ credits: 3, oldGrade: 'FF' }]
     );
-    assertApprox(gpa, 5.0, 0.0001, 'retake of FF with AA');
+    assertApprox(gpa, 4.0, 0.0001, 'retake of FF with AA');
 });
 
 test('Cumulative GPA: retake of DD, new grade AA', () => {
@@ -297,13 +267,23 @@ test('Cumulative GPA: retake of DD, new grade AA', () => {
     // Retake: DD (1.0) 3cr -> removes 3 credits and 3 points from previous
     // Semester: AA(4.0) 3cr -> 12 points
     // adjPrevCredits = 6-3=3, adjPrevPoints = 18-3=15
-    // cumulative = (12 + 15) / (3 + 3) = 27/6 = 4.5
     const gpa = computeCumulativeGPA(
         [{ grade: 'AA', credits: 3 }],
         3.0, 6,
         [{ credits: 3, oldGrade: 'DD' }]
     );
-    assertApprox(gpa, 4.5, 0.0001, 'retake DD -> AA');
+    assertApprox(gpa, 4.0, 0.0001, 'retake DD -> AA');
+});
+
+test('Cumulative stats: P adds total credits but not GPA credits', () => {
+    const stats = computeCumulativeStats(
+        [{ grade: 'P', credits: 3 }, { grade: 'BB', credits: 3 }],
+        2.0, 6, []
+    );
+    assertEqual(stats.totalCredits, 12, 'cumulative total credits include P');
+    assertEqual(stats.gpaCredits, 9, 'cumulative GPA credits exclude P');
+    assertApprox(stats.points, 21, 0.0001, 'cumulative points exclude P');
+    assertApprox(stats.gpa, 21 / 9, 0.0001, 'cumulative GPA with P');
 });
 
 test('Cumulative GPA: retake of P grade is not subtracted (P not in GPA)', () => {
@@ -338,14 +318,7 @@ test('Cumulative GPA: previous credits clamped to zero if retake removes all', (
         3.0, 3,
         [{ credits: 5, oldGrade: 'FF' }]
     );
-    // adjPrevCredits = max(0, 3-5) = 0, adjPrevPoints = max(0, 9-0) = 9 -> clamped
-    // cumulative = (12 + 0) / (3 + 0) = 4.0
-    // With clamping on both: adjPrevPoints = max(0, 9-0) = 9... wait
-    // Our implementation: adjPrevCredits = max(0, 3-5)=0, adjPrevPoints = max(0, 9-0)=9
-    // totalPoints = 12+9=21, totalCredits=3+0=3, gpa=7.0
-    // Actually the clamping only prevents negative credits. Let's just check it doesn't crash.
-    assert(typeof gpa === 'number' && !isNaN(gpa), 'should return a valid number, not NaN');
-    assert(gpa > 0, 'result should be positive');
+    assertApprox(gpa, 4.0, 0.0001, 'retake cannot create GPA above 4.0');
 });
 
 // ============================================
@@ -782,6 +755,136 @@ test('Pusula: countdownInfo computes signed days/hours and overdue flag', () => 
 });
 
 // ============================================
+// Final Grade Calculator (imported from src/final-grade-math.js)
+// ============================================
+test('FinalGrade: scoreThresholds use the BOUN absolute 0-100 scale', () => {
+    assertEqual(scoreThresholds.AA, 90, 'AA ≥ 90');
+    assertEqual(scoreThresholds.BB, 75, 'BB ≥ 75');
+    assertEqual(scoreThresholds.CC, 55, 'CC ≥ 55');
+    assertEqual(scoreThresholds.FF, 0, 'FF starts at 0');
+});
+
+test('FinalGrade: scoreThresholds are strictly descending', () => {
+    const grades = ['AA', 'BA', 'BB', 'CB', 'CC', 'DC', 'DD', 'FF'];
+    for (let i = 1; i < grades.length; i++) {
+        assert(scoreThresholds[grades[i - 1]] > scoreThresholds[grades[i]],
+            `${grades[i - 1]} threshold must exceed ${grades[i]}`);
+    }
+});
+
+test('FinalGrade: computeCurrentPoints sums weight×score', () => {
+    assertApprox(computeCurrentPoints([{ weight: 0.3, score: 80 }, { weight: 0.2, score: 50 }]), 34, 0.0001, '30%·80 + 20%·50 = 34');
+});
+
+test('FinalGrade: computeCurrentPoints handles empty and invalid entries', () => {
+    assertEqual(computeCurrentPoints([]), 0, 'empty list → 0');
+    assertEqual(computeCurrentPoints([{ weight: 0.5, score: 'x' }, { weight: 'a', score: 10 }, {}]), 0, 'non-numeric entries skipped');
+});
+
+test('FinalGrade: validateWeightTotal requires components plus final to equal 100%', () => {
+    assert(validateWeightTotal([{ weight: 0.3 }, { weight: 0.3 }], 0.4).valid, 'weights totaling 1 are valid');
+    assert(!validateWeightTotal([{ weight: 0.3 }], 0.4).valid, 'weights below 1 are invalid');
+    assert(!validateWeightTotal([{ weight: 0.7 }], 0.4).valid, 'weights above 1 are invalid');
+});
+
+test('FinalGrade: requiredFinalScore computes score needed on final', () => {
+    const r = requiredFinalScore(34, 0.4, 70);
+    assertEqual(r.status, 'ok', 'reachable target');
+    assertApprox(r.required, 90, 0.0001, '(70−34)/0.4 = 90');
+});
+
+test('FinalGrade: requiredFinalScore reports already achieved', () => {
+    const r = requiredFinalScore(80, 0.4, 70);
+    assertEqual(r.status, 'achieved', 'current points already above target');
+    assertEqual(r.required, 0, 'required is 0 when achieved');
+});
+
+test('FinalGrade: requiredFinalScore reports impossible when >100 needed', () => {
+    const r = requiredFinalScore(34, 0.4, 95);
+    assertEqual(r.status, 'impossible', '(95−34)/0.4 = 152.5 > 100');
+    assertApprox(r.required, 152.5, 0.0001, 'required kept for display');
+});
+
+test('FinalGrade: requiredFinalScore boundary — exactly 100 is ok, not impossible', () => {
+    const r = requiredFinalScore(50, 0.5, 100);
+    assertEqual(r.status, 'ok', 'required = 100 is the boundary of reachable');
+    assertApprox(r.required, 100, 0.0001, '(100−50)/0.5 = 100');
+});
+
+test('FinalGrade: requiredFinalScore invalid on zero final weight or bad target', () => {
+    assertEqual(requiredFinalScore(50, 0, 70).status, 'invalid', 'zero final weight');
+    assertEqual(requiredFinalScore(50, -0.2, 70).status, 'invalid', 'negative final weight');
+    assertEqual(requiredFinalScore(50, 0.4, NaN).status, 'invalid', 'NaN target point');
+});
+
+test('FinalGrade: achievablePoint projects total with final score', () => {
+    assertApprox(achievablePoint(34, 0.4, 90), 70, 0.0001, '34 + 0.4·90 = 70');
+    assertApprox(achievablePoint(34, 0.4, 100), 74, 0.0001, 'perfect final → 74');
+});
+
+test('FinalGrade: achievablePoint ignores non-numeric final score', () => {
+    assertEqual(achievablePoint(34, 0.4, NaN), 34, 'NaN score → current points');
+});
+
+// ============================================
+// Course Registration Planner (imported from src/course-planner-math.js)
+// ============================================
+test('Planner: creditTotal sums all planned credits', () => {
+    assertEqual(creditTotal([{ credits: 3 }, { credits: 4 }, { credits: 2 }]), 9, '3+4+2');
+    assertEqual(creditTotal([{ credits: 3 }, { credits: null }, {}]), 3, 'missing credits → 0');
+});
+
+test('Planner: creditTotal empty plan is 0', () => {
+    assertEqual(creditTotal([]), 0, 'no courses');
+});
+
+test('Planner: gpaCreditTotal excludes P (null point) courses', () => {
+    assertEqual(gpaCreditTotal([{ credits: 3, point: 4 }, { credits: 4, point: null }, { credits: 2, point: 3 }]), 5, '3+2');
+    assertEqual(gpaCreditTotal([{ credits: 5, point: null }]), 0, 'all P → 0');
+});
+
+test('Planner: projectedGPA blends current cumulative with planned courses', () => {
+    const r = projectedGPA(3.0, 60, [{ credits: 3, point: 4 }, { credits: 3, point: null }]);
+    assertApprox(r.gpa, (180 + 12) / 63, 0.0001, '(3.0·60 + 4.0·3) / 63');
+    assertEqual(r.credits, 63, 'P credits excluded from GPA credits');
+});
+
+test('Planner: projectedGPA with no current data equals planned average', () => {
+    const r = projectedGPA(0, 0, [{ credits: 4, point: 3 }]);
+    assertApprox(r.gpa, 3.0, 0.0001, 'BB 4 credits alone');
+    assertEqual(r.credits, 4, 'post-plan GPA credits');
+});
+
+test('Planner: projectedGPA with all-P plan keeps current GPA and credits', () => {
+    const r = projectedGPA(3.5, 40, [{ credits: 6, point: null }]);
+    assertApprox(r.gpa, 3.5, 0.0001, 'P does not move GPA');
+    assertEqual(r.credits, 40, 'P credits not added to GPA credits');
+});
+
+test('Planner: projectedGPA empty plan returns current values', () => {
+    const r = projectedGPA(2.5, 20, []);
+    assertApprox(r.gpa, 2.5, 0.0001, 'unchanged GPA');
+    assertEqual(r.credits, 20, 'unchanged credits');
+});
+
+test('Planner: requiredPlannedGPA computes needed planned average', () => {
+    assertApprox(requiredPlannedGPA(3.0, 60, 3.2, 30), 3.6, 0.0001, '(3.2·90 − 3.0·60)/30');
+});
+
+test('Planner: requiredPlannedGPA null when no planned credits', () => {
+    assertEqual(requiredPlannedGPA(3.0, 60, 3.2, 0), null, 'no plan to average over');
+});
+
+test('Planner: requiredPlannedGPA negative when target already met', () => {
+    const r = requiredPlannedGPA(3.5, 60, 2.5, 10);
+    assert(r < 0, 'target already satisfied → negative requirement');
+});
+
+test('Planner: requiredPlannedGPA above 4 means unreachable', () => {
+    assertApprox(requiredPlannedGPA(2.0, 40, 4.0, 5), 20, 0.0001, '(4.0·45 − 2.0·40)/5 = 20');
+});
+
+// ============================================
 // Render Results
 // ============================================
 const passed = results.filter(r => r.ok).length;
@@ -808,11 +911,11 @@ if (typeof document !== 'undefined') {
 }
 
 // Node.js / CI output
-if (typeof process !== 'undefined' && typeof window === 'undefined') {
+if (typeof process !== 'undefined' && process?.release?.name === 'node') {
     results.forEach(function (r) {
         const status = r.ok ? 'PASS' : 'FAIL';
         console.log('[' + status + '] ' + r.desc + (r.error ? '\n       ' + r.error : ''));
     });
     console.log('\n' + passed + '/' + results.length + ' passed, ' + failed + ' failed');
-    if (failed > 0) process.exit(1);
+    if (failed > 0) process.exitCode = 1;
 }

@@ -31,7 +31,11 @@
 | `src/notes.js` | Notes (pin/search) + tasks module | ~200 |
 | `src/campus.js` | Campus links / transport / contacts (render-only from seed) | ~110 |
 | `src/gradeGuide.js` | Read-only grade table + FAQ derived from `grades.js`/`gpa.js` | ~90 |
-| `tests/tests.js` | Regression tests (mirror GPA logic; import `pusula-utils.js` directly) | 800+ |
+| `src/final-grade-math.js` | PURE final-grade math (no DOM) — imported directly by tests | ~60 |
+| `src/finalGrade.js` | Final Grade Calculator module (components → required final score) | ~200 |
+| `src/course-planner-math.js` | PURE course-planner math (no DOM) — imported directly by tests | ~75 |
+| `src/coursePlanner.js` | Course Registration Planner module (projected GPA, credit load) | ~230 |
+| `tests/tests.js` | Regression tests (mirror GPA logic; import DOM-free pure modules directly) | 900+ |
 | `tests/test-runner.html` | Browser test runner page (loads tests.js as `type="module"`) | 23 |
 
 Source modules live in `src/`. Assets live under `assets/favicon/` and `assets/images/`.
@@ -52,7 +56,7 @@ node tests/tests.js
 open tests/test-runner.html
 ```
 
-Tests are standalone pure functions that mirror production logic in `src/gpa.js` and `src/grades.js`. The test file duplicates some logic locally (rather than importing from `src/`) because the import chain triggers `document.getElementById()` calls in `src/state.js` that fail in Node.js. If you touch `calculateGPA()`, `checkAchievements()`, `calculateGoal()`, or the retake/explorer/perfectGPA logic in `src/ui.js` or `src/gpa.js`, update the corresponding test functions in `tests/tests.js` to stay in sync.
+Tests are standalone pure functions that mirror production logic in `src/gpa.js` and `src/grades.js`. The test file duplicates some logic locally (rather than importing from `src/`) because the import chain triggers `document.getElementById()` calls in `src/state.js` that fail in Node.js. DOM-free pure modules (`src/pusula-utils.js`, `src/final-grade-math.js`, `src/course-planner-math.js`) ARE imported directly. If you touch `calculateGPA()`, `checkAchievements()`, `calculateGoal()`, or the retake/explorer/perfectGPA logic in `src/ui.js` or `src/gpa.js`, update the corresponding test functions in `tests/tests.js` to stay in sync.
 
 ## JavaScript architecture and patterns
 

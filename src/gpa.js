@@ -13,15 +13,24 @@ import { gradePoints, nonGPAGrades } from './grades.js';
  * Takes array of { grade, credits } objects. Returns GPA (0 if no credits).
  */
 export function computeSemesterGPA(courses) {
-    let points = 0, credits = 0;
+    return computeSemesterStats(courses).gpa;
+}
+
+/** Returns the weighted semester totals, including credits for non-GPA grades. */
+export function computeSemesterStats(courses) {
+    let points = 0, gpaCredits = 0, totalCredits = 0;
     for (const c of courses) {
+        const credits = Number(c.credits);
         const gp = gradePoints[c.grade];
-        if (gp !== null && gp !== undefined && c.credits > 0) {
-            points += gp * c.credits;
-            credits += c.credits;
+        if (Number.isFinite(credits) && credits > 0 && c.grade) {
+            totalCredits += credits;
+            if (gp !== null && gp !== undefined) {
+                points += gp * credits;
+                gpaCredits += credits;
+            }
         }
     }
-    return credits > 0 ? points / credits : 0;
+    return { points, gpaCredits, totalCredits, gpa: gpaCredits > 0 ? points / gpaCredits : 0 };
 }
 
 // ============================================
@@ -34,30 +43,49 @@ export function computeSemesterGPA(courses) {
  * retakes: [{ credits, oldGrade }]
  */
 export function computeCumulativeGPA(semCourses, previousGPA, previousCredits, retakes) {
-    let semPoints = 0, semCredits = 0;
-    let retakeCredits = 0, retakeOldPoints = 0;
+    return computeCumulativeStats(semCourses, previousGPA, previousCredits, retakes).gpa;
+}
 
-    for (const c of semCourses) {
-        const gp = gradePoints[c.grade];
-        if (gp !== null && gp !== undefined && c.credits > 0) {
-            semPoints += gp * c.credits;
-            semCredits += c.credits;
-        }
-    }
+/** Returns cumulative totals after removing the previous contribution of retakes. */
+export function computeCumulativeStats(semCourses, previousGPA, previousCredits, retakes = []) {
+    const semester = computeSemesterStats(semCourses);
+    let retakeCredits = 0, retakeOldPoints = 0;
+    const prevCredits = Number(previousCredits);
+    const safePrevCredits = Number.isFinite(prevCredits) ? Math.max(0, prevCredits) : 0;
+    let remainingPreviousCredits = safePrevCredits;
 
     for (const r of retakes) {
-        if (!nonGPAGrades.includes(r.oldGrade)) {
-            retakeCredits += r.credits;
-            retakeOldPoints += (gradePoints[r.oldGrade] || 0) * r.credits;
+        const credits = Number(r.credits);
+        const oldGradePoints = gradePoints[r.oldGrade];
+        // A malformed retake must not remove more of the baseline than exists.
+        // In particular, cap the aggregate credits rather than clamping credits
+        // and points independently (which can produce an impossible GPA).
+        if (Number.isFinite(credits) && credits > 0 &&
+            !nonGPAGrades.includes(r.oldGrade) && Number.isFinite(oldGradePoints)) {
+            const appliedCredits = Math.min(credits, remainingPreviousCredits);
+            retakeCredits += appliedCredits;
+            retakeOldPoints += oldGradePoints * appliedCredits;
+            remainingPreviousCredits -= appliedCredits;
         }
     }
 
-    const prevPoints = previousGPA * previousCredits;
-    const adjPrevCredits = Math.max(0, previousCredits - retakeCredits);
-    const adjPrevPoints = Math.max(0, prevPoints - retakeOldPoints);
-    const totalCredits = semCredits + adjPrevCredits;
-    const totalPoints = semPoints + adjPrevPoints;
-    return totalCredits > 0 ? totalPoints / totalCredits : 0;
+    const prevGPAValue = Number(previousGPA);
+    const prevGPA = Number.isFinite(prevGPAValue) ? Math.min(4, Math.max(0, prevGPAValue)) : 0;
+    const prevPoints = prevGPA * safePrevCredits;
+    const adjPrevCredits = safePrevCredits - retakeCredits;
+    // Keep the adjusted baseline valid even when the supplied GPA and retake
+    // records are mutually inconsistent.
+    const adjPrevPoints = Math.min(adjPrevCredits * 4, Math.max(0, prevPoints - retakeOldPoints));
+    const gpaCredits = semester.gpaCredits + adjPrevCredits;
+    const totalPoints = semester.points + adjPrevPoints;
+    const rawGPA = gpaCredits > 0 ? totalPoints / gpaCredits : 0;
+    return {
+        gpa: Math.min(4, Math.max(0, rawGPA)),
+        gpaCredits,
+        totalCredits: semester.totalCredits + adjPrevCredits,
+        points: totalPoints,
+        adjustedPreviousCredits: adjPrevCredits
+    };
 }
 
 // ============================================

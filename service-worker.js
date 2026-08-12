@@ -4,7 +4,7 @@
  */
 
 // Bump this version when deploying changes to force cache refresh for returning visitors
-const CACHE_NAME = 'boun-pusula-v3.0.0';
+const CACHE_NAME = 'boun-gpa-calculator-v4.0.0';
 const OFFLINE_URL = '/boun-gpa-calculator/index.html';
 
 // Assets to cache immediately on install
@@ -21,14 +21,11 @@ const PRECACHE_ASSETS = [
     '/boun-gpa-calculator/src/charts.js',
     '/boun-gpa-calculator/src/features.js',
     '/boun-gpa-calculator/src/store.js',
-    '/boun-gpa-calculator/src/pusula-utils.js',
-    '/boun-gpa-calculator/src/campus-seed.js',
-    '/boun-gpa-calculator/src/schedule.js',
-    '/boun-gpa-calculator/src/planner.js',
-    '/boun-gpa-calculator/src/notes.js',
-    '/boun-gpa-calculator/src/campus.js',
     '/boun-gpa-calculator/src/gradeGuide.js',
-    '/boun-gpa-calculator/src/home.js',
+    '/boun-gpa-calculator/src/final-grade-math.js',
+    '/boun-gpa-calculator/src/finalGrade.js',
+    '/boun-gpa-calculator/src/course-planner-math.js',
+    '/boun-gpa-calculator/src/coursePlanner.js',
     '/boun-gpa-calculator/site.webmanifest',
     '/boun-gpa-calculator/assets/images/boun-logo.png',
     '/boun-gpa-calculator/assets/favicon/favicon.ico',

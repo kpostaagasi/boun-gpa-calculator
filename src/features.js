@@ -7,7 +7,7 @@
 import { state, elements, viewInitFlags } from './state.js';
 import { t, currentLanguage, registerViewRefresh, refreshView } from './i18n.js';
 import { gradePoints, retakeableGrades, nonGPAGrades, getClosestGradeToPoint, getSortedNumericGrades, escapeHtml, getGradeLabels, formatGradePoint, getGradeAtLeastPoint } from './grades.js';
-import { calculateGPA, getCurrentGPAValue, registerViewInit, closeMobileMenu, showToast, saveToLocalStorage, switchView, achievementsList, checkAchievements, addCourse, updateCoursesEmptyState } from './ui.js';
+import { calculateGPA, getCurrentGPAValue, registerViewInit, closeMobileMenu, showToast, saveToLocalStorage, switchView, achievementsList, checkAchievements, addCourse, updateCoursesEmptyState, openModal, closeModal } from './ui.js';
 import { computeSemesterGPA, computeCumulativeGPA, calculateGoalRequirement, getTotalCourseCount, hasGrade } from './gpa.js';
 
 // ============================================
@@ -443,13 +443,14 @@ export function importData() {
         if (state.currentView === 'graduation') {
             calculateGraduationProgress();
         }
-        // Re-render any BOUN Pusula module view that's currently open
-        if (['home', 'schedule', 'planner', 'notes', 'campus', 'gradeGuide'].includes(state.currentView)) {
+        // Re-render any registered module view that's currently open
+        if (['gradeGuide', 'finalGrade', 'coursePlanner'].includes(state.currentView)) {
             refreshView(state.currentView);
         }
 
-        // Close modal
-        document.getElementById('importModal')?.classList.remove('active');
+        // Close through the shared modal lifecycle (ARIA, focus restoration,
+        // focus trap, and scroll locking), rather than changing CSS directly.
+        closeModal(document.getElementById('importModal'));
 
         alert(t('alert.importSuccess'));
 
@@ -958,17 +959,17 @@ const importFile = document.getElementById('importFile');
 const importFileName = document.getElementById('importFileName');
 
 importBtn?.addEventListener('click', () => {
-    importModal?.classList.add('active');
     closeMobileMenu();
+    openModal(importModal);
 });
 importModalClose?.addEventListener('click', () => {
-    importModal?.classList.remove('active');
+    closeModal(importModal);
 });
 importCancelBtn?.addEventListener('click', () => {
-    importModal?.classList.remove('active');
+    closeModal(importModal);
 });
 importModal?.addEventListener('click', (e) => {
-    if (e.target === importModal) importModal.classList.remove('active');
+    if (e.target === importModal) closeModal(importModal);
 });
 importFile?.addEventListener('change', (e) => {
     const file = e.target.files[0];

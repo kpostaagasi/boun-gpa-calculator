@@ -11,14 +11,14 @@ import { state, elements } from './state.js';
 // ============================================
 export const translations = {
     tr: {
-        // ===== BOUN Pusula (SuperApp) =====
-        'brand.name': 'Pusula',
-        'brand.tagline': 'Boğaziçili öğrencinin günlük pusulası',
+        // ===== BOUN GPA Calculator =====
+        'brand.name': 'GPA Calculator',
+        'brand.tagline': 'Boğaziçi Üniversitesi GPA hesaplayıcısı',
 
-        // Nav sections + new modules
-        'nav.daily': 'Günlük',
-        'nav.academic': 'Akademik',
-        'nav.home': 'Bugün',
+        // Calculator navigation. Legacy keys remain for the existing HTML shell.
+        'nav.daily': 'GPA Araçları',
+        'nav.academic': 'GPA Calculator',
+        'nav.home': 'Dashboard',
         'nav.schedule': 'Ders Programı',
         'nav.planner': 'Sınav & Ödev',
         'nav.notes': 'Notlar & Görevler',
@@ -33,7 +33,7 @@ export const translations = {
         'common.save': 'Kaydet', 'common.cancel': 'İptal', 'common.delete': 'Sil',
         'common.edit': 'Düzenle', 'common.add': 'Ekle', 'common.close': 'Kapat',
 
-        // Home hub
+        // Legacy module keys retained for compatibility with the current shell.
         'home.greetingMorning': 'Günaydın', 'home.greetingAfternoon': 'İyi günler',
         'home.greetingEvening': 'İyi akşamlar', 'home.greetingNight': 'İyi geceler',
         'home.todayClasses': 'Bugünkü Dersler',
@@ -56,7 +56,6 @@ export const translations = {
         'home.pinnedNotes': 'Sabit not',
         'home.openTasks': 'Açık görev',
 
-        // Schedule
         'schedule.title': 'Haftalık Ders Programı',
         'schedule.desc': 'Derslerini gün ve saatleriyle ekle, haftalık programını gör',
         'schedule.addCourse': 'Ders Ekle',
@@ -72,7 +71,6 @@ export const translations = {
         'schedule.overlap': 'Çakışan dersler var',
         'schedule.saved': 'Ders programı kaydedildi',
 
-        // Planner
         'planner.title': 'Sınav & Ödev Planı',
         'planner.desc': 'Sınav, ödev ve projelerini geri sayımla takip et',
         'planner.add': 'Yeni Ekle',
@@ -91,7 +89,6 @@ export const translations = {
         'planner.exportIcs': 'Takvime Aktar (.ics)',
         'planner.saved': 'Plan kaydedildi',
 
-        // Notes & Tasks
         'notes.title': 'Notlar & Görevler',
         'notes.desc': 'Hızlı notlar ve yapılacaklar listesi',
         'notes.notesTab': 'Notlar', 'notes.tasksTab': 'Görevler',
@@ -106,7 +103,6 @@ export const translations = {
         'notes.emptyTasksDesc': 'Yukarıdan yapılacak bir görev ekle.',
         'notes.saved': 'Kaydedildi',
 
-        // Campus
         'campus.title': 'Kampüs Servisleri',
         'campus.desc': 'Resmi bağlantılar, ulaşım saatleri ve önemli numaralar',
         'campus.links': 'Resmi Bağlantılar',
@@ -117,7 +113,7 @@ export const translations = {
         'campus.lastUpdated': 'Son güncelleme',
         'campus.call': 'Ara', 'campus.open': 'Aç',
 
-        // Grade Guide
+        // Grade guide
         'guide.title': 'Not Sistemi Rehberi',
         'guide.desc': 'BOUN not sistemi, onur eşikleri ve sık sorulanlar',
         'guide.gradeTable': 'Not - Katsayı Tablosu',
@@ -461,17 +457,65 @@ export const translations = {
         'shortcut.saved': 'Kaydedildi!',
         'simulation.semesterMismatch': 'Bu senaryo farklı bir dönem için kaydedildi',
         'alert.storageFull': 'Kayıt alanı dolu. Veriler kaydedilemedi.',
+
+        // Final Grade Calculator
+        'nav.finalGrade': 'Final Notu',
+        'finalGrade.title': 'Final Notu Hesaplayıcı',
+        'finalGrade.desc': 'Vize, ödev ve diğer not bileşenlerine göre finalden alman gereken puanı hesapla',
+        'finalGrade.addComponent': 'Bileşen Ekle',
+        'finalGrade.componentName': 'Bileşen adı (örn. Vize 1)',
+        'finalGrade.weight': 'Ağırlık (%)',
+        'finalGrade.score': 'Puan (0-100)',
+        'finalGrade.remove': 'Bileşeni kaldır',
+        'finalGrade.finalWeight': 'Final Ağırlığı (%)',
+        'finalGrade.targetGrade': 'Hedef Not',
+        'finalGrade.currentPoints': 'Mevcut Puan',
+        'finalGrade.result': 'Sonuç',
+        'finalGrade.required': "Final'den en az {n} alman gerekiyor",
+        'finalGrade.achieved': 'Hedef notun şimdiden garantilendi',
+        'finalGrade.impossible': 'Bu hedef nota ulaşmak mümkün değil',
+        'finalGrade.invalid': 'Final ağırlığı ve hedef notu gir',
+        'finalGrade.bestCase': 'Finalden 100 alırsan',
+        'finalGrade.weightHint': 'Ağırlıkların toplamı final dahil %100 olmalı',
+        'finalGrade.empty': 'Henüz bileşen yok',
+        'finalGrade.emptyDesc': 'Vize, ödev gibi not bileşenlerini ekle.',
+        'finalGrade.saved': 'Kaydedildi',
+
+        // Course Registration Planner
+        'nav.coursePlanner': 'Ders Kayıt Planı',
+        'coursePlanner.title': 'Ders Kayıt Planlayıcı',
+        'coursePlanner.desc': 'Gelecek dönem derslerini seç, kredi yükünü ve tahmini GPA etkisini gör',
+        'coursePlanner.currentGPA': 'Mevcut Genel GPA',
+        'coursePlanner.currentCredits': 'Mevcut Kredi',
+        'coursePlanner.targetGPA': 'Hedef GPA',
+        'coursePlanner.addCourse': 'Ders Ekle',
+        'coursePlanner.courseName': 'Ders Adı',
+        'coursePlanner.credits': 'Kredi',
+        'coursePlanner.predictedGrade': 'Tahmini Not',
+        'coursePlanner.remove': 'Dersi kaldır',
+        'coursePlanner.pullFromGPA': 'Dönem derslerini aktar',
+        'coursePlanner.totalCredits': 'Toplam Kredi Yükü',
+        'coursePlanner.projectedGPA': 'Tahmini GPA',
+        'coursePlanner.delta': 'Değişim',
+        'coursePlanner.requiredGPA': 'Planlanan kredilerde gereken ortalama',
+        'coursePlanner.requiredReachable': 'Hedefe ulaşılabilir',
+        'coursePlanner.requiredImpossible': 'Bu planla hedefe ulaşılamaz',
+        'coursePlanner.requiredMet': 'Hedef zaten karşılanıyor',
+        'coursePlanner.requiredNoPlan': 'Ders ekle',
+        'coursePlanner.empty': 'Henüz ders yok',
+        'coursePlanner.emptyDesc': 'Gelecek dönem planına ders ekle veya mevcut dönemden aktar.',
+        'coursePlanner.saved': 'Plan kaydedildi',
     },
     en: {
         // Navigation
-        // ===== BOUN Pusula (SuperApp) =====
-        'brand.name': 'Pusula',
-        'brand.tagline': 'A Boğaziçi student\'s daily compass',
+        // ===== BOUN GPA Calculator =====
+        'brand.name': 'GPA Calculator',
+        'brand.tagline': 'Boğaziçi University GPA calculator',
 
-        // Nav sections + new modules
-        'nav.daily': 'Daily',
-        'nav.academic': 'Academic',
-        'nav.home': 'Today',
+        // Calculator navigation. Legacy keys remain for the existing HTML shell.
+        'nav.daily': 'GPA Tools',
+        'nav.academic': 'GPA Calculator',
+        'nav.home': 'Dashboard',
         'nav.schedule': 'Weekly Schedule',
         'nav.planner': 'Exams & Tasks',
         'nav.notes': 'Notes & Tasks',
@@ -486,7 +530,7 @@ export const translations = {
         'common.save': 'Save', 'common.cancel': 'Cancel', 'common.delete': 'Delete',
         'common.edit': 'Edit', 'common.add': 'Add', 'common.close': 'Close',
 
-        // Home hub
+        // Legacy module keys retained for compatibility with the current shell.
         'home.greetingMorning': 'Good morning', 'home.greetingAfternoon': 'Good afternoon',
         'home.greetingEvening': 'Good evening', 'home.greetingNight': 'Good night',
         'home.todayClasses': "Today's Classes",
@@ -509,7 +553,6 @@ export const translations = {
         'home.pinnedNotes': 'Pinned notes',
         'home.openTasks': 'Open tasks',
 
-        // Schedule
         'schedule.title': 'Weekly Schedule',
         'schedule.desc': 'Add your classes with days and times to see your week',
         'schedule.addCourse': 'Add Class',
@@ -525,7 +568,6 @@ export const translations = {
         'schedule.overlap': 'You have overlapping classes',
         'schedule.saved': 'Schedule saved',
 
-        // Planner
         'planner.title': 'Exam & Assignment Planner',
         'planner.desc': 'Track exams, assignments and projects with live countdowns',
         'planner.add': 'Add New',
@@ -544,7 +586,6 @@ export const translations = {
         'planner.exportIcs': 'Export to Calendar (.ics)',
         'planner.saved': 'Planner saved',
 
-        // Notes & Tasks
         'notes.title': 'Notes & Tasks',
         'notes.desc': 'Quick notes and a simple to-do list',
         'notes.notesTab': 'Notes', 'notes.tasksTab': 'Tasks',
@@ -559,7 +600,6 @@ export const translations = {
         'notes.emptyTasksDesc': 'Add a to-do from the box above.',
         'notes.saved': 'Saved',
 
-        // Campus
         'campus.title': 'Campus Services',
         'campus.desc': 'Official links, transport times and key phone numbers',
         'campus.links': 'Official Links',
@@ -570,7 +610,7 @@ export const translations = {
         'campus.lastUpdated': 'Last updated',
         'campus.call': 'Call', 'campus.open': 'Open',
 
-        // Grade Guide
+        // Grade guide
         'guide.title': 'Grade System Guide',
         'guide.desc': 'BOUN grade system, honor thresholds and FAQ',
         'guide.gradeTable': 'Grade - Point Table',
@@ -913,6 +953,54 @@ export const translations = {
         'shortcut.saved': 'Saved!',
         'simulation.semesterMismatch': 'This scenario was saved for a different semester',
         'alert.storageFull': 'Storage full. Data could not be saved.',
+
+        // Final Grade Calculator
+        'nav.finalGrade': 'Final Grade',
+        'finalGrade.title': 'Final Grade Calculator',
+        'finalGrade.desc': 'Calculate the score you need on the final from your other components',
+        'finalGrade.addComponent': 'Add Component',
+        'finalGrade.componentName': 'Component name (e.g. Midterm 1)',
+        'finalGrade.weight': 'Weight (%)',
+        'finalGrade.score': 'Score (0-100)',
+        'finalGrade.remove': 'Remove component',
+        'finalGrade.finalWeight': 'Final Weight (%)',
+        'finalGrade.targetGrade': 'Target Grade',
+        'finalGrade.currentPoints': 'Current Points',
+        'finalGrade.result': 'Result',
+        'finalGrade.required': 'You need at least {n} on the final',
+        'finalGrade.achieved': 'Target grade is already secured',
+        'finalGrade.impossible': 'This target is unreachable',
+        'finalGrade.invalid': 'Enter the final weight and target grade',
+        'finalGrade.bestCase': 'If you score 100 on the final',
+        'finalGrade.weightHint': 'Weights should add up to 100% including the final',
+        'finalGrade.empty': 'No components yet',
+        'finalGrade.emptyDesc': 'Add components like midterms and assignments.',
+        'finalGrade.saved': 'Saved',
+
+        // Course Registration Planner
+        'nav.coursePlanner': 'Course Plan',
+        'coursePlanner.title': 'Course Registration Planner',
+        'coursePlanner.desc': 'Pick next term courses, see your credit load and projected GPA',
+        'coursePlanner.currentGPA': 'Current Cumulative GPA',
+        'coursePlanner.currentCredits': 'Current Credits',
+        'coursePlanner.targetGPA': 'Target GPA',
+        'coursePlanner.addCourse': 'Add Course',
+        'coursePlanner.courseName': 'Course Name',
+        'coursePlanner.credits': 'Credits',
+        'coursePlanner.predictedGrade': 'Predicted Grade',
+        'coursePlanner.remove': 'Remove course',
+        'coursePlanner.pullFromGPA': 'Import from current semester',
+        'coursePlanner.totalCredits': 'Total Credit Load',
+        'coursePlanner.projectedGPA': 'Projected GPA',
+        'coursePlanner.delta': 'Change',
+        'coursePlanner.requiredGPA': 'Average needed on planned credits',
+        'coursePlanner.requiredReachable': 'Target is reachable',
+        'coursePlanner.requiredImpossible': 'Target unreachable with this plan',
+        'coursePlanner.requiredMet': 'Target already met',
+        'coursePlanner.requiredNoPlan': 'Add courses',
+        'coursePlanner.empty': 'No courses yet',
+        'coursePlanner.emptyDesc': 'Add courses to your plan or import from the current semester.',
+        'coursePlanner.saved': 'Plan saved',
     }
 };
 
@@ -983,12 +1071,6 @@ export function translatePage() {
     // Update view titles
     if (elements.pageTitle) {
         const viewTitles = {
-            get home() { return t('nav.home'); },
-            get schedule() { return t('nav.schedule'); },
-            get planner() { return t('nav.planner'); },
-            get notes() { return t('nav.notes'); },
-            get campus() { return t('nav.campus'); },
-            get gradeGuide() { return t('nav.gradeGuide'); },
             get dashboard() { return t('nav.home'); },
             get calculator() { return t('nav.calculator'); },
             get goal() { return t('goal.title'); },
@@ -998,6 +1080,9 @@ export function translatePage() {
             get simulation() { return t('simulation.title'); },
             get graduation() { return t('graduation.title'); },
             get achievements() { return t('achievements.title'); },
+            get gradeGuide() { return t('nav.gradeGuide'); },
+            get finalGrade() { return t('nav.finalGrade'); },
+            get coursePlanner() { return t('nav.coursePlanner'); },
             get help() { return t('help.title'); },
             get import() { return t('import.title'); },
             get feedback() { return t('feedback.title'); },
