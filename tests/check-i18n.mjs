@@ -1,5 +1,5 @@
 /**
- * BOUN Pusula — i18n key consistency checker (Node)
+ * BOUN GPA Calculator — i18n key consistency checker (Node)
  *
  * Verifies that every translation key actually used by the app exists in BOTH
  * the `tr` and `en` blocks of src/i18n.js, and that both blocks are symmetric

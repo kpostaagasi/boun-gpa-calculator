@@ -1,12 +1,12 @@
 /**
- * BOUN Pusula — Final Grade Calculator module
+ * BOUN GPA Calculator — Final Grade Calculator module
  *
  * "Finalden kaç almalıyım?" — enter the components you already have scores for
  * (midterms, assignments, quizzes) with their weights, pick the final's weight
  * and your target letter grade, and the module computes the score you need on
  * the final. Pure math lives in src/final-grade-math.js (DOM-free, tested).
  *
- * State persists under 'pusula:finalGrade' and auto-saves on every change.
+ * State persists under 'bounGpa:finalGrade' and auto-saves on every change.
  */
 import { registerViewInit } from './ui.js';
 import { registerViewRefresh, t } from './i18n.js';
@@ -36,11 +36,11 @@ function blankComponent() {
 
 function componentRow(c) {
     return `
-        <div class="fg-comp" data-id="${c.id}">
+        <div class="fg-comp" data-id="${escapeHtml(c.id)}">
             <input type="text" class="form-input fg-name" value="${escapeHtml(c.name)}" placeholder="${t('finalGrade.componentName')}" aria-label="${t('finalGrade.componentName')}">
             <input type="number" class="form-input fg-weight" min="0" max="100" step="0.5" value="${escapeHtml(String(c.weight))}" placeholder="0" aria-label="${t('finalGrade.weight')}">
             <input type="number" class="form-input fg-score" min="0" max="100" step="0.5" value="${escapeHtml(String(c.score))}" placeholder="0" aria-label="${t('finalGrade.score')}">
-            <button type="button" class="btn-icon sm" data-action="fg-remove" data-id="${c.id}" aria-label="${t('finalGrade.remove')}">✕</button>
+            <button type="button" class="btn-icon sm" data-action="fg-remove" data-id="${escapeHtml(c.id)}" aria-label="${t('finalGrade.remove')}">✕</button>
         </div>`;
 }
 

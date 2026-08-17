@@ -4,7 +4,7 @@
  */
 
 // Bump this version when deploying changes to force cache refresh for returning visitors
-const CACHE_NAME = 'boun-gpa-calculator-v4.0.0';
+const CACHE_NAME = 'boun-gpa-calculator-v4.1.2';
 const OFFLINE_URL = '/boun-gpa-calculator/index.html';
 
 // Assets to cache immediately on install
@@ -26,6 +26,11 @@ const PRECACHE_ASSETS = [
     '/boun-gpa-calculator/src/finalGrade.js',
     '/boun-gpa-calculator/src/course-planner-math.js',
     '/boun-gpa-calculator/src/coursePlanner.js',
+    '/boun-gpa-calculator/src/home.js',
+    '/boun-gpa-calculator/src/schedule.js',
+    '/boun-gpa-calculator/src/planner.js',
+    '/boun-gpa-calculator/src/boun-gpa-utils.js',
+    '/boun-gpa-calculator/src/pusula-utils.js',
     '/boun-gpa-calculator/site.webmanifest',
     '/boun-gpa-calculator/assets/images/boun-logo.png',
     '/boun-gpa-calculator/assets/favicon/favicon.ico',
@@ -40,8 +45,11 @@ const PRECACHE_ASSETS = [
 const RUNTIME_CACHE_URLS = [
     'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js',
     'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js',
-    'https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap'
+    'https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fraunces:opsz,wght@9..144,400..700&display=swap'
 ];
+
+const isRuntimeAsset = (request, url) => RUNTIME_CACHE_URLS.includes(request.url)
+    || (url.hostname === 'fonts.gstatic.com' && request.destination === 'font');
 
 // Install event - precache assets
 self.addEventListener('install', (event) => {
@@ -118,7 +126,7 @@ self.addEventListener('fetch', (event) => {
             fetch(request)
                 .then((response) => {
                     // Clone and cache the response
-                    if (response.ok && RUNTIME_CACHE_URLS.some(cacheUrl => request.url.includes(cacheUrl))) {
+                    if (response.ok && isRuntimeAsset(request, url)) {
                         const responseClone = response.clone();
                         caches.open(CACHE_NAME)
                             .then((cache) => cache.put(request, responseClone));

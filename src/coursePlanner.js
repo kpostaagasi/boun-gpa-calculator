@@ -1,5 +1,5 @@
 /**
- * BOUN Pusula — Course Registration Planner module
+ * BOUN GPA Calculator — Course Registration Planner module
  *
  * Plan the next term: add courses with predicted grades, see the total credit
  * load, the projected cumulative GPA, and the average you would need on the
@@ -7,7 +7,7 @@
  * GPA, mirroring the calculator's model. Pure math lives in
  * src/course-planner-math.js (DOM-free, tested).
  *
- * State persists under 'pusula:coursePlanner' and auto-saves on every change.
+ * State persists under 'bounGpa:coursePlanner' and auto-saves on every change.
  * The "Import from current semester" action pulls the active semester's
  * courses from the GPA calculator (state.courses) as a starting point.
  */
@@ -54,11 +54,11 @@ function creditOptions(selected) {
 
 function courseRow(c) {
     return `
-        <div class="cp-course" data-id="${c.id}">
+        <div class="cp-course" data-id="${escapeHtml(c.id)}">
             <input type="text" class="form-input cp-name" value="${escapeHtml(c.name)}" placeholder="${t('coursePlanner.courseName')}" aria-label="${t('coursePlanner.courseName')}">
             <select class="form-select cp-credits" aria-label="${t('coursePlanner.credits')}">${creditOptions(c.credits)}</select>
             <select class="form-select cp-grade" aria-label="${t('coursePlanner.predictedGrade')}">${gradeOptions(c.grade)}</select>
-            <button type="button" class="btn-icon sm" data-action="cp-remove" data-id="${c.id}" aria-label="${t('coursePlanner.remove')}">✕</button>
+            <button type="button" class="btn-icon sm" data-action="cp-remove" data-id="${escapeHtml(c.id)}" aria-label="${t('coursePlanner.remove')}">✕</button>
         </div>`;
 }
 

@@ -1,5 +1,5 @@
 /**
- * BOUN Pusula — Course Registration Planner (pure math)
+ * BOUN GPA Calculator — Course Registration Planner (pure math)
  *
  * No DOM access, no imports — safe to import directly from Node tests.
  *

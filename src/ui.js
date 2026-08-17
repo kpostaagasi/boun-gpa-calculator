@@ -47,6 +47,7 @@ export const viewTitles = {
     get simulation() { return t('nav.simulation'); },
     get graduation() { return t('nav.graduation'); },
     get achievements() { return t('nav.achievements'); }
+    ,get home() { return t('nav.home'); }, get schedule() { return t('schedule.title'); }, get planner() { return t('planner.title'); }
 };
 
 // ============================================
@@ -92,7 +93,10 @@ export function switchView(viewId) {
     } else if (viewId === 'achievements') {
         initViewIfNeeded('achievements');
     } else if (['gradeGuide', 'finalGrade', 'coursePlanner'].includes(viewId)) {
-        // BOUN Pusula modules: bind delegated listeners once, then (re)render each visit
+        // BOUN GPA Calculator modules: bind delegated listeners once, then (re)render each visit
+        initViewIfNeeded(viewId);
+        refreshView(viewId);
+    } else if (['home', 'schedule', 'planner'].includes(viewId)) {
         initViewIfNeeded(viewId);
         refreshView(viewId);
     }
@@ -110,6 +114,7 @@ export function initNavigation() {
 
     // Mobile menu
     elements.mobileMenuToggle?.addEventListener('click', toggleMobileMenu);
+    document.getElementById('mobileMoreToggle')?.addEventListener('click', (event) => toggleMobileMenu(event));
     elements.sidebarOverlay?.addEventListener('click', closeMobileMenu);
 
     // Keep the accessibility state in sync when the viewport crosses the
@@ -141,8 +146,11 @@ export function initNavigation() {
     });
 }
 
-export function toggleMobileMenu() {
+export function toggleMobileMenu(event) {
     const isOpen = !elements.sidebar?.classList.contains('open');
+    if (isOpen && event?.currentTarget) {
+        if (elements.sidebar) elements.sidebar.dataset.menuOpener = event.currentTarget.id || 'mobileMenuToggle';
+    }
     elements.sidebar?.classList.toggle('open', isOpen);
     elements.sidebarOverlay?.classList.toggle('active', isOpen);
     // Focus the menu only when opening it as a direct result of the user's
@@ -159,6 +167,7 @@ export function closeMobileMenu() {
 
 function syncMobileMenuA11y({ focusOnOpen = false, restoreFocusOnClose = false } = {}) {
     const toggle = elements.mobileMenuToggle;
+    const moreToggle = document.getElementById('mobileMoreToggle');
     const sidebar = elements.sidebar;
     const isOpen = sidebar?.classList.contains('open') || false;
     // Only hide the sidebar from the accessibility tree on mobile. On desktop
@@ -172,11 +181,16 @@ function syncMobileMenuA11y({ focusOnOpen = false, restoreFocusOnClose = false }
     toggle.setAttribute('aria-expanded', String(isOpen));
     if (sidebar?.id) toggle.setAttribute('aria-controls', sidebar.id);
     toggle.setAttribute('aria-label', isOpen ? t('common.close') : t('nav.menu'));
+    if (moreToggle) {
+        moreToggle.setAttribute('aria-expanded', String(isOpen));
+        moreToggle.setAttribute('aria-controls', sidebar?.id || 'sidebar');
+    }
     if (focusOnOpen && isMobile && isOpen) {
         const firstFocusable = getModalFocusables(sidebar)[0];
         firstFocusable?.focus();
     } else if (restoreFocusOnClose && isMobile && !isOpen && sidebar?.contains(document.activeElement)) {
-        toggle.focus();
+        const opener = document.getElementById(sidebar?.dataset.menuOpener || 'mobileMenuToggle');
+        (opener || toggle).focus();
     }
 }
 
@@ -811,9 +825,9 @@ export function loadFromLocalStorage() {
 export function clearAllData() {
     if (confirm(t('alert.clearConfirm'))) {
         localStorage.removeItem('gpaSaveData');
-        // Remove all BOUN Pusula module data (pusula:*) as well
+        // Remove all BOUN GPA Calculator module data, including legacy keys.
         Object.keys(localStorage)
-            .filter(k => k.startsWith('pusula:'))
+            .filter(k => k.startsWith('bounGpa:') || k.startsWith('pusula:'))
             .forEach(k => localStorage.removeItem(k));
         location.reload();
     }

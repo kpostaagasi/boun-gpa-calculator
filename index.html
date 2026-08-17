@@ -26,10 +26,14 @@
     <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon/favicon-16x16.png">
     <link rel="shortcut icon" type="image/x-icon" href="./assets/favicon/favicon.ico">
-    <meta name="msapplication-TileColor" content="#003366">
-    <meta name="theme-color" content="#003366">
+    <meta name="msapplication-TileColor" content="#0b2d45">
+    <meta name="theme-color" content="#0b2d45">
     <link rel="manifest" href="./site.webmanifest">
-    
+
+    <!-- Font preconnect (fonts loaded via styles.css @import) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     
@@ -56,8 +60,11 @@
             
             <nav class="sidebar-nav">
                 <div class="nav-section">
-                    <div class="nav-section-title" data-i18n="nav.academic">Akademik</div>
-                    <button type="button" class="nav-item nav-primary active" data-view="calculator">
+                    <div class="nav-section-title nav-section-kicker" data-i18n="nav.overview">Genel Bakış</div>
+                    <button type="button" class="nav-item nav-primary" data-view="home"><span aria-hidden="true">⌂</span><span data-i18n="nav.home">Dashboard</span></button>
+                    <button type="button" class="nav-item nav-primary" data-view="schedule"><span aria-hidden="true">▦</span><span data-i18n="nav.schedule">Ders Programı</span></button>
+                    <button type="button" class="nav-item nav-primary" data-view="planner"><span aria-hidden="true">◷</span><span data-i18n="nav.planner">Sınav &amp; Ödev</span></button>
+                    <button type="button" class="nav-item nav-primary nav-overview active" data-view="calculator">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="4" y="2" width="16" height="20" rx="2"></rect>
                             <line x1="8" y1="6" x2="16" y2="6"></line>
@@ -67,7 +74,8 @@
                         </svg>
                         <span data-i18n="nav.calculator">Hesaplayıcı</span>
                     </button>
-                    <button type="button" class="nav-item" data-view="goal">
+                    <div class="nav-section-title nav-section-kicker" data-i18n="nav.workspace">GPA Çalışma Alanı</div>
+                    <button type="button" class="nav-item nav-workspace" data-view="goal">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10"></circle>
                             <circle cx="12" cy="12" r="6"></circle>
@@ -75,14 +83,16 @@
                         </svg>
                         <span data-i18n="nav.goal">Hedef GPA</span>
                     </button>
-                    <button type="button" class="nav-item" data-view="history">
+                    <div class="nav-section-title nav-section-kicker" data-i18n="nav.plan">Akademik Plan</div>
+                    <button type="button" class="nav-item nav-plan" data-view="history">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10"></circle>
                             <polyline points="12 6 12 12 16 14"></polyline>
                         </svg>
                         <span data-i18n="nav.history">Geçmiş</span>
                     </button>
-                    <button type="button" class="nav-item" data-view="charts">
+                    <div class="nav-section-title nav-section-kicker" data-i18n="nav.insights">İçgörüler</div>
+                    <button type="button" class="nav-item nav-insights" data-view="charts">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="20" x2="18" y2="10"></line>
                             <line x1="12" y1="20" x2="12" y2="4"></line>
@@ -90,34 +100,35 @@
                         </svg>
                         <span data-i18n="nav.statistics">İstatistikler</span>
                     </button>
-                    <button type="button" class="nav-item" data-view="simulation">
+                    <button type="button" class="nav-item nav-workspace" data-view="simulation">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
                         </svg>
                         <span data-i18n="nav.simulation">Simülasyon</span>
                     </button>
-                    <button type="button" class="nav-item" data-view="graduation">
+                    <button type="button" class="nav-item nav-plan" data-view="graduation">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
                             <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path>
                         </svg>
                         <span data-i18n="nav.graduation">Mezuniyet</span>
                     </button>
-                    <button type="button" class="nav-item" data-view="achievements">
+                    <button type="button" class="nav-item nav-insights" data-view="achievements">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="8" r="6"></circle>
                             <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
                         </svg>
                         <span data-i18n="nav.achievements">Rozetler</span>
                     </button>
-                    <button type="button" class="nav-item" data-view="gradeGuide">
+                    <div class="nav-section-title nav-section-kicker" data-i18n="nav.utility">Rehber ve Araçlar</div>
+                    <button type="button" class="nav-item nav-utility" data-view="gradeGuide">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
                             <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
                         </svg>
                         <span data-i18n="nav.gradeGuide">Not Rehberi</span>
                     </button>
-                    <button type="button" class="nav-item" data-view="finalGrade">
+                    <button type="button" class="nav-item nav-workspace" data-view="finalGrade">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="19" y1="5" x2="5" y2="19"></line>
                             <circle cx="6.5" cy="6.5" r="2.5"></circle>
@@ -125,7 +136,7 @@
                         </svg>
                         <span data-i18n="nav.finalGrade">Final Notu</span>
                     </button>
-                    <button type="button" class="nav-item" data-view="coursePlanner">
+                    <button type="button" class="nav-item nav-plan" data-view="coursePlanner">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
                             <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
@@ -134,7 +145,7 @@
                         </svg>
                         <span data-i18n="nav.coursePlanner">Ders Kayıt Planı</span>
                     </button>
-                    <button type="button" class="nav-item" data-view="export">
+                    <button type="button" class="nav-item nav-utility" data-view="export">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                             <polyline points="17 8 12 3 7 8"></polyline>
@@ -202,7 +213,7 @@
             <!-- Header -->
             <header class="main-header">
                 <div class="header-leading">
-                    <button type="button" class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menüyü Aç">
+                    <button type="button" class="mobile-menu-toggle" id="mobileMenuToggle" data-i18n-aria-label="nav.menu" aria-expanded="false" aria-controls="sidebar">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="3" y1="12" x2="21" y2="12"></line>
                             <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -212,11 +223,11 @@
                     <h1 class="header-title" id="pageTitle">BOUN GPA Calculator</h1>
                 </div>
                 <div class="header-actions">
-                    <button type="button" class="lang-toggle" id="langToggle" aria-label="Change Language">
+                    <button type="button" class="lang-toggle" id="langToggle" data-i18n-aria-label="nav.changeLanguage">
                         <span class="lang-flag">TR</span>
                         <span class="lang-code">TR</span>
                     </button>
-                    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Tema Değiştir">
+                    <button type="button" class="theme-toggle" id="themeToggle" data-i18n-aria-label="nav.changeTheme">
                         <svg aria-hidden="true" class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="5"></circle>
                             <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -239,6 +250,9 @@
             <div class="main-body">
                 <!-- Grade Guide View -->
                 <div class="view" id="gradeGuideView"></div>
+                <div class="view" id="homeView"></div>
+                <div class="view" id="scheduleView"></div>
+                <div class="view" id="plannerView"></div>
 
                 <!-- Final Grade Calculator View -->
                 <div class="view" id="finalGradeView"></div>
@@ -726,6 +740,18 @@
                 </div>
             </div>
         </main>
+
+        <nav class="mobile-bottom-nav" data-i18n-aria-label="nav.mobileNavigation">
+            <button type="button" class="mobile-nav-item nav-item" data-view="home"><span class="mobile-nav-icon" aria-hidden="true">⌂</span><span data-i18n="nav.home">Dashboard</span></button>
+            <button type="button" class="mobile-nav-item nav-item" data-view="schedule"><span class="mobile-nav-icon" aria-hidden="true">▦</span><span data-i18n="nav.schedule">Program</span></button>
+            <button type="button" class="mobile-nav-item nav-item" data-view="planner"><span class="mobile-nav-icon" aria-hidden="true">◷</span><span data-i18n="nav.planner">Plan</span></button>
+            <button type="button" class="mobile-nav-item nav-item active" data-view="calculator">
+                <span class="mobile-nav-icon" aria-hidden="true">+</span><span data-i18n="nav.overview">Genel Bakış</span>
+            </button>
+            <button type="button" class="mobile-nav-item mobile-more" id="mobileMoreToggle" data-i18n-aria-label="nav.moreNavigation" aria-expanded="false" aria-controls="sidebar">
+                <span class="mobile-nav-icon" aria-hidden="true">···</span><span data-i18n="nav.more">Daha fazla</span>
+            </button>
+        </nav>
     </div>
     
     <!-- Templates Modal -->
@@ -809,7 +835,7 @@
         <div class="modal" role="dialog" aria-modal="true" aria-labelledby="feedbackModalTitle">
             <div class="modal-header">
                 <h2 class="modal-title" id="feedbackModalTitle" data-i18n="feedback.title">Geri Bildirim</h2>
-                <button type="button" class="modal-close" id="feedbackModalClose" aria-label="Kapat">&times;</button>
+                <button type="button" class="modal-close" id="feedbackModalClose" data-i18n-aria-label="common.close">&times;</button>
             </div>
             <div class="modal-body">
                 <form id="feedbackForm">
@@ -841,7 +867,7 @@
         <div class="modal" role="dialog" aria-modal="true" aria-labelledby="shortcutsModalTitle">
             <div class="modal-header">
                 <h2 class="modal-title" id="shortcutsModalTitle" data-i18n="shortcuts.title">Klavye Kısayolları</h2>
-                <button type="button" class="modal-close" id="shortcutsModalClose" aria-label="Kapat">&times;</button>
+                <button type="button" class="modal-close" id="shortcutsModalClose" data-i18n-aria-label="common.close">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="shortcuts-list">
@@ -887,7 +913,7 @@
         <div class="modal" role="dialog" aria-modal="true" aria-labelledby="importModalTitle">
             <div class="modal-header">
                 <h2 class="modal-title" id="importModalTitle" data-i18n="import.title">Veri İçe Aktar</h2>
-                <button type="button" class="modal-close" id="importModalClose" aria-label="Kapat">&times;</button>
+                <button type="button" class="modal-close" id="importModalClose" data-i18n-aria-label="common.close">&times;</button>
             </div>
             <div class="modal-body">
                 <p data-i18n="import.desc">Daha önce dışa aktardığınız JSON dosyasını yükleyin veya yapıştırın.</p>

@@ -1,8 +1,8 @@
 /**
- * BOUN Pusula — Final Grade Calculator (pure math)
+ * BOUN GPA Calculator — Final Grade Calculator (pure math)
  *
  * No DOM access, no imports — safe to import directly from Node tests
- * (same pattern as src/pusula-utils.js).
+ * (same pattern as src/boun-gpa-utils.js).
  *
  * Model: a course grade is the weighted sum of component scores. Each
  * component weight is a fraction of the total (e.g. 0.3 = 30%), and scores

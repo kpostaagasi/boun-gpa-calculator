@@ -2,7 +2,7 @@
 
 ## What this project is
 
-**BOUN Pusula** — a static, offline-first PWA that is a multi-module student SuperApp for Boğaziçi University (BOUN), hosted on GitHub Pages. The GPA calculator is now one module among several (Home hub, Weekly Schedule, Planner, Notes & Tasks, Campus, Grade Guide). The codebase uses native ES modules (no build step, no bundler) loaded via `<script type="module">`. A minimal `package.json` with `"type": "module"` exists only so Node.js treats `.js` files as ES modules for the test suite.
+**BOUN GPA Calculator** — a static, offline-first PWA that is a multi-module student SuperApp for Boğaziçi University (BOUN), hosted on GitHub Pages. The GPA calculator is now one module among several (Home hub, Weekly Schedule, Planner, Notes & Tasks, Campus, Grade Guide). The codebase uses native ES modules (no build step, no bundler) loaded via `<script type="module">`. A minimal `package.json` with `"type": "module"` exists only so Node.js treats `.js` files as ES modules for the test suite.
 
 **Adding a SuperApp module** (see CLAUDE.md → "SuperApp Module Architecture" for the full contract): create `src/<key>.js`, add a `<div class="view" id="<key>View">` + a `data-view="<key>"` nav button in `index.html`, `registerViewInit`/`registerViewRefresh` at module top level, `import './<key>.js'` in `main.js`, persist via `store.js` (`loadModule`/`saveModule` + `registerAppKey`), escape user text with `escapeHtml`, and add the file to `service-worker.js` `PRECACHE_ASSETS`. Do NOT rewrite `switchView`'s dispatch into a registry.
 
@@ -22,8 +22,8 @@
 | `src/ui.js` | DOM manipulation, `calculateGPA()`, storage, navigation, achievements, `init()` | 1178 |
 | `src/charts.js` | Chart.js rendering; registers `'charts'` view init + refresh | 341 |
 | `src/features.js` | Goal calculator, export/import (versioned envelope), semester history, simulation, graduation, achievements | 970+ |
-| `src/store.js` | Per-module storage helper: `loadModule`/`saveModule` (`pusula:*`), `APP_KEYS`, `registerAppKey`, `pickLang`, `uid` | ~65 |
-| `src/pusula-utils.js` | PURE time/schedule math (no DOM) — imported directly by tests | ~90 |
+| `src/store.js` | Per-module storage helper: `loadModule`/`saveModule` (`bounGpa:*` with legacy migration), `APP_KEYS`, `registerAppKey`, `pickLang`, `uid` | ~65 |
+| `src/boun-gpa-utils.js` | PURE time/schedule math (no DOM) — imported directly by tests | ~90 |
 | `src/campus-seed.js` | Static bundled campus data (`export default`; links, ring/shuttle, contacts, calendar) | ~140 |
 | `src/home.js` | Home hub ("Bugün") — read-only widget aggregation over other modules + 60s tick | ~230 |
 | `src/schedule.js` | Weekly timetable grid module | ~250 |
@@ -56,7 +56,7 @@ node tests/tests.js
 open tests/test-runner.html
 ```
 
-Tests are standalone pure functions that mirror production logic in `src/gpa.js` and `src/grades.js`. The test file duplicates some logic locally (rather than importing from `src/`) because the import chain triggers `document.getElementById()` calls in `src/state.js` that fail in Node.js. DOM-free pure modules (`src/pusula-utils.js`, `src/final-grade-math.js`, `src/course-planner-math.js`) ARE imported directly. If you touch `calculateGPA()`, `checkAchievements()`, `calculateGoal()`, or the retake/explorer/perfectGPA logic in `src/ui.js` or `src/gpa.js`, update the corresponding test functions in `tests/tests.js` to stay in sync.
+Tests are standalone pure functions that mirror production logic in `src/gpa.js` and `src/grades.js`. The test file duplicates some logic locally (rather than importing from `src/`) because the import chain triggers `document.getElementById()` calls in `src/state.js` that fail in Node.js. DOM-free pure modules (`src/boun-gpa-utils.js`, `src/final-grade-math.js`, `src/course-planner-math.js`) ARE imported directly. If you touch `calculateGPA()`, `checkAchievements()`, `calculateGoal()`, or the retake/explorer/perfectGPA logic in `src/ui.js` or `src/gpa.js`, update the corresponding test functions in `tests/tests.js` to stay in sync.
 
 ## JavaScript architecture and patterns
 

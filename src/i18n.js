@@ -24,6 +24,11 @@ export const translations = {
         'nav.notes': 'Notlar & Görevler',
         'nav.campus': 'Kampüs',
         'nav.gradeGuide': 'Not Rehberi',
+        'nav.overview': 'Genel Bakış', 'nav.workspace': 'GPA Çalışma Alanı',
+        'nav.plan': 'Akademik Plan', 'nav.insights': 'İçgörüler',
+        'nav.utility': 'Rehber ve Araçlar', 'nav.more': 'Daha fazla',
+        'nav.mobileNavigation': 'Mobil gezinme', 'nav.moreNavigation': 'Daha fazla gezinme',
+        'nav.changeLanguage': 'Dili değiştir', 'nav.changeTheme': 'Temayı değiştir',
 
         // Day labels (0 = Monday)
         'day.mon': 'Pzt', 'day.tue': 'Sal', 'day.wed': 'Çar', 'day.thu': 'Per',
@@ -521,6 +526,11 @@ export const translations = {
         'nav.notes': 'Notes & Tasks',
         'nav.campus': 'Campus',
         'nav.gradeGuide': 'Grade Guide',
+        'nav.overview': 'Overview', 'nav.workspace': 'GPA Workspace',
+        'nav.plan': 'Academic Plan', 'nav.insights': 'Insights',
+        'nav.utility': 'Guide & Tools', 'nav.more': 'More',
+        'nav.mobileNavigation': 'Mobile navigation', 'nav.moreNavigation': 'More navigation',
+        'nav.changeLanguage': 'Change language', 'nav.changeTheme': 'Change theme',
 
         // Day labels (0 = Monday)
         'day.mon': 'Mon', 'day.tue': 'Tue', 'day.wed': 'Wed', 'day.thu': 'Thu',
@@ -1063,6 +1073,10 @@ export function translatePage() {
         el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
     });
 
+    document.querySelectorAll('[data-i18n-aria-label]').forEach(el => {
+        el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria-label')));
+    });
+
     // Update HTML lang attribute
     document.documentElement.lang = currentLanguage;
 
@@ -1071,15 +1085,13 @@ export function translatePage() {
     // Update view titles
     if (elements.pageTitle) {
         const viewTitles = {
-            get dashboard() { return t('nav.home'); },
+            get home() { return t('nav.home'); },
             get calculator() { return t('nav.calculator'); },
-            get goal() { return t('goal.title'); },
-            get history() { return t('history.title'); },
-            get charts() { return t('charts.gradeDistribution'); },
-            get export() { return t('export.title'); },
-            get simulation() { return t('simulation.title'); },
-            get graduation() { return t('graduation.title'); },
+            get goal() { return t('goal.title'); }, get history() { return t('history.title'); },
+            get charts() { return t('charts.gradeDistribution'); }, get export() { return t('export.title'); },
+            get simulation() { return t('simulation.title'); }, get graduation() { return t('graduation.title'); },
             get achievements() { return t('achievements.title'); },
+            get schedule() { return t('schedule.title'); }, get planner() { return t('planner.title'); },
             get gradeGuide() { return t('nav.gradeGuide'); },
             get finalGrade() { return t('nav.finalGrade'); },
             get coursePlanner() { return t('nav.coursePlanner'); },
@@ -1089,7 +1101,7 @@ export function translatePage() {
             get shortcuts() { return t('shortcuts.title'); }
         };
         const currentView = state.currentView;
-        elements.pageTitle.textContent = viewTitles[currentView] || 'Dashboard';
+        elements.pageTitle.textContent = viewTitles[currentView] || t('nav.home');
     }
 
     // Update semester options

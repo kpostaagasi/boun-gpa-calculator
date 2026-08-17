@@ -330,21 +330,21 @@ export async function shareResults() {
     }
 }
 
-// Collect every BOUN Pusula module blob ('pusula:*') as raw JSON strings.
-function collectPusulaModules() {
+// Collect every active module blob as raw JSON strings.
+function collectGpaModules() {
     const out = {};
     Object.keys(localStorage).forEach(k => {
-        if (k.startsWith('pusula:')) out[k] = localStorage.getItem(k);
+        if (k.startsWith('bounGpa:')) out[k] = localStorage.getItem(k);
     });
     return out;
 }
 
 export function exportAsJSON() {
     const data = {
-        // schemaVersion 3 = BOUN Pusula envelope (GPA data + module data).
-        // Legacy GPA-only backups (no schemaVersion / no pusulaModules) still import.
-        schemaVersion: 3,
-        version: '3.0',
+        // schemaVersion 4 = BOUN GPA Calculator envelope (GPA data + module data).
+        // Legacy GPA-only and legacy module backups remain importable.
+        schemaVersion: 4,
+        version: '4.0',
         exportDate: new Date().toISOString(),
         language: currentLanguage,
         courses: state.courses,
@@ -357,13 +357,13 @@ export function exportAsJSON() {
         baseCredits: state.baseCredits,
         achievements: state.achievements,
         scenarios: state.scenarios,
-        pusulaModules: collectPusulaModules()
+        bounGpaModules: collectGpaModules()
     };
 
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
-    link.download = `boun-pusula-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    link.download = `boun-gpa-calculator-backup-${new Date().toISOString().slice(0, 10)}.json`;
     link.href = url;
     link.click();
     URL.revokeObjectURL(url);
@@ -416,10 +416,13 @@ export function importData() {
         if (data.achievements && typeof data.achievements === 'object') state.achievements = data.achievements;
         if (Array.isArray(data.scenarios)) state.scenarios = data.scenarios;
 
-        // Import BOUN Pusula module data (schemaVersion 3+). Absent in legacy backups.
-        if (data.pusulaModules && typeof data.pusulaModules === 'object') {
-            Object.entries(data.pusulaModules).forEach(([k, v]) => {
-                if (k.startsWith('pusula:') && typeof v === 'string') localStorage.setItem(k, v);
+        // Import active or legacy module data. Legacy keys are migrated to active keys.
+        const moduleBackup = data.bounGpaModules || data.pusulaModules;
+        if (moduleBackup && typeof moduleBackup === 'object') {
+            Object.entries(moduleBackup).forEach(([k, v]) => {
+                if (/^(?:bounGpa|pusula):(schedule|planner)$/.test(k) && typeof v === 'string') {
+                    try { const parsed = JSON.parse(v); if (parsed && typeof parsed === 'object') localStorage.setItem(`bounGpa:${k.split(':')[1]}`, JSON.stringify(parsed)); } catch { /* skip corrupt module */ }
+                }
             });
         }
 
@@ -444,7 +447,7 @@ export function importData() {
             calculateGraduationProgress();
         }
         // Re-render any registered module view that's currently open
-        if (['gradeGuide', 'finalGrade', 'coursePlanner'].includes(state.currentView)) {
+        if (['home', 'schedule', 'planner', 'gradeGuide', 'finalGrade', 'coursePlanner'].includes(state.currentView)) {
             refreshView(state.currentView);
         }
 

@@ -16,6 +16,9 @@ import './features.js'; // side-effect: registers view inits + refreshes + event
 import './gradeGuide.js';
 import './finalGrade.js';
 import './coursePlanner.js';
+import './home.js';
+import './schedule.js';
+import './planner.js';
 
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);

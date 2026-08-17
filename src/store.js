@@ -1,15 +1,17 @@
 /**
- * BOUN Pusula — Per-Module Storage Helper
+ * BOUN GPA Calculator — Per-Module Storage Helper
  *
  * Each SuperApp module persists its own state under a namespaced key
- * ('pusula:<module>'), kept completely separate from the GPA calculator's
+ * ('bounGpa:<module>'), kept completely separate from the GPA calculator's
  * legacy 'gpaSaveData' blob. This mirrors the calculator's auto-save UX by
  * flashing the same indicator on every write.
  */
 import { showAutoSaveIndicator } from './ui.js';
 import { currentLanguage } from './i18n.js';
 
-const PREFIX = 'pusula:';
+const PREFIX = 'bounGpa:';
+// Retained solely to migrate data created by older releases.
+const LEGACY_PREFIX = 'pusula:';
 
 /**
  * Registry of every localStorage key the app owns. Modules push their namespaced
@@ -27,7 +29,19 @@ export function registerAppKey(ns) {
 /** Load a module's data object. Returns {} on missing/corrupt data (never throws). */
 export function loadModule(ns) {
     try {
-        return JSON.parse(localStorage.getItem(PREFIX + ns) || '{}') || {};
+        const activeKey = PREFIX + ns;
+        let raw = localStorage.getItem(activeKey);
+        if (raw == null) {
+            const legacyKey = LEGACY_PREFIX + ns;
+            raw = localStorage.getItem(legacyKey);
+            if (raw != null) {
+                const migrated = JSON.parse(raw);
+                localStorage.setItem(activeKey, JSON.stringify(migrated));
+                localStorage.removeItem(legacyKey);
+                return migrated || {};
+            }
+        }
+        return JSON.parse(raw || '{}') || {};
     } catch {
         return {};
     }

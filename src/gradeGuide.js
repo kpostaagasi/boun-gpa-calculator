@@ -1,5 +1,5 @@
 /**
- * BOUN Pusula — Grade System Guide (read-only reference)
+ * BOUN GPA Calculator — Grade System Guide (read-only reference)
  *
  * Rendered FROM the live grades.js constants so it can never drift from the
  * calculator: AA–FF ↔ point table, P/non-GPA grades, honor thresholds, retake
