@@ -469,6 +469,51 @@ input[type="number"] {
     min-width: 0;
 }
 
+/* ---------------------------------------------------------------------------
+   Archive notice.
+
+   The project is archived and GPA calculation now lives in BOUN Course
+   Planner, so every visitor gets one line saying where it went. It sits above
+   the sticky header and scrolls away with the page rather than sticking too:
+   this is a redirect worth seeing on arrival, not a bar worth spending screen
+   height on for the whole session — the tools that did not move still work
+   here and people still use them.
+
+   Coloured from --accent-gold-soft / --accent-gold and the text tokens,
+   because those are the ones this stylesheet actually redefines under
+   [data-theme="dark"]; --warning-* and --primary-* are light-only and would
+   have shipped a light-mode bar into the dark theme.
+   ------------------------------------------------------------------------ */
+.archive-banner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-3);
+    padding: var(--space-3) var(--space-8);
+    background: var(--accent-gold-soft);
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.875rem;
+    line-height: 1.45;
+}
+
+.archive-banner-text {
+    color: var(--text-secondary);
+}
+
+.archive-banner-link {
+    color: var(--text-primary);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    white-space: nowrap;
+    transition: color 150ms;
+}
+
+.archive-banner-link:hover,
+.archive-banner-link:focus-visible {
+    color: var(--accent-gold);
+}
+
 .main-header {
     height: var(--header-height);
     background: var(--header-bg);
@@ -2640,6 +2685,11 @@ input[type="number"] {
 
     .main-header {
         padding: 0 var(--space-4);
+    }
+
+    /* Match the header's side padding so the notice lines up with the title. */
+    .archive-banner {
+        padding: var(--space-3) var(--space-4);
     }
 
     .header-title {

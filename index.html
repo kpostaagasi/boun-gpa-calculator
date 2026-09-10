@@ -210,6 +210,17 @@
         
         <!-- Main Content -->
         <main class="main-content">
+            <!--
+              Archive notice. The text and the link are separate [data-i18n]
+              elements on purpose: translatePage() assigns textContent, so an
+              anchor nested inside a translated element would be wiped on the
+              first language switch.
+            -->
+            <aside class="archive-banner" role="note">
+                <span class="archive-banner-text" data-i18n="archive.notice">Bu araç arşivlendi ve artık geliştirilmiyor. GPA hesabı, ders programınızı da kurduğunuz BOUN Course Planner'a taşındı; buradaki diğer araçlar yerinde kalıyor.</span>
+                <a class="archive-banner-link" href="https://kpostaagasi.github.io/boun-course-planner" data-i18n="archive.cta">Planlayıcıyı aç</a>
+            </aside>
+
             <!-- Header -->
             <header class="main-header">
                 <div class="header-leading">

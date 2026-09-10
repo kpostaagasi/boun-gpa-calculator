@@ -11,6 +11,11 @@ import { state, elements } from './state.js';
 // ============================================
 export const translations = {
     tr: {
+        // Archive notice shown above the header on every view. Only the GPA
+        // calculation moved, so the banner says so rather than implying the
+        // whole app was replaced.
+        'archive.notice': 'Bu araç arşivlendi ve artık geliştirilmiyor. GPA hesabı, ders programınızı da kurduğunuz BOUN Course Planner\'a taşındı; buradaki diğer araçlar yerinde kalıyor.',
+        'archive.cta': 'Planlayıcıyı aç',
         // ===== BOUN GPA Calculator =====
         'brand.name': 'GPA Calculator',
         'brand.tagline': 'Boğaziçi Üniversitesi GPA hesaplayıcısı',
@@ -512,6 +517,8 @@ export const translations = {
         'coursePlanner.saved': 'Plan kaydedildi',
     },
     en: {
+        'archive.notice': 'This tool is archived and no longer developed. GPA calculation has moved to BOUN Course Planner, where you build your schedule too; the other tools here stay put.',
+        'archive.cta': 'Open the planner',
         // Navigation
         // ===== BOUN GPA Calculator =====
         'brand.name': 'GPA Calculator',

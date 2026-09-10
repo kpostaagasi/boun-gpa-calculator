@@ -4,7 +4,7 @@
  */
 
 // Bump this version when deploying changes to force cache refresh for returning visitors
-const CACHE_NAME = 'boun-gpa-calculator-v4.1.2';
+const CACHE_NAME = 'boun-gpa-calculator-v4.2.0';
 const OFFLINE_URL = '/boun-gpa-calculator/index.html';
 
 // Assets to cache immediately on install
